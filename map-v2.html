@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Карта Древнего мира — географическая основа v2</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<style>
+:root{--ink:#243246;--paper:#fbf7ec;--accent:#8b4b2f}
+*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.45 system-ui,-apple-system,Segoe UI,sans-serif}
+header{padding:16px;background:#efe3ca;border-bottom:1px solid #d4c4a5}h1{font-size:1.25rem;line-height:1.2;margin:0 0 6px}header p{margin:0;font-size:.9rem}
+main{max-width:1200px;margin:auto;padding:12px}.controls{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-bottom:10px}
+button,select{font:inherit;border:1px solid #c8b89a;border-radius:10px;padding:10px;background:#fffaf0;color:var(--ink)}
+button{background:#304d61;color:white;border:0;font-weight:650}.period{font-weight:750;margin-left:auto}
+#map{height:min(68vh,680px);min-height:380px;border:1px solid #b5cbd0;border-radius:14px;overflow:hidden}
+.columns{display:grid;grid-template-columns:minmax(0,2fr) minmax(250px,1fr);gap:12px}.panel{background:#fffdf7;border:1px solid #e1d5bf;border-radius:14px;padding:13px;margin-top:10px}.panel h2{font-size:1.03rem;margin:0 0 6px}.panel p{margin:5px 0}.small{font-size:.82rem;color:#59636c}.key{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0}.key span{display:inline-flex;gap:6px;align-items:center;background:#fffaf0;border:1px solid #e4d9c5;border-radius:999px;padding:5px 9px;font-size:.82rem}.swatch{width:12px;height:12px;border-radius:3px;display:inline-block}
+.leaflet-popup-content{font:14px/1.45 system-ui,-apple-system,Segoe UI,sans-serif}.note{background:#fff4d9;border-left:4px solid #b7863d;padding:10px 12px;border-radius:8px}
+@media(max-width:760px){.columns{grid-template-columns:1fr}#map{height:56vh;min-height:350px}.period{width:100%;margin-left:0}}
+</style>
+</head>
+<body>
+<header><h1>Интерактивный атлас Древнего мира — новая географическая основа</h1><p>Прототип: реальные географические координаты, приближение, перемещение карты и выбор исторических территорий.</p></header>
+<main>
+<div class="controls">
+<button id="prev" type="button">← Назад</button><button id="next" type="button">Вперёд →</button>
+<label for="era">Исторический период:</label><select id="era">
+<option value="0">ок. 3000 г. до н. э. — ранний Египет и города Междуречья</option>
+<option value="1">ок. 1500 г. до н. э. — Египет Нового царства</option>
+<option value="2">ок. 600 г. до н. э. — Ассирия, Вавилон и соседние государства</option>
+<option value="3">ок. 500 г. до н. э. — Персидская держава</option>
+<option value="4">ок. 330 г. до н. э. — завоевания Александра</option>
+</select><span class="period" id="period">Период 1 из 5</span>
+</div>
+<div class="columns"><section><div id="map" role="application" aria-label="Интерактивная географическая карта Древнего мира"></div><div class="key" id="key"></div></section>
+<aside><div class="panel"><h2 id="eraTitle">Египет и Междуречье</h2><p id="eraText">Нажми на цветную область, чтобы открыть справку.</p><p class="small" id="eraDate"></p></div>
+<div class="panel"><h2 id="stateTitle">Выбери государство</h2><p id="stateInfo">Нажми на цветную территорию на карте или на элемент легенды.</p></div>
+<div class="panel"><h2>Как читать границы</h2><p class="note">Это первый географический прототип. Береговые линии и положение рек привязаны к координатам; исторические полигоны пока являются учебными реконструкциями, а не окончательной научной разметкой. Для древних эпох границы часто спорны или известны приблизительно.</p><p class="small">Подложка: © OpenStreetMap contributors. Исторические данные в дальнейшем сверяются с Cliopatria / Seshat и профильными историческими атласами.</p></div></aside></div>
+</main>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+const map=L.map('map',{zoomControl:true,preferCanvas:true}).setView([29.5,35.0],4);
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19,attribution:'© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap contributors</a>'}).addTo(map);
+const palette={egypt:'#d9a441',sumer:'#c96d55',babylon:'#bd7354',assyria:'#a85b3d',hittites:'#6b9bb8',phoenicia:'#e5a56f',persia:'#c9a24f',greek:'#719acb',alexander:'#6f91bd'};
+const descriptions={
+egypt:{name:'Древний Египет',info:'Цивилизация развивалась вдоль Нила. Населённая долина и дельта реки были узкой жизненно важной полосой среди пустынь. Границы и степень контроля над Нубией и Синаем менялись в разные эпохи.'},
+sumer:{name:'Шумерские города',info:'Южное Междуречье — область городов-государств, среди которых Ур, Урук и Лагаш. Для ранних периодов корректнее показывать область городов, а не единую территориальную империю.'},
+babylon:{name:'Вавилония / Нововавилонское царство',info:'Вавилон находился на Евфрате. Территория Вавилонии менялась; контур на карте схематичен и показывает основную область, а не точную линию границы.'},
+assyria:{name:'Ассирия',info:'Ассирийское ядро находилось в северной Месопотамии, вокруг верхнего Тигра. В период расцвета Новоассирийской державы её власть распространялась далеко за пределы этого ядра.'},
+hittites:{name:'Хеттское царство',info:'Хеттское государство располагалось в центральной Анатолии. Его влияние и вассальные связи выходили за пределы центральной территории.'},
+phoenicia:{name:'Финикийские города',info:'Финикия — не единая сплошная империя, а цепь прибрежных городов Леванта, в том числе Тир, Сидон и Библ. Поэтому область показана узкой прибрежной зоной.'},
+persia:{name:'Держава Ахеменидов',info:'Персидская держава расширялась при Кире II, Камбисе II и Дарии I. В 525 г. до н. э. она завоевала Египет. Показанный контур — обзорная реконструкция огромной державы, не точная граница каждого сатрапийного округа.'},
+greek:{name:'Греческие полисы',info:'Греческий мир состоял из самостоятельных полисов и регионов. На этой обзорной карте область не означает единое греческое государство.'},
+alexander:{name:'Держава Александра Македонского',info:'К 330 г. до н. э. Александр завоевал державу Ахеменидов. После его смерти в 323 г. до н. э. территория распалась на государства диадохов.'}
+};
+// Geometry coordinates are provisional educational outlines, in [latitude, longitude].
+// They are not claimed as surveyed or exact historical borders.
+const territories=[
+{key:'egypt',eras:[0,1,2],coords:[[22.0,31.4],[22.0,32.9],[24.0,33.0],[26.0,33.0],[28.2,33.1],[29.5,32.6],[30.7,32.4],[31.6,32.3],[31.4,31.0],[30.7,30.0],[29.8,30.5],[28.0,31.0],[26.0,31.2],[24.0,31.2],[22.0,31.4]]},
+{key:'egypt',eras:[3,4],coords:[[22.0,31.4],[22.0,32.9],[24.0,33.0],[26.0,33.0],[28.2,33.1],[29.5,32.6],[30.7,32.4],[31.6,32.3],[31.4,31.0],[30.7,30.0],[29.8,30.5],[28.0,31.0],[26.0,31.2],[24.0,31.2],[22.0,31.4]]},
+{key:'sumer',eras:[0,1],coords:[[29.2,45.2],[29.0,47.2],[31.3,48.1],[32.3,46.8],[32.0,44.8],[30.5,44.1],[29.2,45.2]]},
+{key:'babylon',eras:[2],coords:[[29.1,44.3],[29.0,47.2],[31.4,48.4],[33.0,47.1],[33.0,44.7],[31.7,43.5],[29.1,44.3]]},
+{key:'assyria',eras:[1,2],coords:[[33.0,40.7],[33.4,43.2],[35.4,44.5],[37.3,43.6],[37.6,41.5],[36.2,40.5],[34.4,40.2],[33.0,40.7]]},
+{key:'hittites',eras:[1],coords:[[36.0,32.0],[36.3,34.3],[38.4,36.2],[40.4,35.4],[40.7,33.0],[39.4,31.5],[37.7,31.0],[36.0,32.0]]},
+{key:'phoenicia',eras:[1,2,3,4],coords:[[33.0,35.1],[33.2,35.6],[34.0,35.8],[34.9,35.7],[35.5,35.5],[35.3,35.1],[34.4,35.0],[33.0,35.1]]},
+{key:'persia',eras:[3],coords:[[24.0,46.0],[25.0,50.0],[28.0,54.0],[30.0,58.0],[35.0,61.0],[39.0,59.0],[42.0,54.0],[40.0,47.0],[38.0,42.0],[34.0,39.0],[31.0,40.0],[29.0,44.0],[24.0,46.0]]},
+{key:'alexander',eras:[4],coords:[[29.5,32.0],[30.5,36.0],[32.0,40.0],[34.0,44.0],[37.0,48.0],[39.0,54.0],[40.0,60.0],[35.0,63.0],[29.0,59.0],[25.0,52.0],[24.0,45.0],[27.0,38.0],[29.5,32.0]]},
+{key:'greek',eras:[0,1,2,3,4],coords:[[35.0,19.0],[36.0,22.0],[39.0,24.0],[41.0,26.0],[40.0,22.0],[38.0,19.0],[35.0,19.0]]}
+];
+const eraData=[
+{date:'ок. 3000 г. до н. э.',title:'Ранние цивилизации',text:'Сравни долину Нила с южным Междуречьем. В раннем Междуречье важно различать города-государства, а не изображать их единой империей.',keys:['egypt','sumer']},
+{date:'ок. 1500 г. до н. э.',title:'Египет Нового царства',text:'Египет достигал большой силы и распространял влияние в Нубии и Леванте. На карте отдельно показаны центральные области соседних государств; это не означает, что их власть всегда была одинаковой.',keys:['egypt','sumer','assyria','hittites','phoenicia','greek']},
+{date:'ок. 600 г. до н. э.',title:'Державы железного века',text:'В регионе сосуществовали разные политические образования. Ассирийская держава к этому времени уже пала; Вавилон стал важным центром. Контуры здесь — предварительный слой для дальнейшей исторической проверки.',keys:['egypt','babylon','assyria','phoenicia','greek']},
+{date:'ок. 500 г. до н. э.',title:'Персидская держава',text:'Ахемениды контролировали Египет, Месопотамию, Иран и обширные территории к востоку. Для точного учебного слоя потребуется сверка каждого участка с историческими источниками.',keys:['egypt','persia','phoenicia','greek']},
+{date:'ок. 330 г. до н. э.',title:'Завоевания Александра',text:'После падения державы Ахеменидов большая часть её территорий оказалась под властью Александра. Это краткий момент времени: после 323 г. до н. э. его держава распалась.',keys:['egypt','alexander','phoenicia','greek']}
+];
+let idx=0,layers=[];
+function selectPolity(key){const d=descriptions[key];document.getElementById('stateTitle').textContent=d.name;document.getElementById('stateInfo').textContent=d.info}
+function render(){idx=Math.max(0,Math.min(eraData.length-1,idx));const e=eraData[idx];document.getElementById('era').value=idx;document.getElementById('period').textContent='Период '+(idx+1)+' из '+eraData.length;document.getElementById('eraTitle').textContent=e.title;document.getElementById('eraText').textContent=e.text;document.getElementById('eraDate').textContent='Ориентировочная дата: '+e.date;document.getElementById('prev').disabled=idx===0;document.getElementById('next').disabled=idx===eraData.length-1;
+layers.forEach(l=>map.removeLayer(l));layers=[];const keyEl=document.getElementById('key');keyEl.innerHTML='';
+const visible=new Set(e.keys);
+territories.filter(t=>t.eras.includes(idx)&&visible.has(t.key)).forEach(t=>{const d=descriptions[t.key];const layer=L.polygon(t.coords,{color:palette[t.key],weight:2,fillColor:palette[t.key],fillOpacity:.43}).addTo(map);layer.bindPopup('<strong>'+d.name+'</strong><br>'+d.info);layer.on('click',()=>selectPolity(t.key));layers.push(layer);const span=document.createElement('span');span.innerHTML='<i class="swatch" style="background:'+palette[t.key]+'"></i>'+d.name;span.tabIndex=0;span.role='button';span.onclick=()=>{selectPolity(t.key);map.fitBounds(layer.getBounds(),{padding:[20,20]});layer.openPopup()};span.onkeydown=ev=>{if(ev.key==='Enter'||ev.key===' '){ev.preventDefault();span.onclick()}};keyEl.appendChild(span)});
+document.getElementById('stateTitle').textContent='Выбери государство';document.getElementById('stateInfo').textContent='Нажми на цветную территорию или название в легенде.';
+}
+document.getElementById('era').addEventListener('change',e=>{idx=Number(e.target.value);render()});document.getElementById('prev').onclick=()=>{idx--;render()};document.getElementById('next').onclick=()=>{idx++;render()};render();
+</script>
+</body></html>
