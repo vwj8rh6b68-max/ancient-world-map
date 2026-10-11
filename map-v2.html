@@ -105,7 +105,7 @@ window.cityLayer=L.layerGroup(cities.map(([name,lat,lon,info])=>L.circleMarker([
 const geoLabels=[['Средиземное море',32.4,30.5],['Синай',29.8,34.1],['Красное море',25.0,36.0],['Ливийская пустыня',26.8,27.8]];
 window.geoLabelLayer=L.layerGroup(geoLabels.map(([name,lat,lon])=>L.marker([lat,lon],{interactive:false,icon:L.divIcon({className:'geo-label',html:'<span style="color:#426c7b;font-style:italic;font-size:12px;white-space:nowrap;text-shadow:0 1px #fff">'+name+'</span>',iconSize:[130,18],iconAnchor:[65,9]})}))).addTo(map);
 document.getElementById('stateTitle').textContent='Выбери государство';document.getElementById('stateInfo').textContent='Нажми на цветную территорию или название в легенде.';document.getElementById('stateMedia').hidden=true;document.getElementById('stateMedia').innerHTML='';
-if(idx===0){const label=(text,lat,lon)=>L.marker([lat,lon],{interactive:false,icon:L.divIcon({className:'',html:'<span class="map-history-label">'+text+'</span>',iconSize:[140,28],iconAnchor:[70,14]})});window.egyptLabels=L.layerGroup([label('Верхний Египет',26.5,32.4),label('Нижний Египет',30.8,31.1)]).addTo(map);}
+if(idx===0){const label=(text,lat,lon)=>L.marker([lat,lon],{interactive:false,icon:L.divIcon({className:'',html:'<span class="map-history-label">'+text+'</span>',iconSize:[140,28],iconAnchor:[70,14]})});window.egyptLabels=L.layerGroup([label('Верхний Египет',26.5,32.4),label('Нижний Египет',30.8,31.1),label('Менес? / Нармер — объединение Египта',29.9,32.1)]).addTo(map);}
 }
 document.getElementById('era').addEventListener('change',e=>{idx=Number(e.target.value);render()});document.getElementById('prev').onclick=()=>{idx--;render()};document.getElementById('next').onclick=()=>{idx++;render()};render();
 </script>
