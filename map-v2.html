@@ -14,7 +14,7 @@ button,select{font:inherit;border:1px solid #c8b89a;border-radius:10px;padding:1
 button{background:#304d61;color:white;border:0;font-weight:650}.period{font-weight:750;margin-left:auto}
 #map{height:min(68vh,680px);min-height:380px;border:1px solid #b5cbd0;border-radius:14px;overflow:hidden}
 .columns{display:grid;grid-template-columns:minmax(0,2fr) minmax(250px,1fr);gap:12px}.panel{background:#fffdf7;border:1px solid #e1d5bf;border-radius:14px;padding:13px;margin-top:10px}.panel h2{font-size:1.03rem;margin:0 0 6px}.panel p{margin:5px 0}.small{font-size:.82rem;color:#59636c}.key{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0}.key span{display:inline-flex;gap:6px;align-items:center;background:#fffaf0;border:1px solid #e4d9c5;border-radius:999px;padding:5px 9px;font-size:.82rem}.swatch{width:12px;height:12px;border-radius:3px;display:inline-block}
-.leaflet-popup-content{font:14px/1.45 system-ui,-apple-system,Segoe UI,sans-serif}.geo-label{background:transparent;border:0}.history-media{margin-top:10px;border-top:1px solid #e1d5bf;padding-top:10px}.history-media img{display:block;width:100%;max-height:240px;object-fit:contain;border-radius:8px;background:#f2ead9}.crowns{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}.crown-card{background:#f8f1e3;border:1px solid #e1d5bf;border-radius:10px;padding:8px;text-align:center;font-size:.82rem}.crown-card svg{width:100%;height:70px;display:block}.map-history-label{background:rgba(255,253,247,.88);border:1px solid #bda980;border-radius:6px;padding:4px 7px;color:#243246;font-size:12px;font-weight:700;white-space:nowrap;box-shadow:0 1px 3px #0002}.note{background:#fff4d9;border-left:4px solid #b7863d;padding:10px 12px;border-radius:8px}
+.leaflet-popup-content{font:14px/1.45 system-ui,-apple-system,Segoe UI,sans-serif}.geo-label{background:transparent;border:0}.history-media{margin-top:10px;border-top:1px solid #e1d5bf;padding-top:10px}.history-media img{display:block;width:100%;max-height:240px;object-fit:contain;border-radius:8px;background:#f2ead9}.crowns{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}.crown-card{background:#f8f1e3;border:1px solid #e1d5bf;border-radius:10px;padding:8px;text-align:center;font-size:.82rem}.crown-card svg{width:100%;height:70px;display:block}.map-history-label{background:rgba(255,253,247,.88);border:1px solid #bda980;border-radius:6px;padding:4px 7px;color:#243246;font-size:12px;font-weight:700;white-space:nowrap;box-shadow:0 1px 3px #0002}.map-geography-label{background:rgba(245,242,228,.7);border:0;box-shadow:none;color:#4c6876;font-style:italic;font-weight:500;}.note{background:#fff4d9;border-left:4px solid #b7863d;padding:10px 12px;border-radius:8px}
 @media(max-width:760px){.columns{grid-template-columns:1fr}#map{height:56vh;min-height:350px}.period{width:100%;margin-left:0}}
 </style>
 </head>
@@ -39,7 +39,7 @@ button{background:#304d61;color:white;border:0;font-weight:650}.period{font-weig
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script>
 const map=L.map('map',{zoomControl:true,preferCanvas:true}).setView([29.0,35.0],4);
-L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Physical_Map/MapServer/tile/{z}/{y}/{x}',{maxZoom:8,attribution:'Tiles © <a href="https://www.esri.com/">Esri</a> и поставщики географических данных'}).addTo(map);
+L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Shaded_Relief/MapServer/tile/{z}/{y}/{x}',{maxZoom:8,attribution:'Рельефная подложка © <a href="https://www.esri.com/">Esri</a> и поставщики географических данных'}).addTo(map);
 const palette={egypt:'#d9a441',persian_egypt:'#c9a24f',alexander_egypt:'#6f91bd',nubia:'#d9b96b',levant_egypt:'#e7c778',sumer:'#c96d55',babylon:'#bd7354',assyria:'#a85b3d',hittites:'#6b9bb8',phoenicia:'#e5a56f',persia:'#c9a24f',greek:'#719acb',alexander:'#6f91bd'};
 const descriptions={
 nubia:{name:'Египетское влияние в Нубии',info:'В эпоху Нового царства египетская власть распространялась далеко к югу по долине Нила. Южные рубежи и степень контроля менялись; этот контур обозначает ориентировочную зону влияния, а не точную границу.'},
@@ -103,6 +103,12 @@ const labelNames={egypt:'Египет',persian_egypt:'Египет Ахемен�
 window.historyLabelLayer=L.layerGroup();
 e.keys.forEach(key=>{if(!labelPositions[key]||!territories.some(t=>t.key===key&&t.eras.includes(idx)))return;const [lat,lon]=labelPositions[key];const name=labelNames[key]||getDescription(key).name;window.historyLabelLayer.addLayer(L.marker([lat,lon],{interactive:false,icon:L.divIcon({className:'',html:'<span class="map-history-label">'+name+'</span>',iconSize:[150,26],iconAnchor:[75,13]})}));});
 window.historyLabelLayer.addTo(map);
+
+// Географические ориентиры подписаны по-русски; подписи самой подложки отключены.
+const geographyLabels=[
+ ['Средиземное море',35.2,25.2,150],['Красное море',22.0,37.0,110],['Персидский залив',27.0,50.5,130],['Аравийская пустыня',25.0,29.0,130],['Месопотамия',33.0,43.5,110],['Анатолия',39.5,34.5,90]
+];
+window.geographyLabelLayer=L.layerGroup(geographyLabels.map(([name,lat,lon,width])=>L.marker([lat,lon],{interactive:false,icon:L.divIcon({className:'',html:'<span class="map-history-label map-geography-label">'+name+'</span>',iconSize:[width,24],iconAnchor:[width/2,12]})}))).addTo(map);
 
 // Nile is drawn as a geographic line, with the delta branching northwards.
 const nileCoords=[[4.0,32.5],[9.0,32.5],[15.0,32.5],[18.0,32.6],[20.5,32.8],[22.0,31.7],[23.0,32.7],[24.1,32.9],[25.7,32.65],[27.0,32.5],[28.5,32.4],[29.8,31.2],[30.2,31.0],[30.7,30.8],[31.2,30.5]];
