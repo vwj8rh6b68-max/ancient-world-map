@@ -62,7 +62,7 @@ button{background:#304d61;color:white;border:0;font-weight:650}.period{font-weig
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script>
 const map=L.map('map',{zoomControl:true,preferCanvas:true}).setView([29.0,35.0],4);
-map.attributionControl.setPrefix(false);
+map.attributionControl.remove();
 L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Physical_Map/MapServer/tile/{z}/{y}/{x}',{maxZoom:8,attribution:''}).addTo(map);
 const palette={egypt:'#d9a441',persian_egypt:'#c9a24f',alexander_egypt:'#6f91bd',nubia:'#d9b96b',levant_egypt:'#e7c778',sumer:'#c96d55',babylon:'#bd7354',assyria:'#a85b3d',hittites:'#6b9bb8',phoenicia:'#e5a56f',persia:'#c9a24f',greek:'#719acb',alexander:'#6f91bd'};
 const descriptions={
