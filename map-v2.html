@@ -16,6 +16,8 @@ button{background:#304d61;color:white;border:0;font-weight:650}.period{font-weig
 .columns{display:grid;grid-template-columns:minmax(0,2fr) minmax(250px,1fr);gap:12px}.panel{background:#fffdf7;border:1px solid #e1d5bf;border-radius:14px;padding:13px;margin-top:10px}.panel h2{font-size:1.03rem;margin:0 0 6px}.panel p{margin:5px 0}.small{font-size:.82rem;color:#59636c}.key{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0}.key span{display:inline-flex;gap:6px;align-items:center;background:#fffaf0;border:1px solid #e4d9c5;border-radius:999px;padding:5px 9px;font-size:.82rem}.swatch{width:12px;height:12px;border-radius:3px;display:inline-block}
 .leaflet-popup-content{font:14px/1.45 system-ui,-apple-system,Segoe UI,sans-serif}.geo-label{background:transparent;border:0}.history-media{margin-top:10px;border-top:1px solid #e1d5bf;padding-top:10px}.history-media img{display:block;width:100%;max-height:240px;object-fit:contain;border-radius:8px;background:#f2ead9}.crowns{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}.crown-card{background:#f8f1e3;border:1px solid #e1d5bf;border-radius:10px;padding:8px;text-align:center;font-size:.82rem}.crown-card svg{width:100%;height:70px;display:block}.map-history-label{background:rgba(255,253,247,.88);border:1px solid #bda980;border-radius:6px;padding:4px 7px;color:#243246;font-size:12px;font-weight:700;white-space:nowrap;box-shadow:0 1px 3px #0002}.map-geography-label{background:rgba(245,242,228,.7);border:0;box-shadow:none;color:#4c6876;font-style:italic;font-weight:500;}.note{background:#fff4d9;border-left:4px solid #b7863d;padding:10px 12px;border-radius:8px}
 @media(max-width:760px){.columns{grid-template-columns:1fr}#map{height:56vh;min-height:350px}.period{width:100%;margin-left:0}}
+
+.practice{background:#f3f6f2;border:1px solid #cbd9ce;border-radius:14px;padding:13px;margin-top:10px}.practice h2{font-size:1.03rem;margin:0 0 6px}.practice-controls{display:flex;flex-wrap:wrap;gap:7px;margin-top:8px}.practice select{width:100%;margin-top:6px}.practice button{padding:8px 10px}.practice .answer{margin-top:9px;padding:9px;background:#fffdf7;border-radius:8px;border:1px dashed #9db5a3}.practice .answer[hidden]{display:none}.practice-status{font-size:.85rem;color:#4b6254;margin-top:6px}
 </style>
 </head>
 <body>
@@ -34,6 +36,21 @@ button{background:#304d61;color:white;border:0;font-weight:650}.period{font-weig
 <div class="columns"><section><div id="map" role="application" aria-label="Интерактивная географическая карта Древнего мира"></div><div class="key" id="key"></div></section>
 <aside><div class="panel"><h2 id="eraTitle">Египет и Междуречье</h2><p id="eraText">Нажми на цветную область, чтобы открыть справку.</p><p class="small" id="eraDate"></p></div>
 <div class="panel"><h2 id="stateTitle">Выбери государство</h2><p id="stateInfo">Нажми на цветную территорию на карте или на элемент легенды.</p><div id="stateMedia" class="history-media" hidden></div></div>
+
+<div class="practice" aria-labelledby="practiceTitle">
+<h2 id="practiceTitle">Практика: атлас и контурная карта</h2>
+<p class="small">Короткие задания для 5-го класса: сначала попробуй найти объект самостоятельно, затем открой самопроверку. Задания составлены по темам карты и не заменяют точные задания на страницах вашего пособия.</p>
+<label for="practiceMode">Тип задания</label>
+<select id="practiceMode">
+<option value="atlas">Работа с атласом — найди объект</option>
+<option value="contour">Контурная карта — вспомни подпись</option>
+<option value="compare">Сравни эпохи</option>
+</select>
+<p id="practiceQuestion">Нажми «Новое задание», чтобы начать.</p>
+<div class="practice-controls"><button id="newTask" type="button">Новое задание</button><button id="showAnswer" type="button">Показать ответ</button><button id="focusTask" type="button">Показать на карте</button></div>
+<div id="practiceAnswer" class="answer" hidden></div>
+<p id="practiceStatus" class="practice-status" aria-live="polite">Подсказка: используй масштаб карты и подписи морей, рек и городов.</p>
+</div>
 <div class="panel"><h2>Как читать границы</h2><p class="note">Это первый географический прототип. Береговые линии и положение рек привязаны к координатам; исторические полигоны пока являются учебными реконструкциями, а не окончательной научной разметкой. Для древних эпох границы часто спорны или известны приблизительно.</p><p class="small">Физическая подложка: Esri и поставщики географических данных. Цветные области — схематические исторические реконструкции. Они не являются точными административными границами.</p></div></aside></div>
 </main>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
@@ -130,6 +147,60 @@ window.geoLabelLayer=L.layerGroup(geoLabels.map(([name,lat,lon])=>L.marker([lat,
 document.getElementById('stateTitle').textContent='Выбери государство';document.getElementById('stateInfo').textContent='Нажми на цветную территорию или название в легенде.';document.getElementById('stateMedia').hidden=true;document.getElementById('stateMedia').innerHTML='';
 if(idx===0){const label=(text,lat,lon)=>L.marker([lat,lon],{interactive:false,icon:L.divIcon({className:'',html:'<span class="map-history-label">'+text+'</span>',iconSize:[140,28],iconAnchor:[70,14]})});window.egyptLabels=L.layerGroup([label('Верхний Египет',26.5,32.4),label('Нижний Египет',30.8,31.1),label('Нармер — возможный Менес',29.9,31.8)]).addTo(map);}
 }
+
+const practiceTasks={
+atlas:[
+{q:'Найди реку, вдоль которой возник Древний Египет.',a:'Нил. Он течёт с юга на север и образует дельту у Средиземного моря.',lat:27.5,lon:32.4,zoom:5,era:0},
+{q:'Найди южное Междуречье — родину шумерских городов.',a:'Южная Месопотамия, между нижними течениями Тигра и Евфрата. На карте отмечена область шумерских городов.',lat:31.0,lon:46.5,zoom:5,era:0},
+{q:'Найди Вавилон. С какой рекой связан его город?',a:'Вавилон располагался на Евфрате в Месопотамии.',lat:32.54,lon:44.42,zoom:6,era:2},
+{q:'Найди Средиземное море к северу от Египта.',a:'Средиземное море находится к северу от дельты Нила.',lat:33.5,lon:31.0,zoom:5,era:0},
+{q:'Найди Фивы — важный центр Верхнего Египта.',a:'Фивы находились в долине Нила южнее Мемфиса, в районе современного Луксора.',lat:25.7,lon:32.65,zoom:7,era:1},
+{q:'Найди финикийскую прибрежную область восточного Средиземноморья.',a:'Финикийские города располагались на восточном побережье Средиземного моря, примерно на территории современного Ливана.',lat:34.3,lon:35.4,zoom:7,era:2}
+],
+contour:[
+{q:'Представь, что перед тобой контурная карта: какой город нужно подписать в дельте Нила, если это древний политический центр?',a:'Мемфис. Он находился возле начала дельты Нила.',lat:29.85,lon:31.25,zoom:7,era:0},
+{q:'На контурной карте подпиши город Ур — один из центров Шумера.',a:'Ур — город южного Междуречья, недалеко от Персидского залива.',lat:30.96,lon:46.1,zoom:7,era:0},
+{q:'Как называется море, к которому выходит дельта Нила?',a:'Средиземное море.',lat:31.7,lon:30.8,zoom:6,era:0},
+{q:'Подпиши столицу Нововавилонского царства.',a:'Вавилон.',lat:32.54,lon:44.42,zoom:7,era:2},
+{q:'Подпиши древний город Ниневию в северной Месопотамии.',a:'Ниневия — один из главных городов Ассирии, на восточном берегу Тигра.',lat:36.36,lon:43.15,zoom:7,era:1}
+],
+compare:[
+{q:'Сравни около 1500 и 600 гг. до н. э.: какое государство усилило влияние в Леванте в эпоху Нового царства?',a:'Египет Нового царства. Около 600 г. до н. э. политическая ситуация изменилась: Ассирийская держава уже пала, а в Южном Междуречье усилился Вавилон.',lat:32.7,lon:34.5,zoom:5,era:1},
+{q:'Сравни около 600 и 500 гг. до н. э.: какая держава подчинила Египет к 500 г. до н. э.?',a:'Держава Ахеменидов (Персидская держава). Египет был завоёван Камбисом II в 525 г. до н. э.',lat:29.5,lon:31.5,zoom:4,era:3},
+{q:'Что изменилось между 500 и 330 гг. до н. э. в Передней Азии?',a:'Держава Александра Македонского завоевала державу Ахеменидов. Контуры на карте схематичны и показывают общий масштаб завоеваний.',lat:35.5,lon:45.0,zoom:4,era:4}
+]
+};
+let currentPracticeTask=null,practiceMarker=null;
+function choosePracticeTask(){
+ const mode=document.getElementById('practiceMode').value;
+ const pool=practiceTasks[mode];
+ let next=pool[Math.floor(Math.random()*pool.length)];
+ if(pool.length>1&&currentPracticeTask&&next.q===currentPracticeTask.q)next=pool[(pool.indexOf(next)+1)%pool.length];
+ currentPracticeTask=next;
+ document.getElementById('practiceQuestion').textContent=next.q;
+ document.getElementById('practiceAnswer').hidden=true;
+ document.getElementById('practiceAnswer').textContent='';
+ document.getElementById('practiceStatus').textContent='Попробуй ответить сам, затем проверь себя.';
+ idx=next.era;render();
+}
+function showPracticeAnswer(){
+ if(!currentPracticeTask){document.getElementById('practiceStatus').textContent='Сначала нажми «Новое задание».';return;}
+ const answer=document.getElementById('practiceAnswer');answer.textContent=currentPracticeTask.a;answer.hidden=false;
+ document.getElementById('practiceStatus').textContent='Сверь свой ответ. При необходимости открой объект на карте.';
+}
+function focusPracticeTask(){
+ if(!currentPracticeTask){document.getElementById('practiceStatus').textContent='Сначала нажми «Новое задание».';return;}
+ map.setView([currentPracticeTask.lat,currentPracticeTask.lon],currentPracticeTask.zoom);
+ if(practiceMarker)map.removeLayer(practiceMarker);
+ practiceMarker=L.circleMarker([currentPracticeTask.lat,currentPracticeTask.lon],{radius:10,color:'#fff',weight:3,fillColor:'#e15a3a',fillOpacity:.95}).addTo(map);
+ practiceMarker.bindPopup('<strong>Место для проверки</strong><br>Попробуй назвать объект до открытия ответа.').openPopup();
+ document.getElementById('practiceStatus').textContent='Карта приблизила нужный район. Назови объект до просмотра ответа.';
+}
+document.getElementById('newTask').addEventListener('click',choosePracticeTask);
+document.getElementById('showAnswer').addEventListener('click',showPracticeAnswer);
+document.getElementById('focusTask').addEventListener('click',focusPracticeTask);
+document.getElementById('practiceMode').addEventListener('change',()=>{currentPracticeTask=null;document.getElementById('practiceQuestion').textContent='Нажми «Новое задание», чтобы начать.';document.getElementById('practiceAnswer').hidden=true;document.getElementById('practiceStatus').textContent='Выбран новый тип задания.';});
+
 document.getElementById('era').addEventListener('change',e=>{idx=Number(e.target.value);render()});document.getElementById('prev').onclick=()=>{idx--;render()};document.getElementById('next').onclick=()=>{idx++;render()};render();
 </script>
 </body></html>
