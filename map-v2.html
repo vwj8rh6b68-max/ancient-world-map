@@ -30,7 +30,7 @@ button{background:#304d61;color:white;border:0;font-weight:650}.period{font-weig
 <label for="era">Исторический период:</label><select id="era">
 <option value="0">ок. 3000 г. до н. э. — ранний Египет и города Междуречья</option>
 <option value="1">ок. 1500 г. до н. э. — Египет Нового царства</option>
-<option value="2">ок. 600 г. до н. э. — Ассирия, Вавилон и соседние государства</option>
+<option value="2">ок. 600 г. до н. э. — Вавилон и государства Восточного Средиземноморья</option>
 <option value="3">ок. 500 г. до н. э. — Персидская держава</option>
 <option value="4">ок. 330 г. до н. э. — завоевания Александра</option>
 </select><span class="period" id="period">Период 1 из 5</span>
@@ -158,7 +158,7 @@ const mesopotamiaCities=[
  ['Ниневия',36.359,43.152,'Древний город северной Месопотамии, позднее ставший столицей Новоассирийской державы. Ниневия была разрушена в 612 г. до н. э.; поэтому около 600 г. до н. э. она не отмечена как действующий центр.',[1]]
 ];
 window.mesoCityLayer=L.layerGroup(mesopotamiaCities.filter(c=>c[4].includes(idx)).map(([name,lat,lon,info])=>L.circleMarker([lat,lon],{radius:5,color:'#fff',weight:1.5,fillColor:'#7b382b',fillOpacity:1}).bindPopup('<strong>'+name+'</strong><br>'+info))).addTo(map);
-const geoLabels=[['Средиземное море',32.4,30.5],['Синай',29.8,34.1],['Красное море',25.0,36.0],['Ливийская пустыня',26.8,27.8]];
+const geoLabels=[['Синай',29.8,34.1],['Ливийская пустыня',26.8,27.8]];
 window.geoLabelLayer=L.layerGroup(geoLabels.map(([name,lat,lon])=>L.marker([lat,lon],{interactive:false,icon:L.divIcon({className:'geo-label',html:'<span style="color:#426c7b;font-style:italic;font-size:12px;white-space:nowrap;text-shadow:0 1px #fff">'+name+'</span>',iconSize:[130,18],iconAnchor:[65,9]})}))).addTo(map);
 document.getElementById('stateTitle').textContent='Выбери государство';document.getElementById('stateInfo').textContent='Нажми на цветную территорию или название в легенде.';document.getElementById('stateMedia').hidden=true;document.getElementById('stateMedia').innerHTML='';
 if(idx===0){const label=(text,lat,lon)=>L.marker([lat,lon],{interactive:false,icon:L.divIcon({className:'',html:'<span class="map-history-label">'+text+'</span>',iconSize:[140,28],iconAnchor:[70,14]})});window.egyptLabels=L.layerGroup([label('Верхний Египет',26.5,32.4),label('Нижний Египет',30.8,31.1),label('Нармер и объединение Египта',25.1,32.8)]).addTo(map);}
