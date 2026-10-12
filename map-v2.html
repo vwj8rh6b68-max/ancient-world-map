@@ -182,38 +182,57 @@ function selectPolity(key){const d=getDescription(key);document.getElementById('
 function clearCampaign(){if(window.campaignTimer){clearInterval(window.campaignTimer);window.campaignTimer=null;}if(window.campaignLayer){map.removeLayer(window.campaignLayer);window.campaignLayer=null;}const b=document.getElementById('campaignButton');if(b)b.textContent='Показать поход Александра';}
 function animateAlexanderCampaign(){
  clearCampaign();
- if(idx!==5)return;
- const stops=[
-  {name:'Пелла',lat:40.75,lon:22.52,date:'334 г. до н. э.',info:'Отправная точка похода Александра.'},
-  {name:'Граник',lat:40.25,lon:27.15,date:'334 г. до н. э.',info:'Победа у реки Граник открыла Александру путь в Малую Азию.'},
-  {name:'Сарды',lat:38.49,lon:28.04,date:'334 г. до н. э.',info:'Сарды перешли под власть Александра.'},
-  {name:'Гордион',lat:39.72,lon:31.77,date:'333 г. до н. э.',info:'Один из важных пунктов продвижения через Малую Азию.'},
-  {name:'Исс',lat:36.86,lon:36.2,date:'333 г. до н. э.',info:'Победа при Иссе над войском Дария III.'},
-  {name:'Тир',lat:33.27,lon:35.2,date:'332 г. до н. э.',info:'После осады Тир был взят Александром.'},
-  {name:'Газа',lat:31.5,lon:34.47,date:'332 г. до н. э.',info:'После похода вдоль восточного побережья Средиземного моря Александр двинулся в Египет.'},
-  {name:'Мемфис',lat:29.85,lon:31.25,date:'332 г. до н. э.',info:'Египет перешёл под власть Александра.'},
-  {name:'Гавгамелы',lat:36.36,lon:43.25,date:'331 г. до н. э.',info:'Победа при Гавгамелах стала решающим поражением державы Ахеменидов.'},
-  {name:'Вавилон',lat:32.54,lon:44.42,date:'331 г. до н. э.',info:'Вавилон открыл ворота войску Александра.'},
-  {name:'Сузы',lat:32.19,lon:48.25,date:'331–330 гг. до н. э.',info:'Один из важнейших центров державы Ахеменидов.'},
-  {name:'Персеполь',lat:29.93,lon:52.89,date:'330 г. до н. э.',info:'К 330 г. до н. э. Александр овладел Персеполем. Дальнейшие походы в Среднюю Азию и Индию здесь не показаны.'}
- ];
- const coords=stops.map(s=>[s.lat,s.lon]);
+ const campaigns={
+  1:{title:'Походы Тутмоса III',note:'Схема общего направления египетских походов в Левант; не точный маршрут одного дня или одной кампании.',stops:[
+   {name:'Фивы',lat:25.7,lon:32.65,date:'XV в. до н. э.',info:'Один из главных царских центров Египта; походы отправлялись на север через долину Нила и Синай.'},
+   {name:'Газа',lat:31.5,lon:34.47,date:'XV в. до н. э.',info:'Левантинский коридор связывал Египет с городами Южной Сирии и Палестины.'},
+   {name:'Мегиддо',lat:32.58,lon:35.18,date:'ок. 1457 г. до н. э.',info:'Победа Тутмоса III при Мегиддо укрепила египетское влияние в Ханаане.'},
+   {name:'Кадеш',lat:34.56,lon:36.52,date:'XV–XIII вв. до н. э.',info:'Район важен для соперничества Египта и Хеттского царства. Не все точки на схеме относятся к одной кампании.'},
+   {name:'Район Евфрата',lat:36.0,lon:38.0,date:'XV в. до н. э.',info:'Египетские походы достигали северной Сирии и района Евфрата; устойчивость контроля менялась.'}
+  ]},
+  2:{title:'Расширение Ассирийской державы',note:'Обобщённая схема экспансии VIII–VII вв. до н. э.; точки относятся к разным походам и царям.',stops:[
+   {name:'Ашшур',lat:35.46,lon:43.26,date:'VIII–VII вв. до н. э.',info:'Один из древних религиозных и политических центров Ассирии.'},
+   {name:'Ниневия',lat:36.36,lon:43.15,date:'VIII–VII вв. до н. э.',info:'Столица державы в период её расцвета; дворцовые рельефы изображают войны и осады.'},
+   {name:'Вавилон',lat:32.54,lon:44.42,date:'VIII–VII вв. до н. э.',info:'Ассирийские цари неоднократно вмешивались в дела Вавилонии и захватывали город.'},
+   {name:'Дамаск',lat:33.51,lon:36.29,date:'732 г. до н. э.',info:'Дамаск был захвачен ассирийцами при Тиглатпаласаре III.'},
+   {name:'Мемфис',lat:29.85,lon:31.25,date:'671 г. до н. э.',info:'Ассирийский царь Асархаддон вторгся в Египет и захватил Мемфис; контроль над Египтом был непрочным.'}
+  ]},
+  4:{title:'Расширение державы Ахеменидов',note:'Схема ключевых направлений завоеваний VI–VI вв. до н. э.; это не непрерывный марш одного войска.',stops:[
+   {name:'Пасаргады',lat:30.2,lon:53.18,date:'VI в. до н. э.',info:'Ранний центр державы Кира II.'},
+   {name:'Сарды',lat:38.49,lon:28.04,date:'546 г. до н. э.',info:'После победы над Лидией западная часть Малой Азии вошла в державу Кира II.'},
+   {name:'Вавилон',lat:32.54,lon:44.42,date:'539 г. до н. э.',info:'Кир II овладел Вавилоном; город и его жители стали частью Ахеменидской державы.'},
+   {name:'Мемфис',lat:29.85,lon:31.25,date:'525 г. до н. э.',info:'Камбис II завоевал Египет. Завоевание произошло позже основных походов Кира II.'},
+   {name:'Персеполь',lat:29.93,lon:52.89,date:'VI–V вв. до н. э.',info:'Церемониальный центр державы; при Дарии I и его преемниках империя управлялась через сатрапии.'}
+  ]},
+  5:{title:'Поход Александра Македонского',note:'Поход 334–330 гг. до н. э.; завоевания в Средней Азии и Индии здесь не показаны.',stops:[
+   {name:'Пелла',lat:40.75,lon:22.52,date:'334 г. до н. э.',info:'Отправная точка похода Александра.'},
+   {name:'Граник',lat:40.25,lon:27.15,date:'334 г. до н. э.',info:'Победа у реки Граник открыла путь в Малую Азию.'},
+   {name:'Сарды',lat:38.49,lon:28.04,date:'334 г. до н. э.',info:'Сарды перешли под власть Александра.'},
+   {name:'Гордион',lat:39.72,lon:31.77,date:'333 г. до н. э.',info:'Важный пункт продвижения через Малую Азию.'},
+   {name:'Исс',lat:36.86,lon:36.2,date:'333 г. до н. э.',info:'Победа над войском Дария III.'},
+   {name:'Тир',lat:33.27,lon:35.2,date:'332 г. до н. э.',info:'После осады Тир был взят Александром.'},
+   {name:'Газа',lat:31.5,lon:34.47,date:'332 г. до н. э.',info:'После похода вдоль восточного побережья Средиземного моря Александр двинулся в Египет.'},
+   {name:'Мемфис',lat:29.85,lon:31.25,date:'332 г. до н. э.',info:'Египет перешёл под власть Александра.'},
+   {name:'Гавгамелы',lat:36.36,lon:43.25,date:'331 г. до н. э.',info:'Решающее поражение державы Ахеменидов.'},
+   {name:'Вавилон',lat:32.54,lon:44.42,date:'331 г. до н. э.',info:'Вавилон стал одним из центров державы Александра.'},
+   {name:'Сузы',lat:32.19,lon:48.25,date:'331–330 гг. до н. э.',info:'Важный административный центр Ахеменидов.'},
+   {name:'Персеполь',lat:29.93,lon:52.89,date:'330 г. до н. э.',info:'К 330 г. до н. э. Александр овладел Персеполем.'}
+  ]}
+ };
+ const campaign=campaigns[idx];if(!campaign)return;
+ const stops=campaign.stops,coords=stops.map(p=>[p.lat,p.lon]);
  window.campaignLayer=L.layerGroup();
  L.polyline(coords,{color:'#8b4b2f',weight:4,opacity:.9,dashArray:'8 7'}).addTo(window.campaignLayer);
  const marker=L.circleMarker(coords[0],{radius:8,color:'#fff',weight:3,fillColor:'#d94b36',fillOpacity:1}).addTo(window.campaignLayer);
- window.campaignLayer.addTo(map);
- map.fitBounds(L.latLngBounds(coords),{padding:[24,24]});
- let i=0;
- marker.bindPopup('<strong>'+stops[0].name+' — '+stops[0].date+'</strong><br>'+stops[0].info).openPopup();
- const button=document.getElementById('campaignButton');button.textContent='Повторить поход Александра';
- window.campaignTimer=window.setInterval(()=>{
-  i++;
-  if(i>=stops.length){clearInterval(window.campaignTimer);window.campaignTimer=null;marker.setLatLng(coords[coords.length-1]);marker.bindPopup('<strong>'+stops[stops.length-1].name+' — '+stops[stops.length-1].date+'</strong><br>'+stops[stops.length-1].info).openPopup();return;}
-  marker.setLatLng(coords[i]);marker.bindPopup('<strong>'+stops[i].name+' — '+stops[i].date+'</strong><br>'+stops[i].info).openPopup();
- },700);
+ window.campaignLayer.addTo(map);map.fitBounds(L.latLngBounds(coords),{padding:[24,24]});
+ let i=0;marker.bindPopup('<strong>'+campaign.title+'</strong><br>'+stops[0].name+' — '+stops[0].date+'<br>'+stops[0].info+'<br><em>'+campaign.note+'</em>').openPopup();
+ const button=document.getElementById('campaignButton');button.textContent='Повторить: '+campaign.title;
+ window.campaignTimer=window.setInterval(()=>{i++;if(i>=stops.length){clearInterval(window.campaignTimer);window.campaignTimer=null;i=stops.length-1;}
+  marker.setLatLng(coords[i]);marker.bindPopup('<strong>'+campaign.title+'</strong><br>'+stops[i].name+' — '+stops[i].date+'<br>'+stops[i].info+'<br><em>'+campaign.note+'</em>').openPopup();
+ },850);
 }
 document.getElementById('campaignButton').addEventListener('click',animateAlexanderCampaign);
-function render(){clearCampaign();idx=Math.max(0,Math.min(eraData.length-1,idx));const e=eraData[idx];document.getElementById('campaignButton').hidden=idx!==5;document.getElementById('era').value=idx;document.getElementById('period').textContent='Период '+(idx+1)+' из '+eraData.length;document.getElementById('eraTitle').textContent=e.title;document.getElementById('eraText').textContent=e.text;document.getElementById('eraDate').textContent='Ориентировочная дата: '+e.date;document.getElementById('prev').disabled=idx===0;document.getElementById('next').disabled=idx===eraData.length-1;
+function render(){clearCampaign();idx=Math.max(0,Math.min(eraData.length-1,idx));const e=eraData[idx];document.getElementById('campaignButton').hidden=![1,2,4,5].includes(idx);document.getElementById('campaignButton').textContent=idx===1?'Показать походы Тутмоса III':idx===2?'Показать расширение Ассирии':idx===4?'Показать расширение Персии':'Показать поход Александра';document.getElementById('era').value=idx;document.getElementById('period').textContent='Период '+(idx+1)+' из '+eraData.length;document.getElementById('eraTitle').textContent=e.title;document.getElementById('eraText').textContent=e.text;document.getElementById('eraDate').textContent='Ориентировочная дата: '+e.date;document.getElementById('prev').disabled=idx===0;document.getElementById('next').disabled=idx===eraData.length-1;
 layers.forEach(l=>map.removeLayer(l));layers=[];if(window.nileLayer)map.removeLayer(window.nileLayer);if(window.mesopotamiaRiverLayer)map.removeLayer(window.mesopotamiaRiverLayer);if(window.cityLayer)map.removeLayer(window.cityLayer);if(window.mesoCityLayer)map.removeLayer(window.mesoCityLayer);if(window.worldCityLayer)map.removeLayer(window.worldCityLayer);if(window.practiceMarker){map.removeLayer(window.practiceMarker);window.practiceMarker=null;}if(window.geographyLabelLayer)map.removeLayer(window.geographyLabelLayer);if(window.geoLabelLayer)map.removeLayer(window.geoLabelLayer);if(window.egyptLabels)map.removeLayer(window.egyptLabels);if(window.historyLabelLayer)map.removeLayer(window.historyLabelLayer);const keyEl=document.getElementById('key');keyEl.innerHTML='';
 const visible=new Set(e.keys);
 territories.filter(t=>t.eras.includes(idx)&&visible.has(t.key)).forEach(t=>{const d=getDescription(t.key);const shapes=t.parts||[t.coords];const group=L.featureGroup();shapes.forEach(coords=>{const isInfluenceZone=['nubia','levant_egypt','china_warring','jin_china'].includes(t.key);const layer=L.polygon(coords,{color:boundaryFocus?'#263746':palette[t.key],weight:boundaryFocus?(isInfluenceZone?2.5:3):(isInfluenceZone?1.5:1.5),opacity:boundaryFocus ? .98 : .8,dashArray:isInfluenceZone?'6 5':'',fillColor:palette[t.key],fillOpacity:boundaryFocus ? (isInfluenceZone?.16:.32) : (isInfluenceZone?.25:.48)}).addTo(map);layer.bindPopup('<strong>'+d.name+'</strong><br>'+d.info);layer.on('click',()=>selectPolity(t.key));group.addLayer(layer);layers.push(layer)});const span=document.createElement('span');span.innerHTML='<i class="swatch" style="background:'+palette[t.key]+'"></i>'+d.name;span.tabIndex=0;span.role='button';span.onclick=()=>{selectPolity(t.key);map.fitBounds(group.getBounds(),{padding:[20,20]});group.eachLayer(layer=>layer.openPopup())};span.onkeydown=ev=>{if(ev.key==='Enter'||ev.key===' '){ev.preventDefault();span.onclick()}};keyEl.appendChild(span)});
