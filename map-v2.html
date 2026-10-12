@@ -133,7 +133,7 @@ window.historyLabelLayer.addTo(map);
 
 // Географические ориентиры подписаны по-русски; подписи самой подложки отключены.
 const geographyLabels=[
- ['Средиземное море',35.2,25.2,150],['Красное море',22.0,37.0,110],['Персидский залив',27.0,50.5,130],['Аравийская пустыня',25.0,29.0,130],['Месопотамия',33.0,43.5,110],['Анатолия',39.5,34.5,90]
+ ['Средиземное море',35.2,25.2,150],['Красное море',22.0,37.0,110],['Персидский залив',27.0,50.5,130],['Аравийская пустыня',25.0,29.0,130],['Месопотамия',33.0,43.5,110],['Евфрат',34.1,40.2,70],['Тигр',34.6,44.0,55],['Анатолия',39.5,34.5,90]
 ];
 window.geographyLabelLayer=L.layerGroup(geographyLabels.map(([name,lat,lon,width])=>L.marker([lat,lon],{interactive:false,icon:L.divIcon({className:'',html:'<span class="map-history-label map-geography-label">'+name+'</span>',iconSize:[width,24],iconAnchor:[width/2,12]})}))).addTo(map);
 
