@@ -493,7 +493,7 @@ function animateAlexanderCampaign(){
  const button=document.getElementById('campaignButton');button.textContent='Повторить: '+campaign.title;
  window.campaignTimer=window.setInterval(()=>{i++;if(i>=stops.length){clearInterval(window.campaignTimer);window.campaignTimer=null;i=stops.length-1;}
   marker.setLatLng(coords[i]);marker.bindPopup('<strong>'+campaign.title+'</strong><br>'+stops[i].name+' — '+stops[i].date+'<br>'+stops[i].info+'<br><em>'+campaign.note+'</em>').openPopup();
- },850);
+ },1700);
 }
 document.getElementById('campaignButton').addEventListener('click',animateAlexanderCampaign);
 function render(){clearCampaign();idx=Math.max(0,Math.min(eraData.length-1,idx));const e=eraData[idx];document.getElementById('campaignButton').hidden=![1,2,4,5].includes(idx);document.getElementById('campaignButton').textContent=idx===1?'Показать походы Тутмоса III':idx===2?'Показать расширение Ассирии':idx===4?'Показать направления завоеваний Персии':'Показать поход Александра';document.getElementById('era').value=idx;document.getElementById('period').textContent='Период '+(idx+1)+' из '+eraData.length;document.getElementById('eraTitle').textContent=e.title;document.getElementById('eraText').textContent=e.text;document.getElementById('eraDate').textContent='Ориентировочная дата: '+e.date;document.getElementById('prev').disabled=idx===0;document.getElementById('next').disabled=idx===eraData.length-1;
@@ -659,7 +659,7 @@ const quizBank=[
 {q:'Как назывались области Персидской державы, управляемые назначенными правителями?',a:['Полисы','Сатрапии','Провинции сената','Номы Греции'],correct:1,why:'Персидская держава делилась на сатрапии.'},
 {q:'Что такое полис в Древней Греции?',a:['Храмовая пирамида','Город-государство','Китайская династия','Римский легион'],correct:1,why:'Полис — самостоятельная гражданская община и город-государство.'},
 {q:'Кто возглавил походы, создавшие огромную державу от Македонии до Востока?',a:['Хаммурапи','Ашшурбанапал','Александр Македонский','Рамсес II'],correct:2,why:'Александр Македонский завоевал державу Ахеменидов и продвинулся до Индии.'},
-{q:'Как называлось общество древней Индии, делившееся на варны?',a:['Шумер','Индия','Финикия','Этрурия'],correct:1,why:'Варны — группы древнеиндийского общества.'},
+{q:'В какой древней цивилизации существовала система варн?',a:['Шумер','Индия','Финикия','Этрурия'],correct:1,why:'Варны — группы древнеиндийского общества.'},
 {q:'В каком году пала Западная Римская империя согласно принятой школьной дате?',a:['612 г. до н. э.','330 г. до н. э.','476 г. н. э.','1066 г. н. э.'],correct:2,why:'476 год традиционно считается датой падения Западной Римской империи.'}
 ];
 const quizPanel=document.getElementById('quizPanel'),teacherPanel=document.getElementById('teacherPanel');
