@@ -19,7 +19,7 @@ button{background:#304d61;color:white;border:0;font-weight:650}.period{font-weig
 
 .practice{background:#f3f6f2;border:1px solid #cbd9ce;border-radius:14px;padding:13px;margin-top:10px}.practice h2{font-size:1.03rem;margin:0 0 6px}.practice-controls{display:flex;flex-wrap:wrap;gap:7px;margin-top:8px}.practice select{width:100%;margin-top:6px}.practice button{padding:8px 10px}.practice .answer{margin-top:9px;padding:9px;background:#fffdf7;border-radius:8px;border:1px dashed #9db5a3}.practice .answer[hidden]{display:none}.practice-status{font-size:.85rem;color:#4b6254;margin-top:6px}
 
-.boundary-mode{display:flex;align-items:flex-start;gap:8px;padding:9px 11px;background:#fff4d9;border:1px solid #d9c49a;border-radius:10px;font-size:.9rem;max-width:100%}.boundary-mode input{margin-top:4px;accent-color:#8b4b2f;transform:scale(1.15)}.boundary-guide{background:#f2f5f7;border-left:4px solid #496b82;padding:10px 12px;border-radius:8px;margin:10px 0}.boundary-guide strong{display:block;margin-bottom:3px}.border-key{display:flex;flex-wrap:wrap;gap:10px;font-size:.82rem;margin-top:8px}.border-key span{display:inline-flex;align-items:center;gap:5px}.border-line{display:inline-block;width:24px;height:0;border-top:3px solid #8b4b2f}.border-dash{display:inline-block;width:24px;height:0;border-top:3px dashed #8b4b2f}
+.boundary-mode{display:flex;align-items:flex-start;gap:8px;padding:9px 11px;background:#fff4d9;border:1px solid #d9c49a;border-radius:10px;font-size:.9rem;max-width:100%}.boundary-mode input{margin-top:4px;accent-color:#8b4b2f;transform:scale(1.15)}.boundary-guide{background:#f2f5f7;border-left:4px solid #496b82;padding:10px 12px;border-radius:8px;margin:10px 0}.boundary-guide strong{display:block;margin-bottom:3px}.border-key{display:flex;flex-wrap:wrap;gap:10px;font-size:.82rem;margin-top:8px}.border-key span{display:inline-flex;align-items:center;gap:5px}.border-line{display:inline-block;width:24px;height:0;border-top:3px solid #8b4b2f}.border-dash{display:inline-block;width:24px;height:0;border-top:3px dashed #8b4b2f}#campaignButton[hidden]{display:none}#campaignButton{background:#8b4b2f}
 </style>
 </head>
 <body>
@@ -34,7 +34,7 @@ button{background:#304d61;color:white;border:0;font-weight:650}.period{font-weig
 <option value="3">ок. 500 г. до н. э. — Персидская держава</option>
 <option value="4">ок. 330 г. до н. э. — завоевания Александра</option>
 </select><span class="period" id="period">Период 1 из 5</span>
-<label class="boundary-mode" for="boundaryFocus"><input id="boundaryFocus" type="checkbox" checked><span><strong>Акцент на границах государств</strong><span class="small">Чёткие контуры и более прозрачная заливка — удобнее сравнивать территории.</span></span></label>
+<label class="boundary-mode" for="boundaryFocus"><input id="boundaryFocus" type="checkbox" checked><span><strong>Акцент на границах государств</strong><span class="small">Чёткие контуры и более прозрачная заливка — удобнее сравнивать территории.</span></span></label><button id="campaignButton" type="button" hidden>Показать поход Александра</button>
 
 </div>
 <div class="columns"><section><div id="map" role="application" aria-label="Интерактивная географическая карта Древнего мира"></div>
@@ -122,7 +122,41 @@ function selectPolity(key){const d=getDescription(key);document.getElementById('
 <img src="https://commons.wikimedia.org/wiki/Special:FilePath/King_Narmer.jpg?width=600" alt="Древнее изображение царя Нармера на палетке Нармера" loading="lazy" style="margin-top:10px" onerror="this.style.display='none'">
 <p class="small">На палетке Нармера царь изображён в обеих коронах. Это древнее художественное изображение, а не портрет, достоверно передающий внешность правителя. Нармера часто отождествляют с Менесом, известным по более поздним источникам, однако учёные не считают это установленным фактом.</p>
 <p class="small">Источник изображения: <a href="https://commons.wikimedia.org/wiki/File:King_Narmer.jpg" target="_blank" rel="noopener">Wikimedia Commons — деталь палетки Нармера</a>.</p>`;}else{media.hidden=true;media.innerHTML='';}}
-function render(){idx=Math.max(0,Math.min(eraData.length-1,idx));const e=eraData[idx];document.getElementById('era').value=idx;document.getElementById('period').textContent='Период '+(idx+1)+' из '+eraData.length;document.getElementById('eraTitle').textContent=e.title;document.getElementById('eraText').textContent=e.text;document.getElementById('eraDate').textContent='Ориентировочная дата: '+e.date;document.getElementById('prev').disabled=idx===0;document.getElementById('next').disabled=idx===eraData.length-1;
+function clearCampaign(){if(window.campaignTimer){clearInterval(window.campaignTimer);window.campaignTimer=null;}if(window.campaignLayer){map.removeLayer(window.campaignLayer);window.campaignLayer=null;}const b=document.getElementById('campaignButton');if(b)b.textContent='Показать поход Александра';}
+function animateAlexanderCampaign(){
+ clearCampaign();
+ if(idx!==4)return;
+ const stops=[
+  {name:'Пелла',lat:40.75,lon:22.52,date:'334 г. до н. э.',info:'Отправная точка похода Александра.'},
+  {name:'Граник',lat:40.25,lon:27.15,date:'334 г. до н. э.',info:'Победа у реки Граник открыла Александру путь в Малую Азию.'},
+  {name:'Сарды',lat:38.49,lon:28.04,date:'334 г. до н. э.',info:'Сарды перешли под власть Александра.'},
+  {name:'Гордион',lat:39.72,lon:31.77,date:'333 г. до н. э.',info:'Один из важных пунктов продвижения через Малую Азию.'},
+  {name:'Исс',lat:36.86,lon:36.2,date:'333 г. до н. э.',info:'Победа при Иссе над войском Дария III.'},
+  {name:'Тир',lat:33.27,lon:35.2,date:'332 г. до н. э.',info:'После осады Тир был взят Александром.'},
+  {name:'Газа',lat:31.5,lon:34.47,date:'332 г. до н. э.',info:'После похода вдоль восточного побережья Средиземного моря Александр двинулся в Египет.'},
+  {name:'Мемфис',lat:29.85,lon:31.25,date:'332 г. до н. э.',info:'Египет перешёл под власть Александра.'},
+  {name:'Гавгамелы',lat:36.36,lon:43.25,date:'331 г. до н. э.',info:'Победа при Гавгамелах стала решающим поражением державы Ахеменидов.'},
+  {name:'Вавилон',lat:32.54,lon:44.42,date:'331 г. до н. э.',info:'Вавилон открыл ворота войску Александра.'},
+  {name:'Сузы',lat:32.19,lon:48.25,date:'331–330 гг. до н. э.',info:'Один из важнейших центров державы Ахеменидов.'},
+  {name:'Персеполь',lat:29.93,lon:52.89,date:'330 г. до н. э.',info:'К 330 г. до н. э. Александр овладел Персеполем. Дальнейшие походы в Среднюю Азию и Индию здесь не показаны.'}
+ ];
+ const coords=stops.map(s=>[s.lat,s.lon]);
+ window.campaignLayer=L.layerGroup();
+ L.polyline(coords,{color:'#8b4b2f',weight:4,opacity:.9,dashArray:'8 7'}).addTo(window.campaignLayer);
+ const marker=L.circleMarker(coords[0],{radius:8,color:'#fff',weight:3,fillColor:'#d94b36',fillOpacity:1}).addTo(window.campaignLayer);
+ window.campaignLayer.addTo(map);
+ map.fitBounds(L.latLngBounds(coords),{padding:[24,24]});
+ let i=0;
+ marker.bindPopup('<strong>'+stops[0].name+' — '+stops[0].date+'</strong><br>'+stops[0].info).openPopup();
+ const button=document.getElementById('campaignButton');button.textContent='Повторить поход Александра';
+ window.campaignTimer=window.setInterval(()=>{
+  i++;
+  if(i>=stops.length){clearInterval(window.campaignTimer);window.campaignTimer=null;marker.setLatLng(coords[coords.length-1]);marker.bindPopup('<strong>'+stops[stops.length-1].name+' — '+stops[stops.length-1].date+'</strong><br>'+stops[stops.length-1].info).openPopup();return;}
+  marker.setLatLng(coords[i]);marker.bindPopup('<strong>'+stops[i].name+' — '+stops[i].date+'</strong><br>'+stops[i].info).openPopup();
+ },700);
+}
+document.getElementById('campaignButton').addEventListener('click',animateAlexanderCampaign);
+function render(){clearCampaign();idx=Math.max(0,Math.min(eraData.length-1,idx));const e=eraData[idx];document.getElementById('campaignButton').hidden=idx!==4;document.getElementById('era').value=idx;document.getElementById('period').textContent='Период '+(idx+1)+' из '+eraData.length;document.getElementById('eraTitle').textContent=e.title;document.getElementById('eraText').textContent=e.text;document.getElementById('eraDate').textContent='Ориентировочная дата: '+e.date;document.getElementById('prev').disabled=idx===0;document.getElementById('next').disabled=idx===eraData.length-1;
 layers.forEach(l=>map.removeLayer(l));layers=[];if(window.nileLayer)map.removeLayer(window.nileLayer);if(window.mesopotamiaRiverLayer)map.removeLayer(window.mesopotamiaRiverLayer);if(window.cityLayer)map.removeLayer(window.cityLayer);if(window.mesoCityLayer)map.removeLayer(window.mesoCityLayer);if(window.geographyLabelLayer)map.removeLayer(window.geographyLabelLayer);if(window.geoLabelLayer)map.removeLayer(window.geoLabelLayer);if(window.egyptLabels)map.removeLayer(window.egyptLabels);if(window.historyLabelLayer)map.removeLayer(window.historyLabelLayer);const keyEl=document.getElementById('key');keyEl.innerHTML='';
 const visible=new Set(e.keys);
 territories.filter(t=>t.eras.includes(idx)&&visible.has(t.key)).forEach(t=>{const d=getDescription(t.key);const shapes=t.parts||[t.coords];const group=L.featureGroup();shapes.forEach(coords=>{const isInfluenceZone=['nubia','levant_egypt'].includes(t.key);const layer=L.polygon(coords,{color:boundaryFocus?'#263746':palette[t.key],weight:boundaryFocus?(isInfluenceZone?2.5:3):(isInfluenceZone?1.5:1.5),opacity:boundaryFocus ? .98 : .8,dashArray:isInfluenceZone?'6 5':'',fillColor:palette[t.key],fillOpacity:boundaryFocus ? (isInfluenceZone?.16:.32) : (isInfluenceZone?.25:.48)}).addTo(map);layer.bindPopup('<strong>'+d.name+'</strong><br>'+d.info);layer.on('click',()=>selectPolity(t.key));group.addLayer(layer);layers.push(layer)});const span=document.createElement('span');span.innerHTML='<i class="swatch" style="background:'+palette[t.key]+'"></i>'+d.name;span.tabIndex=0;span.role='button';span.onclick=()=>{selectPolity(t.key);map.fitBounds(group.getBounds(),{padding:[20,20]});group.eachLayer(layer=>layer.openPopup())};span.onkeydown=ev=>{if(ev.key==='Enter'||ev.key===' '){ev.preventDefault();span.onclick()}};keyEl.appendChild(span)});
