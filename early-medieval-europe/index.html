@@ -31,6 +31,7 @@ footer{font-size:.8rem;color:#68737a;padding:4px 2px 20px}
 <label><input type="checkbox" id="showCities" checked> Города и подписи</label>
 <label><input type="checkbox" id="showRegions" checked> Области и зоны влияния</label>
 <label><input type="checkbox" id="showBorders" checked> Границы государств</label>
+<label><input type="checkbox" id="showResearch" checked> Исторические GIS-контуры (814, 843, VII–VIII вв.)</label>
 <label><input type="checkbox" id="compareToggle"> Сравнить два периода</label>
 </div></section>
 <div class="grid">
@@ -43,7 +44,7 @@ footer{font-size:.8rem;color:#68737a;padding:4px 2px 20px}
 <section class="panel wide"><h2>Проверь себя</h2><p id="question"></p><div id="answers"></div><div id="feedback" class="card hidden" aria-live="polite"></div><button id="newQuestion">Следующий вопрос</button></section>
 <section class="panel wide"><h2>Ключевые даты</h2><div id="chronology"></div></section>
 </aside></div>
-<section class="panel"><h2>Как читать эту карту</h2><p>Цветная заливка показывает территории государств на выбранный момент. Пунктиром обозначены приблизительные рубежи, области нестабильного контроля и зоны расселения. Стрелки показывают основные направления переселений и походов. Точки обозначают города и места событий.</p><div class="note"><strong>Историческая точность.</strong> Карта использует географическую основу с реальными береговыми линиями и рельефом, а не условный рисунок. При этом политические рубежи раннего Средневековья часто не были линейными и устойчивыми. Контуры государств — учебная историко-географическая реконструкция, а не кадастровая граница. Для спорных участков используется пунктир; области влияния не следует принимать за полностью освоенные провинции.</div><p class="muted">Картографическая подложка — Esri World Physical (без современной топонимической подписи); географические названия для урока нанесены отдельно на русском языке. Leaflet — библиотека интерактивной карты.</p></section>
+<section class="panel"><h2>Как читать эту карту</h2><p>Цветная заливка показывает территории государств на выбранный момент. Пунктиром обозначены приблизительные рубежи, области нестабильного контроля и зоны расселения. Стрелки показывают основные направления переселений и походов. Точки обозначают города и места событий.</p><div class="note"><strong>Историческая точность.</strong> Карта использует географическую основу с реальными береговыми линиями и рельефом, а не условный рисунок. При этом политические рубежи раннего Средневековья часто не были линейными и устойчивыми. Контуры государств — учебная историко-географическая реконструкция, а не кадастровая граница. Для спорных участков используется пунктир; области влияния не следует принимать за полностью освоенные провинции.</div><p class="muted">Картографическая подложка — Esri World Physical (без современной топонимической подписи); географические названия для урока нанесены отдельно на русском языке. Для отдельных периодов подключены исследовательские GIS-слои Mapping Past Societies / DARMC (Harvard): границы королевств около 814 года, раздел по Верденскому договору 843 года и этапы арабских завоеваний 632–750 годов. Leaflet — библиотека интерактивной карты.</p><p class="muted">Источники данных: <a href="https://darmc.harvard.edu/" target="_blank" rel="noopener">Mapping Past Societies (Harvard)</a> · <a href="https://services1.arcgis.com/qN3V93cYGMKQCOxL/arcgis/rest/services/DARMC_Medieval_World/FeatureServer" target="_blank" rel="noopener">DARMC Medieval World GIS</a>. Исторические контуры являются научными реконструкциями, а не бесспорными точными рубежами.</p></section>
 <footer>Историческая реконструкция для учебного использования. При сопоставлении с учебником учитывайте, что даты и политические границы могут приводиться в обобщённом виде.</footer>
 </main>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
@@ -97,6 +98,27 @@ bulgar:[[45,22],[46,26],[45,30],[43,29],[41,26],[41,22],[43,20]],
 slavs:[[55,14],[57,22],[56,30],[53,34],[49,32],[47,27],[48,21],[51,17]],
 hun:[[49,15],[51,20],[50,26],[48,28],[46,25],[45,20],[46,16]]
 };
+const ruGIS={
+'Abbasid Caliphate':'Аббасидский халифат','Anglo-Saxon England':'Англосаксонские королевства','Avars and Croats':'Авары и хорваты','Bulgarian Kingdom':'Первое Болгарское царство','Byzantine Areas':'Области византийского контроля','Byzantine Empire':'Византийская империя','Frankish Empire':'Франкская империя','Lombard Italy':'Лангобардская Италия','West Slavs':'Западные славяне','Islamic World':'Арабский халифат','Muslim World':'Мусульманские владения','Muslin North Africa':'Мусульманские владения Северной Африки','Brittany':'Бретань','Bulgaria':'Болгария','Denmark':'Дания','Serbs':'Сербы','Croats':'Хорваты','Saxons':'Саксы','Frisia':'Фризия','Venetian Areas':'Области Венеции','Venice':'Венеция','Albania':'Албания','Belgium':'Нижние земли','Galicia and Asturia':'Галисия и Астурия','Kingdom of the Britons':'Бриттские королевства','Kingdom of the Picts':'Королевство пиктов','Kingdom of the Croats':'Хорватское королевство','Alemannia':'Алеманния','Aquitaine':'Аквитания','Bavaria':'Бавария','Saxony':'Саксония','Burgundy':'Бургундия','Gascony':'Гасконь','Lombardy':'Ломбардия','Tuscany':'Тоскана','Spoleto':'Сполето','Benevento':'Беневенто','Papal States':'Папские владения','Asturias':'Астурия','Navarre':'Наварра','Cordoba':'Кордовский эмират','Emirate of Cordoba':'Кордовский эмират','Aghlabids':'Аглабиды','Aghlabid Emirate':'Аглабидский эмират','Byzantine Sicily':'Византийская Сицилия','Khazars':'Хазарский каганат','Moravia':'Моравия','Great Moravia':'Великая Моравия','Lotharingia':'Срединное королевство Лотаря','Charles the Bald':'Карл Лысый','Lothar':'Лотарь','Louis the German':'Людовик Немецкий',
+'By the death of Mohammed 632':'Аравия к 632 году','Under Abu Bakr 632-634':'Завоевания при Абу Бакре (632–634)','Under Omar 634-644':'Завоевания при Омаре (634–644)','Under Othman 644-656 and Ali 656-661':'Завоевания 644–661 годов','Under Umayyad Caliphate 661-750':'Завоевания при Омейядах (661–750)'
+};
+const gisColors=['#8c9fbd','#d0a45c','#7e9f83','#b98774','#8b80a8','#b0a16b','#6d9d9a','#a17d9a'];
+async function loadGIS(layerId,fields){
+ const base='https://services1.arcgis.com/qN3V93cYGMKQCOxL/ArcGIS/rest/services/DARMC_Medieval_World/FeatureServer/'+layerId+'/query';
+ const params=new URLSearchParams({where:'1=1',outFields:fields,returnGeometry:'true',outSR:'4326',f:'geojson'});
+ const response=await fetch(base+'?'+params.toString());if(!response.ok)throw new Error('GIS '+layerId+' HTTP '+response.status);
+ const data=await response.json();if(!data.features)throw new Error('GIS '+layerId+' returned no features');return data;
+}
+function addResearchFeatures(data,field){
+ if(!data||!data.features)return;
+ L.geoJSON(data,{style:(feature)=>{const name=feature.properties[field]||'';let i=0;for(let n=0;n<name.length;n++)i=(i+name.charCodeAt(n))%gisColors.length;return{color:'#4b5360',weight:$('showBorders').checked?1.5:.5,fillColor:gisColors[i],fillOpacity:.42,dashArray:field==='Conquered'?'5 4':null};},
+ onEachFeature:(feature,layer)=>{const original=feature.properties[field]||'Историческая область';const label=ruGIS[original]||'Историческая область';layer.bindTooltip(label,{sticky:true});layer.on('click',()=>{$('detailTitle').textContent=label;$('detailText').innerHTML='<p>Географический контур взят из исследовательского исторического GIS-слоя Mapping Past Societies / DARMC. Исходное название слоя: '+original+'.</p><p class="muted">Это научная реконструкция соответствующего периода; она не означает, что все участки территории контролировались одинаково плотно.</p>';});}
+ }).addTo(researchLayer);
+}
+async function initResearchGIS(){
+ try{const [d814,d843,dislamic]=await Promise.all([loadGIS(5,'KINGDOMNAME,REGIONNAME'),loadGIS(26,'Ruler'),loadGIS(71,'Conquered')]);researchData={814:d814,843:d843,islamic:dislamic};render();}
+ catch(err){console.warn('Исторические GIS-слои не загрузились:',err);$('periodDate').textContent+=' · исследовательские GIS-слои временно недоступны';}
+}
 const periods=[
 {y:395,title:'Разделение Римской империи',text:'После смерти Феодосия I управление империей было разделено между его сыновьями. Западная и Восточная части оставались частями римского мира, но их политические центры и дальнейшая история различались.',ids:['west','east']},
 {y:410,title:'Вестготы у стен Рима',text:'В 410 году вестготы во главе с Аларихом захватили и разграбили Рим. Это стало важным символом ослабления Западной Римской империи, но не означало её немедленного падения.',ids:['west','east','visigoth']},
@@ -138,7 +160,7 @@ const routes=[
 {from:632,to:750,name:'Завоевание Северной Африки и Испании',ll:[[31,32],[32,20],[33,8],[36,-2],[37,-6]]}
 ];
 const $=id=>document.getElementById(id), milestones=periods.map(p=>p.y);
-let currentYear=395,selected=null,questionIndex=0,territoryLayer=L.layerGroup().addTo(map),routeLayer=L.layerGroup().addTo(map),eventLayer=L.layerGroup().addTo(map),cityLayer=L.layerGroup().addTo(map),geoLabelLayer=L.layerGroup().addTo(map);
+let currentYear=395,selected=null,questionIndex=0,territoryLayer=L.layerGroup().addTo(map),routeLayer=L.layerGroup().addTo(map),eventLayer=L.layerGroup().addTo(map),cityLayer=L.layerGroup().addTo(map),geoLabelLayer=L.layerGroup().addTo(map),researchLayer=L.layerGroup().addTo(map),researchData={814:null,843:null,islamic:null};
 function yearText(y){return y+' год';}
 function activePeriod(y){let p=periods[0];for(const e of periods){if(e.y<=y)p=e;}return p;}
 function selectState(id){selected=id;const s=states[id];if(!s)return;$('detailTitle').textContent=s.name;$('detailText').innerHTML='<p>'+s.info+'</p><p class="muted">Показан период: '+yearText(currentYear)+'. Контур — учебная реконструкция с разной степенью точности по регионам.</p>';}
@@ -151,7 +173,12 @@ function addTerritory(id){
 function render(){
  const p=activePeriod(currentYear);$('yearLabel').textContent=yearText(currentYear);$('year').value=currentYear;$('periodTitle').textContent=p.title;$('periodText').textContent=p.text;$('periodDate').textContent='Выбранный год: '+yearText(currentYear)+' · контрольная историческая реконструкция: '+p.y+' год';
  $('prev').disabled=currentYear===395;$('next').disabled=currentYear===950;
- territoryLayer.clearLayers();p.ids.forEach(addTerritory);
+ territoryLayer.clearLayers();researchLayer.clearLayers();
+ const useGIS=$('showResearch').checked;
+ const gis814=useGIS&&p.y===814&&researchData[814],gis843=useGIS&&p.y===843&&researchData[843];
+ if(gis814)addResearchFeatures(researchData[814],'KINGDOMNAME');else if(gis843)addResearchFeatures(researchData[843],'Ruler');else p.ids.forEach(addTerritory);
+ if(useGIS&&currentYear>=632&&currentYear<=750&&researchData.islamic){const allowed=currentYear<634?['By the death of Mohammed 632']:currentYear<644?['By the death of Mohammed 632','Under Abu Bakr 632-634']:currentYear<661?['By the death of Mohammed 632','Under Abu Bakr 632-634','Under Omar 634-644','Under Othman 644-656 and Ali 656-661']:['By the death of Mohammed 632','Under Abu Bakr 632-634','Under Omar 634-644','Under Othman 644-656 and Ali 656-661','Under Umayyad Caliphate 661-750'];const filtered={type:'FeatureCollection',features:researchData.islamic.features.filter(f=>allowed.includes(f.properties.Conquered))};addResearchFeatures(filtered,'Conquered');}
+
  if($('showRegions').checked){if(p.y>=451&&p.y<500)addTerritory('hun');if(p.y>=600&&p.y<843)addTerritory('slavs');}
  routeLayer.clearLayers();if($('showRoutes').checked){routes.filter(r=>currentYear>=r.from&&currentYear<=r.to).forEach(r=>L.polyline(r.ll,{color:'#7e432e',weight:3,dashArray:'8 7',opacity:.9}).bindTooltip(r.name).addTo(routeLayer));}
  eventLayer.clearLayers();if($('showEvents').checked){events.filter(e=>Math.abs(e.y-currentYear)<=14).forEach(e=>L.circleMarker(e.ll,{radius:7,color:'#7c3d2a',weight:2,fillColor:'#fffdf8',fillOpacity:1}).bindPopup('<strong>'+e.name+' · '+e.y+'</strong><br>'+e.info).addTo(eventLayer));}
@@ -169,7 +196,7 @@ for(const id of ['yearA','yearB'])periods.forEach(p=>{const o=document.createEle
 $('yearA').value=395;$('yearB').value=843;
 function updateCompare(){if(!$('compareToggle').checked)return;const a=activePeriod(Number($('yearA').value)),b=activePeriod(Number($('yearB').value));$('compareA').textContent=a.y+' год: '+a.title+' — '+a.text;$('compareB').textContent=b.y+' год: '+b.title+' — '+b.text;}
 $('year').addEventListener('input',e=>setYear(e.target.value));$('prev').addEventListener('click',()=>{const ys=milestones.filter(y=>y<currentYear);setYear(ys.length?ys[ys.length-1]:395);});$('next').addEventListener('click',()=>{const y=milestones.find(y=>y>currentYear);setYear(y||950);});
-['showRoutes','showEvents','showCities','showRegions','showBorders'].forEach(id=>$(id).addEventListener('change',render));
+['showRoutes','showEvents','showCities','showRegions','showBorders','showResearch'].forEach(id=>$(id).addEventListener('change',render));
 $('compareToggle').addEventListener('change',()=>{$('comparePanel').classList.toggle('hidden',!$('compareToggle').checked);updateCompare();});$('yearA').addEventListener('change',updateCompare);$('yearB').addEventListener('change',updateCompare);
 const questions=[
 {q:'Какой год традиционно считается датой падения Западной Римской империи?',a:['395','410','476','843'],c:2,why:'В 476 году Ромул Августул был отстранён от власти.'},
@@ -182,6 +209,6 @@ const questions=[
 ];
 function newQuestion(){const q=questions[questionIndex++%questions.length];$('question').textContent=q.q;$('answers').innerHTML='';$('feedback').classList.add('hidden');q.a.forEach((a,i)=>{const b=document.createElement('button');b.className='quiz-option';b.textContent=a;b.addEventListener('click',()=>{if($('feedback').dataset.done==='1')return;$('feedback').classList.remove('hidden');$('feedback').dataset.done='1';$('feedback').textContent=(i===q.c?'Верно. ':'Не совсем. Правильный ответ: '+q.a[q.c]+'. ')+q.why;b.classList.add(i===q.c?'correct':'wrong');});$('answers').append(b);});$('feedback').dataset.done='0';}
 $('newQuestion').addEventListener('click',newQuestion);
-render();newQuestion();
+render();newQuestion();initResearchGIS();
 map.fitBounds([[25,-12],[60,52]]);
 </script></body></html>
