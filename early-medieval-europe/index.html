@@ -142,12 +142,6 @@ let currentYear=395,selected=null,questionIndex=0,territoryLayer=L.layerGroup().
 function yearText(y){return y+' год';}
 function activePeriod(y){let p=periods[0];for(const e of periods){if(e.y<=y)p=e;}return p;}
 function selectState(id){selected=id;const s=states[id];if(!s)return;$('detailTitle').textContent=s.name;$('detailText').innerHTML='<p>'+s.info+'</p><p class="muted">Показан период: '+yearText(currentYear)+'. Контур — учебная реконструкция с разной степенью точности по регионам.</p>';}
-function addTerritory(id){
- const s=states[id],coords=polygons[id];if(!s||!coords)return;
- const approximate=['hun','slavs','rashid','umayyad','abbasid','andalus','visigoth','vandal','ostro','frank','lomb','anglo','caroling','westfrank','eastfrank','middle','bulgar'].includes(id);
- const layer=L.polygon(coords,{color:s.color,weight:$('showBorders').checked?2:0.6,opacity:.95,fillColor:s.color,fillOpacity:.32,dashArray:approximate?'7 5':null,lineJoin:'round'});
- layer.on('click',()=>selectState(id));layer.bindTooltip(s.name,{sticky:true});layer.addTo(territoryLayer);
-}
 function render(){
  const p=activePeriod(currentYear);$('yearLabel').textContent=yearText(currentYear);$('year').value=currentYear;$('periodTitle').textContent=p.title;$('periodText').textContent=p.text;$('periodDate').textContent='Выбранный год: '+yearText(currentYear)+' · контрольная историческая реконструкция: '+p.y+' год';
  $('prev').disabled=currentYear===395;$('next').disabled=currentYear===950;
