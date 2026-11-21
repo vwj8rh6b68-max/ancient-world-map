@@ -14,6 +14,7 @@ main{max-width:1450px;margin:auto;padding:14px}.toolbar,.panel{background:var(--
 .quick{display:flex;flex-wrap:wrap;gap:7px;margin-top:10px}.quick button.active{background:#8c4d32;color:white;border-color:#8c4d32}
 .grid{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:12px}.mapbox{background:#fffdf7;border:1px solid var(--line);border-radius:14px;overflow:hidden;min-width:0}
 #map{display:block;width:100%;height:auto;background:var(--sea)}.side{min-width:0}.panel h2{font-size:1.05rem;margin:0 0 8px}.panel h3{font-size:.95rem;margin:12px 0 5px}.panel p{margin:6px 0}.muted{font-size:.82rem;color:#63717a}.legend{display:grid;grid-template-columns:1fr 1fr;gap:7px}.legend span{display:flex;align-items:center;gap:7px;font-size:.84rem}.swatch{width:13px;height:13px;border-radius:3px;display:inline-block;border:1px solid #34424b55}
+@keyframes territoryIn{from{opacity:.2}to{opacity:1}}
 #territories polygon{stroke:#4b4a43;stroke-width:1.5;stroke-linejoin:round;fill-opacity:.78;cursor:pointer;transition:fill-opacity .35s,opacity .35s}#territories polygon:hover{fill-opacity:1;stroke-width:3}
 .maplabel{font-size:13px;font-weight:700;fill:#273b4a;paint-order:stroke;stroke:#fffdf2;stroke-width:3px;stroke-linejoin:round;pointer-events:none}.sea-label{font-size:16px;letter-spacing:3px;fill:#77929b;font-style:italic}.place{fill:#293e4b;stroke:#fffdf7;stroke-width:2}.placelabel{font-size:11px;font-weight:700;fill:#293e4b;paint-order:stroke;stroke:#fffdf7;stroke-width:3px}
 .route{fill:none;stroke:#7b3f2d;stroke-width:3;stroke-dasharray:8 6;marker-end:url(#arrow);opacity:.9}.route-label{font-size:11px;fill:#7b3f2d;font-weight:700;paint-order:stroke;stroke:#fffdf7;stroke-width:3px}
@@ -164,7 +165,7 @@ function el(tag,attrs={},text){const n=document.createElementNS(ns,tag);for(cons
 function yearText(y){return y<0?Math.abs(y)+" г. до н. э.":y+" год";}
 function render(){
  const era=activeEra(currentYear);$("yearLabel").textContent=yearText(currentYear);$("periodTitle").textContent=era.title;$("periodText").textContent=era.text;$("periodDate").textContent="Выбранный год: "+yearText(currentYear)+" · ближайшая контрольная реконструкция: "+era.y+" год";
- const g=$("territories");g.innerHTML="";for(const id of era.ids){if(!states[id])continue;if(!$("showExtra").checked&&["sasan","anglo","bulgar","middle"].includes(id))continue;const p=el("polygon",{points:shapes[id],fill:states[id].color,"data-id":id,tabindex:"0",role:"button","aria-label":states[id].name});p.addEventListener("click",()=>showDetail(id));p.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();showDetail(id);}});g.append(p);}
+ const g=$("territories");g.innerHTML="";for(const id of era.ids){if(!states[id])continue;if(!$("showExtra").checked&&["sasan","anglo","bulgar","middle"].includes(id))continue;const p=el("polygon",{points:shapes[id],fill:states[id].color,"data-id":id,tabindex:"0",role:"button","aria-label":states[id].name});p.style.animation=$("animate").checked?"territoryIn .45s ease both":"none";p.addEventListener("click",()=>showDetail(id));p.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();showDetail(id);}});g.append(p);}
  const labels=$("labels");labels.innerHTML="";for(const [t,x,y] of era.labels){labels.append(el("text",{x,y,class:"maplabel"},t));}
  const routeGroup=$("routes");routeGroup.innerHTML="";if($("showRoutes").checked){for(const r of migrations){if(currentYear>=r.from&&currentYear<=r.to){routeGroup.append(el("path",{d:r.d,class:"route"}));routeGroup.append(el("text",{x:r.x,y:r.y,class:"route-label"},r.label));}}}
  const ev=$("events");ev.innerHTML="";if($("showEvents").checked){for(const e of events){if(Math.abs(e.y-currentYear)<=14){const c=el("circle",{cx:e.x,cy:e.yy,r:7,class:"event",tabindex:"0",role:"button"});c.addEventListener("click",()=>showEvent(e));ev.append(c);ev.append(el("text",{x:e.x+10,y:e.yy-9,class:"event-label"},e.name));}}}
@@ -174,7 +175,27 @@ function render(){
  updateCompare();
  document.querySelectorAll(".quick button").forEach(b=>b.classList.toggle("active",Number(b.dataset.year)===era.y));
 }
-function showDetail(id){selected=id;const s=states[id];$("detailTitle").textContent=s.name;$("detailText").innerHTML='<p>'+s.short+'</p><p class="muted">Выбранный год: '+yearText(currentYear)+'. Контур на карте условный и предназначен для учебного сравнения.</p>';}
+const detailed={
+west:"В 395 году управление империей оказалось разделено между двумя дворами. Западная часть переживала политическую и военную нестабильность; в 476 году Ромул Августул был отстранён Одоакром. Римское население и многие институты продолжали существовать на бывших территориях империи.",
+east:"Восточная Римская империя сохранила столицу Константинополь и императорскую власть. В учебной традиции её часто называют Византией. При Юстиниане I она вернула часть западных владений, а затем постепенно утратила многие территории. Государство просуществовало до 1453 года.",
+visigoth:"Вестготы перемещались через Балканы и Италию, в 410 году захватили Рим, а затем создали королевство в Галлии и Испании. После поражения от франков при Вуйе в 507 году центр их владений находился на Пиренейском полуострове. Королевство было завоёвано арабскими и берберскими войсками в начале VIII века.",
+vandal:"Вандалы прошли через Галлию и Испанию и в 429 году переправились в Северную Африку. Их королевство со столицей в Карфагене было завоёвано Византией в 533–534 годах.",
+ostro:"Остготское королевство Теодориха возникло в Италии после свержения Одоакра в 493 году. Византийско-готская война 535–554 годов привела к его падению.",
+frank:"Франки усилились в Галлии при Хлодвиге. Позднее власть перешла к Каролингам. При Карле Великом франкские владения расширились, и в 800 году он был коронован императором.",
+lomb:"Лангобарды вторглись в Италию в 568 году. Их королевство занимало значительную часть северной и центральной Италии, но полуостров оставался политически разделённым.",
+anglo:"После ухода римской администрации из Британии здесь возникло несколько англосаксонских королевств. Их границы и политическое влияние неоднократно менялись.",
+sasan:"Держава Сасанидов была крупной иранской державой и соперником Восточной Римской империи. В VII веке она ослабла в войнах с Византией, а затем была завоёвана арабскими войсками.",
+rashid:"После смерти Мухаммеда в 632 году руководители мусульманской общины получили титул халифа. При первых халифах арабские войска завоевали Сирию, Египет, Месопотамию и Иран.",
+umayyad:"Династия Омейядов правила халифатом в 661–750 годах, столицей был Дамаск. В этот период завоевания достигли Северной Африки и Пиренейского полуострова.",
+abbasid:"В 750 году власть в халифате перешла к Аббасидам. В 762 году был основан Багдад. Омейядская ветвь сохранила власть в Аль-Андалусе.",
+andalus:"В 711 году войска, состоявшие преимущественно из арабов и берберов, начали завоевание Пиренейского полуострова. В 756 году здесь возник независимый Кордовский эмират.",
+caroling:"Карл Великий расширил франкские владения, подчинил лангобардское королевство и провёл ряд походов в Центральной Европе. Его коронация в Риме в 800 году символизировала восстановление западной императорской идеи, но не возрождение прежней Римской империи.",
+westfrank:"Западно-Франкское королевство получило западную часть империи по Верденскому договору. В последующие столетия оно стало одной из исторических основ Франции.",
+eastfrank:"Восточно-Франкское королевство включало восточные области бывшей империи Карла Великого. В X веке здесь сформировались предпосылки возникновения средневекового германского королевства.",
+middle:"Срединное королевство Лотаря включало земли между владениями его братьев, в том числе Италию и полосу от Северного моря к Альпам. Оно оказалось политически неустойчивым и позднее было разделено.",
+bulgar:"Первое Болгарское царство возникло на Балканах после победы войска хана Аспаруха над Византией и договора 681 года. Оно стало важным государством Юго-Восточной Европы."
+};
+function showDetail(id){selected=id;const s=states[id];$("detailTitle").textContent=s.name;$("detailText").innerHTML='<p>'+s.short+'</p><p class="muted">Выбранный год: '+yearText(currentYear)+'. Контур на карте условный и предназначен для учебного сравнения.</p><button id="moreInfo" type="button">Подробнее</button><div id="longInfo" class="hidden card">'+(detailed[id]||"Дополнительная историческая справка готовится.")+'</div>';$("moreInfo").addEventListener("click",()=>{const box=$("longInfo");box.classList.toggle("hidden");$("moreInfo").textContent=box.classList.contains("hidden")?"Подробнее":"Свернуть";});}
 function showEvent(e){$("detailTitle").textContent=e.name;$("detailText").innerHTML="<p>"+e.info+"</p><p class='muted'>Дата события: "+yearText(e.y)+".</p>";}
 function setYear(y){currentYear=Math.max(395,Math.min(950,Number(y)));$("year").value=currentYear;render();}
 function updateCompare(){if(!$("compareToggle").checked)return;const a=Number($("yearA").value||395),b=Number($("yearB").value||843);const ea=activeEra(a),eb=activeEra(b);$("compareA").textContent=yearText(a)+": "+ea.title+" — "+ea.text;$("compareB").textContent=yearText(b)+": "+eb.title+" — "+eb.text;}
@@ -182,7 +203,7 @@ for(const y of milestones){const b=document.createElement("button");b.textConten
 for(const id of ["yearA","yearB"]){for(const e of eras){const o=document.createElement("option");o.value=e.y;o.textContent=e.y+" год — "+e.title;$(id).append(o);}}
 $("yearA").value=395;$("yearB").value=843;
 $("year").addEventListener("input",e=>setYear(e.target.value));$("prev").addEventListener("click",()=>{const ys=milestones.filter(y=>y<currentYear);setYear(ys.length?ys[ys.length-1]:395);});$("next").addEventListener("click",()=>{const y=milestones.find(y=>y>currentYear);setYear(y||950);});
-["showRoutes","showEvents","showExtra"].forEach(id=>$(id).addEventListener("change",render));
+["showRoutes","showEvents","showExtra","animate"].forEach(id=>$(id).addEventListener("change",render));
 $("compareToggle").addEventListener("change",()=>{$("comparePanel").classList.toggle("hidden",!$("compareToggle").checked);updateCompare();});$("yearA").addEventListener("change",updateCompare);$("yearB").addEventListener("change",updateCompare);
 const questions=[
 {q:"Какой год традиционно считается датой падения Западной Римской империи?",a:["395","410","476","843"],c:2,why:"В 476 году Ромул Августул был отстранён от власти."},
