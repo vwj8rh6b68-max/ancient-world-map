@@ -1,220 +1,187 @@
 <!doctype html>
 <html lang="ru">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#273b4a">
-<title>От Рима к средневековой Европе · интерактивная карта</title>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#f4efe3">
+<title>От Рима к средневековой Европе — интерактивный исторический атлас</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
 <style>
-:root{--ink:#243443;--paper:#f5f0e4;--panel:#fffdf7;--line:#d8cdb8;--accent:#8c4d32;--sea:#dce8e8}
-*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font:15px/1.45 system-ui,-apple-system,"Segoe UI",sans-serif}
-header{padding:18px clamp(14px,3vw,34px);background:#e8ddc7;border-bottom:1px solid var(--line)}h1{font-size:clamp(1.25rem,3vw,2rem);margin:0 0 5px}header p{margin:0;max-width:900px;color:#4c5b63}
-main{max-width:1450px;margin:auto;padding:14px}.toolbar,.panel{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:13px;margin-bottom:12px}
-.timeline{display:grid;grid-template-columns:auto minmax(180px,1fr) auto;gap:12px;align-items:center}.year{font-size:1.45rem;font-weight:800;color:var(--accent);min-width:90px;text-align:center}input[type=range]{width:100%;accent-color:var(--accent)}button,select{font:inherit;border:1px solid #cbbda4;border-radius:9px;padding:8px 11px;background:#fffaf0;color:var(--ink)}button{cursor:pointer}button.primary{background:#304b5b;color:white;border-color:#304b5b}button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid #bd8b4e;outline-offset:2px}
-.quick{display:flex;flex-wrap:wrap;gap:7px;margin-top:10px}.quick button.active{background:#8c4d32;color:white;border-color:#8c4d32}
-.grid{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:12px}.mapbox{background:#fffdf7;border:1px solid var(--line);border-radius:14px;overflow:hidden;min-width:0}
-#map{display:block;width:100%;height:auto;background:var(--sea)}.side{min-width:0}.panel h2{font-size:1.05rem;margin:0 0 8px}.panel h3{font-size:.95rem;margin:12px 0 5px}.panel p{margin:6px 0}.muted{font-size:.82rem;color:#63717a}.legend{display:grid;grid-template-columns:1fr 1fr;gap:7px}.legend span{display:flex;align-items:center;gap:7px;font-size:.84rem}.swatch{width:13px;height:13px;border-radius:3px;display:inline-block;border:1px solid #34424b55}
-@keyframes territoryIn{from{opacity:.2}to{opacity:1}}
-#territories polygon{stroke:#4b4a43;stroke-width:1.5;stroke-linejoin:round;fill-opacity:.78;cursor:pointer;transition:fill-opacity .35s,opacity .35s}#territories polygon:hover{fill-opacity:1;stroke-width:3}
-.maplabel{font-size:13px;font-weight:700;fill:#273b4a;paint-order:stroke;stroke:#fffdf2;stroke-width:3px;stroke-linejoin:round;pointer-events:none}.sea-label{font-size:16px;letter-spacing:3px;fill:#77929b;font-style:italic}.place{fill:#293e4b;stroke:#fffdf7;stroke-width:2}.placelabel{font-size:11px;font-weight:700;fill:#293e4b;paint-order:stroke;stroke:#fffdf7;stroke-width:3px}
-.route{fill:none;stroke:#7b3f2d;stroke-width:3;stroke-dasharray:8 6;marker-end:url(#arrow);opacity:.9}.route-label{font-size:11px;fill:#7b3f2d;font-weight:700;paint-order:stroke;stroke:#fffdf7;stroke-width:3px}
-.event{fill:#fffdf7;stroke:#8c4d32;stroke-width:3;cursor:pointer}.event-label{font-size:11px;font-weight:700;fill:#713c2b;paint-order:stroke;stroke:#fffdf7;stroke-width:3px}
-.layers{display:flex;flex-wrap:wrap;gap:10px;font-size:.88rem}.layers label{display:flex;gap:5px;align-items:center}
-.card{border-left:4px solid var(--accent);padding:8px 10px;background:#f7f0e2;border-radius:7px;margin:8px 0}
-#detailTitle{font-size:1.08rem;font-weight:800}.two{display:grid;grid-template-columns:1fr 1fr;gap:10px}.compare{background:#f5f0e4;border-radius:9px;padding:9px}.hidden{display:none!important}
-.quiz button{margin:4px 4px 0 0}.answer{padding:8px;background:#eef3ed;border-radius:8px;margin-top:8px}.smallnote{font-size:.82rem;background:#fff4d9;border-left:4px solid #bd8b4e;padding:9px 11px;border-radius:7px;margin-top:10px}
-footer{padding:8px 3px 20px;color:#64717a;font-size:.8rem}
-@media(max-width:850px){.grid{grid-template-columns:1fr}.side{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.side .panel{margin:0}.side .wide{grid-column:1/-1}}
-@media(max-width:560px){.timeline{grid-template-columns:1fr}.year{text-align:left}.side{grid-template-columns:1fr}.side .wide{grid-column:auto}.two{grid-template-columns:1fr}main{padding:8px}}
-</style>
-</head>
+:root{--ink:#263746;--paper:#f4efe3;--panel:#fffdf8;--line:#d9cfbd;--accent:#8b4c32;--sea:#dce9eb}
+*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font:15px/1.48 system-ui,-apple-system,"Segoe UI",sans-serif}
+header{padding:18px clamp(14px,3vw,34px);background:#e9dfcc;border-bottom:1px solid var(--line)}h1{font-size:clamp(1.3rem,3vw,2rem);line-height:1.2;margin:0 0 6px}header p{max-width:1050px;margin:0;color:#53616a}
+main{max-width:1550px;margin:auto;padding:12px}.toolbar,.panel{background:var(--panel);border:1px solid var(--line);border-radius:13px;padding:12px;margin-bottom:10px}
+button,select,input{font:inherit}button{border:1px solid #536b79;background:#304d60;color:white;border-radius:8px;padding:8px 11px;cursor:pointer;font-weight:650}button:hover{filter:brightness(1.08)}button:disabled{opacity:.45;cursor:default}
+.timeline{display:grid;grid-template-columns:auto minmax(150px,1fr) auto;gap:12px;align-items:center}.year{font-size:1.35rem;font-weight:800;text-align:center;font-variant-numeric:tabular-nums}#year{width:100%;accent-color:#8b4c32}.milestones{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}.milestones button{background:#e9e2d5;color:#344b5a;border-color:#cfc3ad;padding:6px 9px}.milestones button.active{background:#8b4c32;color:white;border-color:#8b4c32}
+.layers{display:flex;flex-wrap:wrap;gap:9px 16px;margin-top:12px}.layers label{display:flex;align-items:center;gap:6px;font-size:.9rem}.layers input{accent-color:#8b4c32}
+.grid{display:grid;grid-template-columns:minmax(0,1fr) 330px;gap:11px;align-items:start}.mapbox{min-width:0;background:var(--panel);border:1px solid var(--line);border-radius:13px;overflow:hidden}#map{width:100%;height:min(72vh,780px);min-height:480px;background:var(--sea)}.side{min-width:0}.panel h2{font-size:1.04rem;margin:0 0 7px}.panel h3{font-size:.96rem;margin:12px 0 5px}.panel p{margin:6px 0}.muted{font-size:.82rem;color:#64717a}.legend{display:grid;grid-template-columns:1fr 1fr;gap:7px}.legend button{display:flex;align-items:center;gap:7px;text-align:left;background:transparent;color:var(--ink);border:0;padding:3px;font-size:.83rem;font-weight:500}.swatch{width:13px;height:13px;border:1px solid #34424b66;border-radius:3px;display:inline-block;flex:none}
+.note{background:#fff4d9;border-left:4px solid #bd8b4e;padding:9px 11px;border-radius:7px;margin-top:10px;font-size:.86rem}.card{border-left:4px solid var(--accent);background:#f7f0e4;border-radius:7px;padding:9px 11px;margin:8px 0}.two{display:grid;grid-template-columns:1fr 1fr;gap:8px}.compare{background:#f4efe3;border-radius:8px;padding:9px}.hidden{display:none!important}.quiz-option{display:block;width:100%;text-align:left;margin:6px 0;background:#eef1ef;color:#263746;border-color:#cbd4d2}.quiz-option.correct{background:#e2eee2;border-color:#6f9a76}.quiz-option.wrong{background:#f5e5df;border-color:#b77a67}.city-label{font-weight:700;color:#273c4b;text-shadow:-1px -1px white,1px 1px white,1px -1px white,-1px 1px white;font-size:11px}.sea-label{color:#527786;font-style:italic;letter-spacing:1px;text-shadow:1px 1px #fff;font-size:12px}.leaflet-tooltip.city-label{background:transparent;border:0;box-shadow:none}.leaflet-tooltip.sea-label{background:transparent;border:0;box-shadow:none}.leaflet-popup-content{font:14px/1.5 system-ui}.leaflet-control-layers{border-radius:8px!important}
+footer{font-size:.8rem;color:#68737a;padding:4px 2px 20px}
+@media(max-width:950px){.grid{grid-template-columns:1fr}.side{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.side .wide{grid-column:1/-1}#map{height:65vh}}
+@media(max-width:600px){.side{grid-template-columns:1fr}.side .wide{grid-column:auto}.timeline{grid-template-columns:1fr 1fr}.timeline>div{grid-column:1/-1;grid-row:1}.timeline button{grid-row:2}#map{height:58vh;min-height:390px}.two{grid-template-columns:1fr}.legend{grid-template-columns:1fr}}
+</style></head>
 <body>
-<header>
-<h1>От Рима к средневековой Европе</h1>
-<p>Интерактивная историческая карта для 6 класса · 395–950 годы. Разделение Римской империи, Великое переселение народов, новые королевства, Византия, Арабский халифат и Франкская империя.</p>
-</header>
+<header><h1>От Рима к средневековой Европе</h1><p>Интерактивный исторический атлас для 6 класса · 395–950 годы. Политическая карта Западной Евразии: разделение Римской империи, Великое переселение народов, новые королевства, Византия, халифат и Франкская империя.</p></header>
 <main>
-<section class="toolbar" aria-label="Временная шкала">
-<div class="timeline">
-<button id="prev" aria-label="Предыдущий исторический этап">← Назад</button>
-<div><div class="year" id="yearLabel">395 год</div><input id="year" type="range" min="395" max="950" step="1" value="395" aria-label="Выбрать год"></div>
-<button id="next" aria-label="Следующий исторический этап">Вперёд →</button>
-</div>
-<div class="quick" id="milestones"></div>
-<div class="layers" style="margin-top:12px">
+<section class="toolbar" aria-label="Управление историческим временем">
+<div class="timeline"><button id="prev">← Назад</button><div><div class="year" id="yearLabel">395 год</div><input id="year" type="range" min="395" max="950" step="1" value="395"></div><button id="next">Вперёд →</button></div>
+<div class="milestones" id="milestones"></div>
+<div class="layers">
 <label><input type="checkbox" id="showRoutes" checked> Переселения и походы</label>
 <label><input type="checkbox" id="showEvents" checked> Исторические события</label>
-<label><input type="checkbox" id="showExtra"> Дополнительный слой</label>
-<label><input type="checkbox" id="animate" checked> Плавное переключение</label>
-<label><input type="checkbox" id="compareToggle"> Режим сравнения</label>
-</div>
-</section>
+<label><input type="checkbox" id="showCities" checked> Города и подписи</label>
+<label><input type="checkbox" id="showRegions" checked> Области и зоны влияния</label>
+<label><input type="checkbox" id="showBorders" checked> Границы государств</label>
+<label><input type="checkbox" id="compareToggle"> Сравнить два периода</label>
+</div></section>
 <div class="grid">
-<section class="mapbox">
-<svg id="map" viewBox="0 0 1000 650" role="img" aria-label="Схематическая историческая карта Европы, Северной Африки и Западной Азии">
-<defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6" fill="#7b3f2d"/></marker></defs>
-<rect width="1000" height="650" fill="#dce8e8"/>
-<path d="M80 60 L280 30 390 58 460 42 555 70 620 45 740 80 830 135 900 210 870 285 820 320 790 390 730 425 700 480 620 495 570 450 520 430 490 375 450 350 420 300 360 280 320 220 250 205 210 160 140 150 90 110Z" fill="#e8dfc9" stroke="#a89b80" stroke-width="3"/>
-<path d="M430 360 L490 370 540 410 600 425 650 460 690 505 720 560 690 610 600 625 510 600 450 560 400 500 380 440Z" fill="#e8dfc9" stroke="#a89b80" stroke-width="3"/>
-<path d="M700 350 L770 330 850 345 920 390 950 470 900 520 820 510 760 470 720 420Z" fill="#e8dfc9" stroke="#a89b80" stroke-width="3"/>
-<path d="M65 230 L100 210 130 230 145 270 130 320 95 340 65 300Z" fill="#e8dfc9" stroke="#a89b80" stroke-width="2"/>
-<path d="M310 250 L340 230 365 255 355 295 330 305Z" fill="#e8dfc9" stroke="#a89b80" stroke-width="2"/>
-<g opacity=".9"><text x="180" y="390" class="sea-label">АТЛАНТИЧЕСКИЙ ОКЕАН</text><text x="440" y="525" class="sea-label">СРЕДИЗЕМНОЕ МОРЕ</text><text x="765" y="295" class="sea-label">ЧЁРНОЕ МОРЕ</text><text x="845" y="580" class="sea-label">АРАВИЙСКОЕ МОРЕ</text></g>
-<g id="territories"></g><g id="routes"></g><g id="events"></g><g id="labels"></g><g id="cities"></g>
-<g class="muted-map"><text x="110" y="35" class="maplabel">ЗАПАДНАЯ ЕВРАЗИЯ И СРЕДИЗЕМНОМОРЬЕ</text></g>
-</svg>
-</section>
+<section class="mapbox"><div id="map" role="application" aria-label="Интерактивная историческая карта Европы, Северной Африки и Западной Азии"></div></section>
 <aside class="side">
 <section class="panel"><h2 id="periodTitle">Разделение Римской империи</h2><p id="periodText">После смерти Феодосия I управление империей было разделено между его сыновьями.</p><p class="muted" id="periodDate">395 год</p></section>
-<section class="panel"><h2>Условные обозначения</h2><div class="legend" id="legend"></div><p class="muted">Нажми на территорию, чтобы открыть историческую справку.</p></section>
-<section class="panel wide"><div id="detailTitle">Выбери государство или событие</div><div id="detailText" class="muted">Карточка объекта появится здесь.</div></section>
-<section class="panel wide hidden" id="comparePanel"><h2>Сравнение исторических периодов</h2><div class="two"><div class="compare"><label>Первый год <select id="yearA"></select></label><p id="compareA"></p></div><div class="compare"><label>Второй год <select id="yearB"></select></label><p id="compareB"></p></div></div></section>
-<section class="panel wide quiz"><h2>Проверь себя</h2><p id="question">В каком году традиционно датируют падение Западной Римской империи?</p><div id="answers"></div><div id="feedback" class="answer hidden"></div><button id="newQuestion">Следующий вопрос</button></section>
-</aside>
-</div>
-<div class="panel" style="margin-top:12px"><h2>Как читать карту</h2><p>Цветная заливка показывает политические владения или области расселения на выбранный исторический момент. Стрелки показывают основные направления движения народов и походов. Точки обозначают города и места важных событий.</p><p class="smallnote"><strong>Историческая оговорка.</strong> Карта является учебной схематической реконструкцией, а не точной геодезической картой границ. В раннем Средневековье границы часто были подвижными, власть могла быть неодинаковой в разных областях, а территории контроля и расселения не всегда совпадали. Пунктирные маршруты и условные контуры не следует трактовать как точные линии государственных границ.</p></div>
-<footer>Автономный HTML-файл: карта, стили, данные и интерактивность встроены в этот документ. Для работы не требуются внешние библиотеки, тайлы или интернет. Историческая база — учебная реконструкция; перед использованием как атласа для конкретного параграфа требуется сверка с изданием учебника и историческими атласами.</footer>
+<section class="panel"><h2>Условные обозначения</h2><div class="legend" id="legend"></div><p class="muted">Нажми на название или цветную территорию, чтобы открыть справку.</p></section>
+<section class="panel wide"><div id="detailTitle"><strong>Выбери государство или событие</strong></div><div id="detailText" class="muted">Историческая справка появится здесь.</div></section>
+<section class="panel wide hidden" id="comparePanel"><h2>Сравнение периодов</h2><div class="two"><div class="compare"><label>Первый период <select id="yearA"></select></label><p id="compareA"></p></div><div class="compare"><label>Второй период <select id="yearB"></select></label><p id="compareB"></p></div></div></section>
+<section class="panel wide"><h2>Проверь себя</h2><p id="question"></p><div id="answers"></div><div id="feedback" class="card hidden" aria-live="polite"></div><button id="newQuestion">Следующий вопрос</button></section>
+<section class="panel wide"><h2>Ключевые даты</h2><div id="chronology"></div></section>
+</aside></div>
+<section class="panel"><h2>Как читать эту карту</h2><p>Цветная заливка показывает территории государств на выбранный момент. Пунктиром обозначены приблизительные рубежи, области нестабильного контроля и зоны расселения. Стрелки показывают основные направления переселений и походов. Точки обозначают города и места событий.</p><div class="note"><strong>Историческая точность.</strong> Карта использует географическую основу с реальными береговыми линиями и рельефом, а не условный рисунок. При этом политические рубежи раннего Средневековья часто не были линейными и устойчивыми. Контуры государств — учебная историко-географическая реконструкция, а не кадастровая граница. Для спорных участков используется пунктир; области влияния не следует принимать за полностью освоенные провинции.</div><p class="muted">Картографическая подложка — Esri World Physical (без современной топонимической подписи); географические названия для урока нанесены отдельно на русском языке. Leaflet — библиотека интерактивной карты.</p></section>
+<footer>Историческая реконструкция для учебного использования. При сопоставлении с учебником учитывайте, что даты и политические границы могут приводиться в обобщённом виде.</footer>
 </main>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script>
-const colors={rome:"#a84d45",byz:"#8971a8",goths:"#7d9c72",franks:"#547d9c",arab:"#d0a34d",sasan:"#bd805d",slavs:"#78a6a0",other:"#b6a77b",lomb:"#9b845f"};
+const map=L.map('map',{zoomControl:true,preferCanvas:true,zoomSnap:.25,zoomDelta:.5,wheelPxPerZoomLevel:150}).setView([43,24],4);
+L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Physical_Map/MapServer/tile/{z}/{y}/{x}',{maxZoom:8,attribution:'Tiles © Esri'}).addTo(map);
+map.setMaxBounds([[-8,-30],[75,75]]);
+const C={west:'#ad665b',east:'#8d86b4',visigoth:'#7c9c73',vandal:'#b0a16b',ostro:'#6c9c83',frank:'#5d87a4',lomb:'#a18b62',anglo:'#b48b69',sasan:'#bd805d',rashid:'#d1a64e',umayyad:'#c99a40',abbasid:'#d9b76d',andalus:'#d6b86f',caroling:'#507e9b',westfrank:'#5b8ca7',eastfrank:'#7b9caa',middle:'#a3a987',bulgar:'#9aaf8d',slavs:'#77a7a0',hun:'#a38b67'};
 const states={
-west:{name:"Западная Римская империя",color:colors.rome,short:"Западная часть Римской империи с центрами власти в Италии и других городах."},
-east:{name:"Восточная Римская империя (Византия)",color:colors.byz,short:"Восточная часть Римской империи; сохраняла римскую государственную традицию."},
-visigoth:{name:"Вестготское королевство",color:colors.goths,short:"Германское королевство, владения которого перемещались из Галлии на Пиренейский полуостров."},
-vandal:{name:"Вандальское королевство",color:"#a5a66c",short:"Королевство в Северной Африке, завоёванное войсками Юстиниана в 533–534 годах."},
-ostro:{name:"Остготское королевство",color:"#719b83",short:"Государство остготов в Италии, существовавшее в конце V — середине VI века."},
-frank:{name:"Франкское государство",color:colors.franks,short:"Королевство франков, усилившееся при Меровингах и Каролингах."},
-lomb:{name:"Лангобардское королевство",color:colors.lomb,short:"Королевство, возникшее в значительной части Италии после вторжения лангобардов в 568 году."},
-anglo:{name:"Англосаксонские королевства",color:"#b58a68",short:"Ряд королевств в Британии; единого англосаксонского государства в этот период ещё не было."},
-sasan:{name:"Держава Сасанидов",color:colors.sasan,short:"Иранская держава, соперничавшая с Византией; прекратила существование в ходе арабских завоеваний."},
-rashid:{name:"Ранний Арабский халифат",color:colors.arab,short:"Государство, возникшее на Аравийском полуострове в VII веке и быстро расширившееся."},
-umayyad:{name:"Омейядский халифат",color:"#c69a45",short:"Халифат со столицей в Дамаске; при Омейядах владения распространились от Пиренейского полуострова до Центральной Азии."},
-abbasid:{name:"Аббасидский халифат",color:"#d4b36e",short:"Династия Аббасидов пришла к власти в 750 году; политический центр находился в Ираке."},
-andalus:{name:"Аль-Андалус",color:"#d8b96d",short:"Территории Пиренейского полуострова, завоёванные мусульманами с 711 года; позднее здесь возник Кордовский эмират."},
-caroling:{name:"Империя Карла Великого",color:colors.franks,short:"Империя, созданная расширением Франкского государства и коронацией Карла Великого в 800 году."},
-westfrank:{name:"Западно-Франкское королевство",color:"#547d9c",short:"Западная часть владений Каролингов после Верденского раздела 843 года."},
-eastfrank:{name:"Восточно-Франкское королевство",color:"#7193a6",short:"Восточная часть Франкской империи после Верденского раздела."},
-middle:{name:"Срединное королевство Лотаря",color:"#8b9b85",short:"Владения Лотаря I — длинная полоса от Северного моря до Италии."},
-bulgar:{name:"Первое Болгарское царство",color:"#9baf8c",short:"Государство, возникшее на Балканах в конце VII века."}
+west:{name:'Западная Римская империя',color:C.west,info:'В 395 году управление империей было разделено между двумя дворами. Западная часть переживала политическую и военную нестабильность; в 476 году Ромул Августул был отстранён Одоакром. Римское население и многие институты продолжали существовать на бывших территориях империи.'},
+east:{name:'Восточная Римская империя (Византия)',color:C.east,info:'Восточная Римская империя сохранила столицу Константинополь и императорскую власть. В учебной традиции её часто называют Византией. При Юстиниане I она вернула часть западных владений, а затем постепенно утратила многие территории. Государство просуществовало до 1453 года.'},
+visigoth:{name:'Вестготское королевство',color:C.visigoth,info:'Вестготы перемещались через Балканы и Италию, в 410 году захватили Рим, а затем создали королевство в Галлии и Испании. После поражения от франков при Вуйе в 507 году центр их владений находился на Пиренейском полуострове. Королевство было завоёвано арабскими и берберскими войсками в начале VIII века.'},
+vandal:{name:'Вандальское королевство',color:C.vandal,info:'Вандалы прошли через Галлию и Испанию и в 429 году переправились в Северную Африку. Их королевство со столицей в Карфагене было завоёвано Византией в 533–534 годах.'},
+ostro:{name:'Остготское королевство',color:C.ostro,info:'Остготское королевство Теодориха возникло в Италии после свержения Одоакра в 493 году. Византийско-готская война 535–554 годов привела к его падению.'},
+frank:{name:'Франкское государство',color:C.frank,info:'Франки усилились в Галлии при Хлодвиге. Позднее власть перешла к Каролингам. При Карле Великом франкские владения расширились, и в 800 году он был коронован императором.'},
+lomb:{name:'Лангобардское королевство',color:C.lomb,info:'Лангобарды вторглись в Италию в 568 году. Их королевство занимало значительную часть северной и центральной Италии, но полуостров оставался политически разделённым.'},
+anglo:{name:'Англосаксонские королевства',color:C.anglo,info:'После ухода римской администрации из Британии здесь возникло несколько англосаксонских королевств. Их границы и политическое влияние неоднократно менялись; единым государством они не были.'},
+sasan:{name:'Держава Сасанидов',color:C.sasan,info:'Держава Сасанидов была крупной иранской державой и соперником Восточной Римской империи. В VII веке она ослабла в войнах с Византией, а затем была завоёвана арабскими войсками.'},
+rashid:{name:'Ранний Арабский халифат',color:C.rashid,info:'После смерти Мухаммеда в 632 году руководители мусульманской общины получили титул халифа. При первых халифах арабские войска завоевали Сирию, Египет, Месопотамию и Иран.'},
+umayyad:{name:'Омейядский халифат',color:C.umayyad,info:'Династия Омейядов правила халифатом в 661–750 годах, столицей был Дамаск. В этот период завоевания достигли Северной Африки и Пиренейского полуострова.'},
+abbasid:{name:'Аббасидский халифат',color:C.abbasid,info:'В 750 году власть в халифате перешла к Аббасидам. В 762 году был основан Багдад. Омейядская ветвь сохранила власть в Аль-Андалусе.'},
+andalus:{name:'Аль-Андалус',color:C.andalus,info:'В 711 году войска, состоявшие преимущественно из арабов и берберов, начали завоевание Пиренейского полуострова. В 756 году здесь возник независимый Кордовский эмират.'},
+caroling:{name:'Империя Карла Великого',color:C.caroling,info:'Карл Великий расширил франкские владения, подчинил лангобардское королевство и провёл ряд походов в Центральной Европе. Его коронация в Риме в 800 году символизировала восстановление западной императорской идеи, но не возрождение прежней Римской империи.'},
+westfrank:{name:'Западно-Франкское королевство',color:C.westfrank,info:'Западно-Франкское королевство получило западную часть империи по Верденскому договору. В последующие столетия оно стало одной из исторических основ Франции.'},
+eastfrank:{name:'Восточно-Франкское королевство',color:C.eastfrank,info:'Восточно-Франкское королевство включало восточные области бывшей империи Карла Великого. В X веке здесь сформировались предпосылки возникновения средневекового германского королевства.'},
+middle:{name:'Срединное королевство Лотаря',color:C.middle,info:'Срединное королевство Лотаря включало земли между владениями его братьев, в том числе Италию и полосу от Северного моря к Альпам. Оно оказалось политически неустойчивым и позднее было разделено.'},
+bulgar:{name:'Первое Болгарское царство',color:C.bulgar,info:'Первое Болгарское царство возникло на Балканах после победы войска хана Аспаруха над Византией и договора 681 года. Оно стало важным государством Юго-Восточной Европы.'},
+slavs:{name:'Области расселения славян',color:C.slavs,info:'В VI–VIII веках славянские группы расселялись в Центральной, Восточной и Юго-Восточной Европе. На карте показана обобщённая зона расселения, а не единое государство и не точная этническая граница.'},
+hun:{name:'Гуннская держава и зона влияния',color:C.hun,info:'В первой половине V века гуннская держава при Аттиле контролировала обширные пространства в Центральной и Восточной Европе. Её влияние было подвижным; пунктирная линия обозначает приблизительный охват, а не устойчивую государственную границу.'}
 };
-// SVG coordinates are deliberately schematic; all polygons are approximate teaching shapes.
-const shapes={
-west:"120,130 245,105 315,145 345,205 310,260 270,300 215,280 180,235 130,220",
-east:"345,205 430,170 520,185 595,230 610,295 565,345 500,350 430,315 380,275",
-visigoth:"125,230 215,280 270,300 255,355 205,380 140,350 105,295",
-vandal:"250,390 360,385 430,410 420,455 335,465 260,445",
-ostro:"260,255 340,245 385,280 370,325 315,340 275,310",
-frank:"145,150 255,120 320,160 315,220 275,270 205,260 155,220",
-lomb:"285,260 350,245 390,280 370,320 315,330 280,300",
-anglo:"100,95 155,90 175,125 155,165 110,160 85,130",
-sasan:"610,250 710,225 800,260 830,325 780,375 700,365 635,320",
-rashid:"560,365 665,350 750,385 790,445 730,490 630,470 575,425",
-umayyad:"270,390 390,380 500,390 600,360 720,385 800,350 835,300 790,250 710,225 610,250 565,345 500,350 430,410 335,465",
-abbasid:"570,340 670,300 780,315 830,370 790,430 710,445 650,410",
-andalus:"105,285 190,300 235,345 205,380 140,350",
-caroling:"145,145 265,120 345,155 400,205 380,270 330,300 260,290 205,260 155,220",
-westfrank:"145,150 260,130 315,170 300,235 255,275 205,260 155,220",
-eastfrank:"300,140 385,145 430,190 420,255 375,280 315,240 325,190",
-middle:"385,180 445,175 485,220 500,285 465,345 410,330 380,270 420,255 430,190",
-bulgar:"450,285 530,270 575,300 565,345 500,360 455,330"
+// Координаты заданы в формате [широта, долгота]. Пунктирные контуры обозначают приблизительные рубежи.
+const polygons={
+west:[[48, -9],[50, -5],[54, -3],[56,2],[55,8],[54,13],[50,17],[47,19],[43,17],[40,15],[38,10],[36,5],[37,-1],[41,-5],[44,-9]],
+east:[[46,12],[49,17],[51,23],[54,28],[56,34],[56,41],[52,45],[47,48],[42,45],[37,43],[34,39],[31,34],[32,28],[35,24],[38,20],[40,15]],
+visigoth:[[44,-9],[44,-2],[46,2],[47,6],[46,10],[44,13],[42,14],[40,10],[38,5],[37,0],[39,-5],[41,-9]],
+vandal:[[37,-7],[37,0],[36,8],[35,15],[32,20],[29,25],[30,10],[31,0],[33,-7]],
+ostro:[[47,6],[48,12],[47,17],[44,18],[42,16],[40,13],[41,8],[44,6]],
+frank:[[50,-5],[52,1],[54,5],[53,10],[50,13],[47,12],[45,8],[46,3],[48,-2]],
+lomb:[[47,7],[47,13],[45,15],[43,14],[42,11],[43,8],[45,6]],
+anglo:[[50,-6],[54,-5],[57,-3],[58,0],[56,2],[53,1],[51,0]],
+sasan:[[39,43],[40,49],[38,54],[35,57],[31,55],[28,51],[27,46],[30,43],[34,42]],
+rashid:[[33,35],[34,39],[33,44],[30,49],[25,52],[19,49],[15,44],[17,39],[22,36],[27,35]],
+umayyad:[[44,-9],[46,-3],[47,5],[46,14],[43,20],[39,28],[36,35],[34,42],[30,48],[25,53],[19,49],[15,44],[17,39],[22,36],[27,35],[30,30],[32,25],[32,18],[31,10],[33,2],[35,-5],[39,-9]],
+abbasid:[[38,27],[40,34],[39,42],[36,48],[33,50],[29,49],[27,45],[29,40],[31,35],[34,30]],
+andalus:[[44,-9],[44,-2],[42,0],[40,-1],[37,-5],[36,-8],[39,-9]],
+caroling:[[54,-5],[55,2],[54,9],[52,15],[49,20],[46,18],[43,15],[42,10],[44,5],[46,0],[49,-5]],
+westfrank:[[51,-5],[52,1],[51,6],[49,8],[47,7],[45,4],[44,0],[46,-4],[49,-5]],
+eastfrank:[[54,6],[55,12],[53,18],[50,21],[47,18],[47,12],[49,8],[52,9]],
+middle:[[52,5],[54,8],[53,13],[51,16],[48,17],[45,15],[43,13],[44,9],[47,8],[49,8]],
+bulgar:[[45,22],[46,26],[45,30],[43,29],[41,26],[41,22],[43,20]],
+slavs:[[55,14],[57,22],[56,30],[53,34],[49,32],[47,27],[48,21],[51,17]],
+hun:[[49,15],[51,20],[50,26],[48,28],[46,25],[45,20],[46,16]]
 };
-const eras=[
-{y:395,title:"Разделение Римской империи",text:"После смерти Феодосия I управление империей было разделено между его сыновьями. Западная и Восточная части оставались частями римского мира, но их политические центры и дальнейшая история различались.",ids:["west","east"],labels:[["Западная Римская империя",220,205],["Восточная Римская империя",470,260]]},
-{y:410,title:"Вестготы у стен Рима",text:"В 410 году вестготы во главе с Аларихом захватили и разграбили Рим. Это событие стало важным символом ослабления Западной Римской империи, но не означало её немедленного падения.",ids:["west","east","visigoth"],labels:[["Вестготы",190,330],["Рим",305,265]]},
-{y:451,title:"Гунны и битва на Каталаунских полях",text:"В 451 году войска Аттилы вторглись в Галлию. На Каталаунских полях им противостояла коалиция римлян и их союзников, среди которых были вестготы. Исход сражения не уничтожил гуннскую державу мгновенно.",ids:["west","east","visigoth","vandal","sasan"],labels:[["Вестготское королевство",175,335],["Римская власть",225,195]]},
-{y:476,title:"Падение Западной Римской империи",text:"В 476 году военачальник Одоакр отстранил от власти юного императора Ромула Августула. Это традиционная дата падения Западной Римской империи. Восточная Римская империя продолжила существование.",ids:["east","visigoth","vandal","sasan"],labels:[["Византия",470,265],["Вестготы",175,335],["Вандалы",340,430]]},
-{y:493,title:"Остготы устанавливают власть в Италии",text:"Теодорих во главе остготов завоевал Италию и в 493 году установил там своё королевство. На бывших землях Западной империи существовали разные политические образования.",ids:["east","visigoth","vandal","ostro","sasan"],labels:[["Остготы",330,300],["Византия",475,265]]},
-{y:507,title:"Франки усиливаются в Галлии",text:"После победы над вестготами при Вуйе в 507 году франки расширили власть в Галлии. Вестготское королевство сохранило основные владения на Пиренейском полуострове.",ids:["east","visigoth","vandal","ostro","frank","anglo","sasan"],labels:[["Франки",225,195],["Вестготы",175,340]]},
-{y:565,title:"Византия при Юстиниане I",text:"При Юстиниане византийские войска вернули Северную Африку и завоевали королевство остготов в Италии после длительной войны. Империя временно восстановила контроль над рядом западных территорий.",ids:["east","visigoth","frank","anglo","sasan"],labels:[["Византия",470,265],["Франки",225,195]]},
-{y:568,title:"Лангобарды вторгаются в Италию",text:"В 568 году лангобарды перешли в Италию. Византийская власть сохранилась в некоторых прибрежных и южных областях, а значительная часть полуострова оказалась под властью лангобардов.",ids:["east","visigoth","frank","anglo","lomb","sasan"],labels:[["Лангобарды",340,300],["Византия",480,260]]},
-{y:622,title:"Начало новой эпохи в Аравии",text:"622 год — хиджра, переселение Мухаммеда из Мекки в Медину. Это событие стало началом мусульманского летоисчисления. Само по себе оно не означает, что к этому году уже существовала огромная империя.",ids:["east","frank","anglo","lomb","sasan"],labels:[["Византия",470,265],["Сасаниды",720,300]]},
-{y:661,title:"Расширение Арабского халифата",text:"После смерти Мухаммеда в 632 году арабские завоевания привели к созданию обширного халифата. К 661 году его власть распространилась на Сирию, Египет, Месопотамию и другие области.",ids:["east","frank","anglo","lomb","rashid"],labels:[["Византия",470,265],["Халифат",670,415]]},
-{y:711,title:"Завоевание Пиренейского полуострова",text:"В 711 году войска, состоявшие преимущественно из арабов и берберов, перешли через Гибралтар и начали завоевание вестготского королевства. Большая часть полуострова оказалась под властью мусульман.",ids:["east","frank","anglo","lomb","umayyad","andalus"],labels:[["Аль-Андалус",170,335],["Византия",475,265]]},
-{y:750,title:"Омейяды и Аббасиды",text:"В 750 году власть в халифате перешла от Омейядов к Аббасидам. Омейядская ветвь сохранила власть в Аль-Андалусе, где позднее возник Кордовский эмират.",ids:["east","frank","anglo","lomb","abbasid","andalus"],labels:[["Аббасидский халифат",690,370],["Аль-Андалус",170,335]]},
-{y:800,title:"Империя Карла Великого",text:"В 800 году папа римский короновал Карла Великого императором. Его держава охватывала значительную часть Западной и Центральной Европы, но не включала всю территорию бывшей Римской империи.",ids:["east","caroling","anglo","lomb","abbasid","andalus"],labels:[["Империя Карла Великого",275,220],["Византия",475,265]]},
-{y:814,title:"Смерть Карла Великого",text:"После смерти Карла Великого в 814 году императором стал его сын Людовик Благочестивый. Между наследниками усилилась борьба за власть, которая завершилась разделом державы.",ids:["east","caroling","anglo","lomb","abbasid","andalus"],labels:[["Империя Карла Великого",275,220],["Византия",475,265]]},
-{y:843,title:"Верденский раздел",text:"По договору 843 года внуки Карла Великого разделили империю на три части: Западно-Франкское королевство, Восточно-Франкское королевство и Срединное королевство Лотаря. Это важный этап, но не момент мгновенного рождения современных Франции, Германии и Италии.",ids:["east","westfrank","eastfrank","middle","anglo","abbasid","andalus"],labels:[["Западно-Франкское",225,210],["Восточно-Франкское",365,185],["Лотарь",450,300]]},
-{y:950,title:"Дальнейшее становление государств",text:"В последующие столетия политические образования менялись. Западно-Франкское королевство стало одной из основ будущей Франции; Восточно-Франкское королевство — одной из основ будущей Германии. Итальянские земли оставались политически раздробленными.",ids:["east","westfrank","eastfrank","middle","anglo","bulgar","abbasid","andalus"],labels:[["Западно-Франкское королевство",220,210],["Восточно-Франкское королевство",370,185],["Византия",475,265]]}
-];
-const migrations=[
-{from:395,to:500,d:"M 140 130 Q 170 210 235 300",label:"Переселение вестготов",x:135,y:250},
-{from:395,to:500,d:"M 160 95 Q 245 80 305 160",label:"Движение гуннов на запад",x:220,y:80},
-{from:395,to:500,d:"M 210 210 Q 270 290 335 405",label:"Переселение вандалов",x:245,y:365},
-{from:500,to:600,d:"M 250 180 Q 315 210 345 285",label:"Движение лангобардов",x:285,y:235},
-{from:600,to:800,d:"M 500 360 Q 430 320 380 280",label:"Расселение славян на Балканах",x:405,y:365},
-{from:632,to:750,d:"M 640 420 Q 520 390 380 350",label:"Арабские завоевания",x:505,y:410},
-{from:632,to:750,d:"M 630 420 Q 480 430 180 340",label:"Завоевание Северной Африки и Испании",x:360,y:455}
+const periods=[
+{y:395,title:'Разделение Римской империи',text:'После смерти Феодосия I управление империей было разделено между его сыновьями. Западная и Восточная части оставались частями римского мира, но их политические центры и дальнейшая история различались.',ids:['west','east']},
+{y:410,title:'Вестготы у стен Рима',text:'В 410 году вестготы во главе с Аларихом захватили и разграбили Рим. Это стало важным символом ослабления Западной Римской империи, но не означало её немедленного падения.',ids:['west','east','visigoth']},
+{y:451,title:'Гунны и битва на Каталаунских полях',text:'В 451 году войска Аттилы вторглись в Галлию. На Каталаунских полях им противостояла коалиция римлян и их союзников, среди которых были вестготы. Сражение не уничтожило гуннскую державу мгновенно.',ids:['west','east','visigoth','vandal','sasan','hun']},
+{y:476,title:'Падение Западной Римской империи',text:'В 476 году военачальник Одоакр отстранил от власти юного императора Ромула Августула. Это традиционная дата падения Западной Римской империи. Восточная Римская империя продолжила существование.',ids:['east','visigoth','vandal','sasan']},
+{y:493,title:'Остготы устанавливают власть в Италии',text:'Теодорих во главе остготов завоевал Италию и в 493 году установил там своё королевство. На бывших землях Западной империи существовали разные политические образования.',ids:['east','visigoth','vandal','ostro','sasan']},
+{y:507,title:'Франки усиливаются в Галлии',text:'После победы над вестготами при Вуйе в 507 году франки расширили власть в Галлии. Вестготское королевство сохранило основные владения на Пиренейском полуострове.',ids:['east','visigoth','vandal','ostro','frank','anglo','sasan']},
+{y:565,title:'Византия при Юстиниане I',text:'При Юстиниане византийские войска вернули Северную Африку и завоевали королевство остготов в Италии после длительной войны. Империя временно восстановила контроль над рядом западных территорий.',ids:['east','visigoth','frank','anglo','sasan']},
+{y:568,title:'Лангобарды вторгаются в Италию',text:'В 568 году лангобарды перешли в Италию. Византийская власть сохранилась в некоторых прибрежных и южных областях, а значительная часть полуострова оказалась под властью лангобардов.',ids:['east','visigoth','frank','anglo','lomb','sasan']},
+{y:622,title:'Начало новой эпохи в Аравии',text:'622 год — хиджра, переселение Мухаммеда из Мекки в Медину. Это событие стало началом мусульманского летоисчисления. К этому году огромной арабской империи ещё не существовало.',ids:['east','frank','anglo','lomb','sasan']},
+{y:661,title:'Расширение Арабского халифата',text:'После смерти Мухаммеда в 632 году арабские завоевания привели к созданию обширного халифата. К 661 году его власть распространилась на Сирию, Египет, Месопотамию и другие области.',ids:['east','frank','anglo','lomb','rashid']},
+{y:711,title:'Завоевание Пиренейского полуострова',text:'В 711 году войска, состоявшие преимущественно из арабов и берберов, перешли через Гибралтар и начали завоевание вестготского королевства. Большая часть полуострова оказалась под властью мусульман.',ids:['east','frank','anglo','lomb','umayyad','andalus']},
+{y:750,title:'Омейяды и Аббасиды',text:'В 750 году власть в халифате перешла от Омейядов к Аббасидам. Омейядская ветвь сохранила власть в Аль-Андалусе, где позднее возник Кордовский эмират.',ids:['east','frank','anglo','lomb','abbasid','andalus']},
+{y:800,title:'Империя Карла Великого',text:'В 800 году папа римский короновал Карла Великого императором. Его держава охватывала значительную часть Западной и Центральной Европы, но не включала всю территорию бывшей Римской империи.',ids:['east','caroling','anglo','lomb','abbasid','andalus']},
+{y:814,title:'Смерть Карла Великого',text:'После смерти Карла Великого в 814 году императором стал его сын Людовик Благочестивый. Между наследниками усилилась борьба за власть, которая завершилась разделом державы.',ids:['east','caroling','anglo','lomb','abbasid','andalus']},
+{y:843,title:'Верденский раздел',text:'По договору 843 года внуки Карла Великого разделили империю на три части: Западно-Франкское королевство, Восточно-Франкское королевство и Срединное королевство Лотаря. Это не было мгновенным рождением современных Франции, Германии и Италии.',ids:['east','westfrank','eastfrank','middle','anglo','abbasid','andalus']},
+{y:950,title:'Дальнейшее становление государств',text:'В последующие столетия политические образования менялись. Западно-Франкское королевство стало одной из основ будущей Франции; Восточно-Франкское королевство — одной из основ будущей Германии. Итальянские земли оставались политически раздробленными.',ids:['east','westfrank','eastfrank','middle','anglo','bulgar','abbasid','andalus']}
 ];
 const events=[
-{y:410,x:305,yy:265,name:"Взятие Рима вестготами",info:"В 410 году войска Алариха захватили Рим."},
-{y:451,x:250,yy:190,name:"Каталаунские поля",info:"Сражение войск Аттилы с римско-вестготской коалицией."},
-{y:476,x:310,yy:260,name:"Равенна",info:"В 476 году Ромул Августул был отстранён от власти."},
-{y:507,x:285,yy:270,name:"Вуйе",info:"Победа франков над вестготами в 507 году."},
-{y:565,x:345,yy:300,name:"Италия",info:"Завершение византийского завоевания остготских владений."},
-{y:622,x:700,yy:430,name:"Мекка и Медина",info:"Хиджра 622 года."},
-{y:732,x:170,yy:315,name:"Пуатье",info:"Сражение 732 года между франкскими силами Карла Мартелла и арабским войском."},
-{y:800,x:285,yy:210,name:"Рим",info:"Коронация Карла Великого императором в 800 году."},
-{y:843,x:365,yy:220,name:"Верден",info:"Договор о разделе империи в 843 году."}
+{y:410,ll:[41.9,12.5],name:'Рим',info:'В 410 году войска Алариха захватили Рим.'},
+{y:451,ll:[49.0,4.0],name:'Каталаунские поля',info:'Сражение войск Аттилы с римско-вестготской коалицией.'},
+{y:476,ll:[44.4,12.2],name:'Равенна',info:'В 476 году Ромул Августул был отстранён от власти.'},
+{y:507,ll:[46.6,-0.2],name:'Вуйе',info:'Победа франков над вестготами в 507 году.'},
+{y:565,ll:[41.9,12.5],name:'Италия',info:'Византийско-готская война завершилась падением остготского королевства.'},
+{y:622,ll:[24.5,39.6],name:'Мекка и Медина',info:'Хиджра 622 года — переселение Мухаммеда из Мекки в Медину.'},
+{y:732,ll:[46.6,0.3],name:'Пуатье',info:'Сражение 732 года между франкскими силами Карла Мартелла и арабским войском.'},
+{y:800,ll:[41.9,12.5],name:'Рим',info:'Коронация Карла Великого императором в 800 году.'},
+{y:843,ll:[49.7,1.2],name:'Верден',info:'Договор о разделе империи в 843 году.'}
 ];
-const milestones=eras.map(e=>e.y);
-const $=id=>document.getElementById(id);
-const ns="http://www.w3.org/2000/svg";
-let currentYear=395,selected=null,questionIndex=0;
-function activeEra(y){let out=eras[0];for(const e of eras){if(e.y<=y)out=e;}return out;}
-function el(tag,attrs={},text){const n=document.createElementNS(ns,tag);for(const [k,v] of Object.entries(attrs))n.setAttribute(k,v);if(text)n.textContent=text;return n;}
-function yearText(y){return y<0?Math.abs(y)+" г. до н. э.":y+" год";}
-function render(){
- const era=activeEra(currentYear);$("yearLabel").textContent=yearText(currentYear);$("periodTitle").textContent=era.title;$("periodText").textContent=era.text;$("periodDate").textContent="Выбранный год: "+yearText(currentYear)+" · ближайшая контрольная реконструкция: "+era.y+" год";
- const g=$("territories");g.innerHTML="";for(const id of era.ids){if(!states[id])continue;if(!$("showExtra").checked&&["sasan","anglo","bulgar","middle"].includes(id))continue;const p=el("polygon",{points:shapes[id],fill:states[id].color,"data-id":id,tabindex:"0",role:"button","aria-label":states[id].name});p.style.animation=$("animate").checked?"territoryIn .45s ease both":"none";p.addEventListener("click",()=>showDetail(id));p.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();showDetail(id);}});g.append(p);}
- const labels=$("labels");labels.innerHTML="";for(const [t,x,y] of era.labels){labels.append(el("text",{x,y,class:"maplabel"},t));}
- const routeGroup=$("routes");routeGroup.innerHTML="";if($("showRoutes").checked){for(const r of migrations){if(currentYear>=r.from&&currentYear<=r.to){routeGroup.append(el("path",{d:r.d,class:"route"}));routeGroup.append(el("text",{x:r.x,y:r.y,class:"route-label"},r.label));}}}
- const ev=$("events");ev.innerHTML="";if($("showEvents").checked){for(const e of events){if(Math.abs(e.y-currentYear)<=14){const c=el("circle",{cx:e.x,cy:e.yy,r:7,class:"event",tabindex:"0",role:"button"});c.addEventListener("click",()=>showEvent(e));ev.append(c);ev.append(el("text",{x:e.x+10,y:e.yy-9,class:"event-label"},e.name));}}}
- const cities=$("cities");cities.innerHTML="";const cityData=[["Рим",305,265],["Константинополь",505,285],["Карфаген",345,425],["Александрия",515,420],["Дамаск",655,345],["Мекка",720,445],["Париж",225,190],["Равенна",330,275],["Толедо",170,335]];for(const [n,x,y] of cityData){cities.append(el("circle",{cx:x,cy:y,r:3.5,class:"place"}));cities.append(el("text",{x:x+6,y:y+13,class:"placelabel"},n));}
- $("legend").innerHTML=era.ids.filter(id=>states[id]&&($("showExtra").checked||!["sasan","anglo","bulgar","middle"].includes(id))).map(id=>'<span><i class="swatch" style="background:'+states[id].color+'"></i>'+states[id].name+'</span>').join("");
- if(selected)showDetail(selected);
- updateCompare();
- document.querySelectorAll(".quick button").forEach(b=>b.classList.toggle("active",Number(b.dataset.year)===era.y));
+const cities=[['Рим',41.9,12.5],['Константинополь',41.0,28.9],['Карфаген',36.85,10.32],['Александрия',31.2,29.9],['Дамаск',33.5,36.3],['Багдад',33.3,44.4],['Мекка',21.4,39.8],['Медина',24.5,39.6],['Париж',48.86,2.35],['Равенна',44.42,12.2],['Толедо',39.86,-4.02],['Кордова',37.89,-4.77],['Верден',49.16,5.38],['Каркассон',43.21,2.35],['Йорк',53.96,-1.08],['Салоники',40.64,22.94]];
+const seas=[['АТЛАНТИЧЕСКИЙ ОКЕАН',40,-20],['СРЕДИЗЕМНОЕ МОРЕ',35,17],['ЧЁРНОЕ МОРЕ',43,34],['КАСПИЙСКОЕ МОРЕ',41,51],['КРАСНОЕ МОРЕ',20,38],['СЕВЕРНОЕ МОРЕ',57,4]];
+const routes=[
+{from:395,to:500,name:'Переселение вестготов',ll:[[47,19],[45,15],[42,13],[44,8],[46,2],[42,-2]]},
+{from:395,to:500,name:'Движение гуннов на запад',ll:[[47,35],[47,28],[47,20],[48,13],[49,5]]},
+{from:395,to:500,name:'Переселение вандалов',ll:[[48,18],[45,12],[43,5],[40,0],[36,-5],[36,10]]},
+{from:500,to:600,name:'Движение лангобардов',ll:[[48,20],[47,15],[46,12],[45,10]]},
+{from:600,to:800,name:'Расселение славян на Балканах',ll:[[50,25],[47,25],[44,23],[42,21]]},
+{from:632,to:750,name:'Арабские завоевания',ll:[[24,40],[30,38],[34,36],[37,30],[39,25]]},
+{from:632,to:750,name:'Завоевание Северной Африки и Испании',ll:[[31,32],[32,20],[33,8],[36,-2],[37,-6]]}
+];
+const $=id=>document.getElementById(id), milestones=periods.map(p=>p.y);
+let currentYear=395,selected=null,questionIndex=0,territoryLayer=L.layerGroup().addTo(map),routeLayer=L.layerGroup().addTo(map),eventLayer=L.layerGroup().addTo(map),cityLayer=L.layerGroup().addTo(map),geoLabelLayer=L.layerGroup().addTo(map);
+function yearText(y){return y+' год';}
+function activePeriod(y){let p=periods[0];for(const e of periods){if(e.y<=y)p=e;}return p;}
+function selectState(id){selected=id;const s=states[id];if(!s)return;$('detailTitle').textContent=s.name;$('detailText').innerHTML='<p>'+s.info+'</p><p class="muted">Показан период: '+yearText(currentYear)+'. Контур — учебная реконструкция с разной степенью точности по регионам.</p>';}
+function addTerritory(id){
+ const s=states[id],coords=polygons[id];if(!s||!coords)return;
+ const approximate=['hun','slavs','rashid','umayyad','abbasid','andalus','visigoth','vandal','ostro','frank','lomb','anglo','caroling','westfrank','eastfrank','middle','bulgar'].includes(id);
+ const layer=L.polygon(coords,{color:s.color,weight:$('showBorders').checked?2:0.6,opacity:.95,fillColor:s.color,fillOpacity:.32,dashArray:approximate?'7 5':null,lineJoin:'round'});
+ layer.on('click',()=>selectState(id));layer.bindTooltip(s.name,{sticky:true});layer.addTo(territoryLayer);
 }
-const detailed={
-west:"В 395 году управление империей оказалось разделено между двумя дворами. Западная часть переживала политическую и военную нестабильность; в 476 году Ромул Августул был отстранён Одоакром. Римское население и многие институты продолжали существовать на бывших территориях империи.",
-east:"Восточная Римская империя сохранила столицу Константинополь и императорскую власть. В учебной традиции её часто называют Византией. При Юстиниане I она вернула часть западных владений, а затем постепенно утратила многие территории. Государство просуществовало до 1453 года.",
-visigoth:"Вестготы перемещались через Балканы и Италию, в 410 году захватили Рим, а затем создали королевство в Галлии и Испании. После поражения от франков при Вуйе в 507 году центр их владений находился на Пиренейском полуострове. Королевство было завоёвано арабскими и берберскими войсками в начале VIII века.",
-vandal:"Вандалы прошли через Галлию и Испанию и в 429 году переправились в Северную Африку. Их королевство со столицей в Карфагене было завоёвано Византией в 533–534 годах.",
-ostro:"Остготское королевство Теодориха возникло в Италии после свержения Одоакра в 493 году. Византийско-готская война 535–554 годов привела к его падению.",
-frank:"Франки усилились в Галлии при Хлодвиге. Позднее власть перешла к Каролингам. При Карле Великом франкские владения расширились, и в 800 году он был коронован императором.",
-lomb:"Лангобарды вторглись в Италию в 568 году. Их королевство занимало значительную часть северной и центральной Италии, но полуостров оставался политически разделённым.",
-anglo:"После ухода римской администрации из Британии здесь возникло несколько англосаксонских королевств. Их границы и политическое влияние неоднократно менялись.",
-sasan:"Держава Сасанидов была крупной иранской державой и соперником Восточной Римской империи. В VII веке она ослабла в войнах с Византией, а затем была завоёвана арабскими войсками.",
-rashid:"После смерти Мухаммеда в 632 году руководители мусульманской общины получили титул халифа. При первых халифах арабские войска завоевали Сирию, Египет, Месопотамию и Иран.",
-umayyad:"Династия Омейядов правила халифатом в 661–750 годах, столицей был Дамаск. В этот период завоевания достигли Северной Африки и Пиренейского полуострова.",
-abbasid:"В 750 году власть в халифате перешла к Аббасидам. В 762 году был основан Багдад. Омейядская ветвь сохранила власть в Аль-Андалусе.",
-andalus:"В 711 году войска, состоявшие преимущественно из арабов и берберов, начали завоевание Пиренейского полуострова. В 756 году здесь возник независимый Кордовский эмират.",
-caroling:"Карл Великий расширил франкские владения, подчинил лангобардское королевство и провёл ряд походов в Центральной Европе. Его коронация в Риме в 800 году символизировала восстановление западной императорской идеи, но не возрождение прежней Римской империи.",
-westfrank:"Западно-Франкское королевство получило западную часть империи по Верденскому договору. В последующие столетия оно стало одной из исторических основ Франции.",
-eastfrank:"Восточно-Франкское королевство включало восточные области бывшей империи Карла Великого. В X веке здесь сформировались предпосылки возникновения средневекового германского королевства.",
-middle:"Срединное королевство Лотаря включало земли между владениями его братьев, в том числе Италию и полосу от Северного моря к Альпам. Оно оказалось политически неустойчивым и позднее было разделено.",
-bulgar:"Первое Болгарское царство возникло на Балканах после победы войска хана Аспаруха над Византией и договора 681 года. Оно стало важным государством Юго-Восточной Европы."
-};
-function showDetail(id){selected=id;const s=states[id];$("detailTitle").textContent=s.name;$("detailText").innerHTML='<p>'+s.short+'</p><p class="muted">Выбранный год: '+yearText(currentYear)+'. Контур на карте условный и предназначен для учебного сравнения.</p><button id="moreInfo" type="button">Подробнее</button><div id="longInfo" class="hidden card">'+(detailed[id]||"Дополнительная историческая справка готовится.")+'</div>';$("moreInfo").addEventListener("click",()=>{const box=$("longInfo");box.classList.toggle("hidden");$("moreInfo").textContent=box.classList.contains("hidden")?"Подробнее":"Свернуть";});}
-function showEvent(e){$("detailTitle").textContent=e.name;$("detailText").innerHTML="<p>"+e.info+"</p><p class='muted'>Дата события: "+yearText(e.y)+".</p>";}
-function setYear(y){currentYear=Math.max(395,Math.min(950,Number(y)));$("year").value=currentYear;render();}
-function updateCompare(){if(!$("compareToggle").checked)return;const a=Number($("yearA").value||395),b=Number($("yearB").value||843);const ea=activeEra(a),eb=activeEra(b);$("compareA").textContent=yearText(a)+": "+ea.title+" — "+ea.text;$("compareB").textContent=yearText(b)+": "+eb.title+" — "+eb.text;}
-for(const y of milestones){const b=document.createElement("button");b.textContent=y;b.dataset.year=y;b.addEventListener("click",()=>setYear(y));$("milestones").append(b);}
-for(const id of ["yearA","yearB"]){for(const e of eras){const o=document.createElement("option");o.value=e.y;o.textContent=e.y+" год — "+e.title;$(id).append(o);}}
-$("yearA").value=395;$("yearB").value=843;
-$("year").addEventListener("input",e=>setYear(e.target.value));$("prev").addEventListener("click",()=>{const ys=milestones.filter(y=>y<currentYear);setYear(ys.length?ys[ys.length-1]:395);});$("next").addEventListener("click",()=>{const y=milestones.find(y=>y>currentYear);setYear(y||950);});
-["showRoutes","showEvents","showExtra","animate"].forEach(id=>$(id).addEventListener("change",render));
-$("compareToggle").addEventListener("change",()=>{$("comparePanel").classList.toggle("hidden",!$("compareToggle").checked);updateCompare();});$("yearA").addEventListener("change",updateCompare);$("yearB").addEventListener("change",updateCompare);
+function render(){
+ const p=activePeriod(currentYear);$('yearLabel').textContent=yearText(currentYear);$('year').value=currentYear;$('periodTitle').textContent=p.title;$('periodText').textContent=p.text;$('periodDate').textContent='Выбранный год: '+yearText(currentYear)+' · контрольная историческая реконструкция: '+p.y+' год';
+ $('prev').disabled=currentYear===395;$('next').disabled=currentYear===950;
+ territoryLayer.clearLayers();p.ids.forEach(addTerritory);
+ if($('showRegions').checked){if(p.y>=451&&p.y<500)addTerritory('hun');if(p.y>=600&&p.y<843)addTerritory('slavs');}
+ routeLayer.clearLayers();if($('showRoutes').checked){routes.filter(r=>currentYear>=r.from&&currentYear<=r.to).forEach(r=>L.polyline(r.ll,{color:'#7e432e',weight:3,dashArray:'8 7',opacity:.9}).bindTooltip(r.name).addTo(routeLayer));}
+ eventLayer.clearLayers();if($('showEvents').checked){events.filter(e=>Math.abs(e.y-currentYear)<=14).forEach(e=>L.circleMarker(e.ll,{radius:7,color:'#7c3d2a',weight:2,fillColor:'#fffdf8',fillOpacity:1}).bindPopup('<strong>'+e.name+' · '+e.y+'</strong><br>'+e.info).addTo(eventLayer));}
+ cityLayer.clearLayers();geoLabelLayer.clearLayers();if($('showCities').checked){cities.forEach(c=>L.circleMarker([c[1],c[2]],{radius:3,color:'#273c4b',weight:1,fillColor:'#fff',fillOpacity:1}).bindTooltip(c[0],{permanent:true,direction:'right',className:'city-label',offset:[4,0]}).addTo(cityLayer));seas.forEach(c=>L.marker([c[1],c[2]],{interactive:false,icon:L.divIcon({className:'sea-label',html:c[0],iconSize:[150,18],iconAnchor:[75,9]})}).addTo(geoLabelLayer));}
+ $('legend').innerHTML=p.ids.filter(id=>states[id]).map(id=>'<button type="button" data-id="'+id+'"><i class="swatch" style="background:'+states[id].color+'"></i>'+states[id].name+'</button>').join('')+(($('showRegions').checked&&p.y>=451&&p.y<843)?'<button type="button" data-id="slavs"><i class="swatch" style="background:'+C.slavs+'"></i>Области расселения славян</button>':'');
+ $('legend').querySelectorAll('button').forEach(b=>b.addEventListener('click',()=>selectState(b.dataset.id)));
+ document.querySelectorAll('#milestones button').forEach(b=>b.classList.toggle('active',Number(b.dataset.year)===p.y));
+ if(selected&&states[selected]&&p.ids.includes(selected))selectState(selected);
+ updateCompare();
+ $('chronology').innerHTML=periods.map(e=>'<p><strong>'+e.y+'</strong> — '+e.title+'</p>').join('');
+}
+function setYear(y){currentYear=Math.max(395,Math.min(950,Number(y)));render();}
+periods.forEach(p=>{const b=document.createElement('button');b.textContent=p.y;b.dataset.year=p.y;b.addEventListener('click',()=>setYear(p.y));$('milestones').append(b);});
+for(const id of ['yearA','yearB'])periods.forEach(p=>{const o=document.createElement('option');o.value=p.y;o.textContent=p.y+' — '+p.title;$(id).append(o);});
+$('yearA').value=395;$('yearB').value=843;
+function updateCompare(){if(!$('compareToggle').checked)return;const a=activePeriod(Number($('yearA').value)),b=activePeriod(Number($('yearB').value));$('compareA').textContent=a.y+' год: '+a.title+' — '+a.text;$('compareB').textContent=b.y+' год: '+b.title+' — '+b.text;}
+$('year').addEventListener('input',e=>setYear(e.target.value));$('prev').addEventListener('click',()=>{const ys=milestones.filter(y=>y<currentYear);setYear(ys.length?ys[ys.length-1]:395);});$('next').addEventListener('click',()=>{const y=milestones.find(y=>y>currentYear);setYear(y||950);});
+['showRoutes','showEvents','showCities','showRegions','showBorders'].forEach(id=>$(id).addEventListener('change',render));
+$('compareToggle').addEventListener('change',()=>{$('comparePanel').classList.toggle('hidden',!$('compareToggle').checked);updateCompare();});$('yearA').addEventListener('change',updateCompare);$('yearB').addEventListener('change',updateCompare);
 const questions=[
-{q:"Какой год традиционно считается датой падения Западной Римской империи?",a:["395","410","476","843"],c:2,why:"В 476 году Ромул Августул был отстранён от власти."},
-{q:"Какое государство продолжило существовать после 476 года?",a:["Западная Римская империя","Восточная Римская империя","Остготское королевство","Вандальское королевство"],c:1,why:"Восточная Римская империя, позднее называемая Византией, продолжила существование."},
-{q:"Какое событие произошло в 800 году?",a:["Верденский раздел","Коронация Карла Великого","Хиджра","Взятие Рима Аларихом"],c:1,why:"В 800 году Карл Великий был коронован императором."},
-{q:"Что произошло в 843 году?",a:["Падение Западной Римской империи","Начало переселения вестготов","Верденский раздел","Битва при Пуатье"],c:2,why:"Империя Карла Великого была разделена между его внуками."},
-{q:"С каким событием связан 622 год?",a:["Хиджра","Завоевание Италии Юстинианом","Битва при Вуйе","Коронация Карла Великого"],c:0,why:"Хиджра — переселение Мухаммеда из Мекки в Медину."}
+{q:'Какой год традиционно считается датой падения Западной Римской империи?',a:['395','410','476','843'],c:2,why:'В 476 году Ромул Августул был отстранён от власти.'},
+{q:'Какое государство продолжило существовать после 476 года?',a:['Западная Римская империя','Восточная Римская империя','Остготское королевство','Вандальское королевство'],c:1,why:'Восточная Римская империя, позднее называемая Византией, продолжила существование.'},
+{q:'Какое событие произошло в 800 году?',a:['Верденский раздел','Коронация Карла Великого','Хиджра','Взятие Рима Аларихом'],c:1,why:'В 800 году Карл Великий был коронован императором.'},
+{q:'Что произошло в 843 году?',a:['Падение Западной Римской империи','Начало переселения вестготов','Верденский раздел','Битва при Пуатье'],c:2,why:'Империя Карла Великого была разделена между его внуками.'},
+{q:'С каким событием связан 622 год?',a:['Хиджра','Завоевание Италии Юстинианом','Битва при Вуйе','Коронация Карла Великого'],c:0,why:'Хиджра — переселение Мухаммеда из Мекки в Медину.'},
+{q:'Какое утверждение о 476 годе верно?',a:['Исчезла вся Римская государственная традиция','Прекратила существование Западная императорская власть','Возникло Франкское государство','Был заключён Верденский договор'],c:1,why:'Восточная Римская империя продолжила существование, а на Западе сохранялись римские институты и традиции.'},
+{q:'Что обозначает пунктирная граница на карте?',a:['Точно установленную границу','Современную государственную границу','Приблизительный или спорный рубеж','Границу материка'],c:2,why:'Рубежи раннесредневековых государств часто менялись и реконструируются историками.'}
 ];
-function newQuestion(){const q=questions[questionIndex%questions.length];questionIndex++;$("question").textContent=q.q;$("answers").innerHTML="";$("feedback").classList.add("hidden");q.a.forEach((a,i)=>{const b=document.createElement("button");b.textContent=a;b.addEventListener("click",()=>{$("feedback").classList.remove("hidden");$("feedback").textContent=(i===q.c?"Верно. ":"Не совсем. Правильный ответ: "+q.a[q.c]+". ")+q.why;});$("answers").append(b);});}
-$("newQuestion").addEventListener("click",newQuestion);
+function newQuestion(){const q=questions[questionIndex++%questions.length];$('question').textContent=q.q;$('answers').innerHTML='';$('feedback').classList.add('hidden');q.a.forEach((a,i)=>{const b=document.createElement('button');b.className='quiz-option';b.textContent=a;b.addEventListener('click',()=>{if($('feedback').dataset.done==='1')return;$('feedback').classList.remove('hidden');$('feedback').dataset.done='1';$('feedback').textContent=(i===q.c?'Верно. ':'Не совсем. Правильный ответ: '+q.a[q.c]+'. ')+q.why;b.classList.add(i===q.c?'correct':'wrong');});$('answers').append(b);});$('feedback').dataset.done='0';}
+$('newQuestion').addEventListener('click',newQuestion);
 render();newQuestion();
-</script>
-</body>
-</html>
+map.fitBounds([[25,-12],[60,52]]);
+</script></body></html>
