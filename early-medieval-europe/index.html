@@ -141,7 +141,6 @@ const $=id=>document.getElementById(id), milestones=periods.map(p=>p.y);
 let currentYear=395,selected=null,questionIndex=0,territoryLayer=L.layerGroup().addTo(map),routeLayer=L.layerGroup().addTo(map),eventLayer=L.layerGroup().addTo(map),cityLayer=L.layerGroup().addTo(map),geoLabelLayer=L.layerGroup().addTo(map),researchLayer=L.layerGroup().addTo(map),provinceLayer=L.layerGroup().addTo(map),researchData={814:null,843:null,islamic:null};
 function yearText(y){return y+' год';}
 function activePeriod(y){let p=periods[0];for(const e of periods){if(e.y<=y)p=e;}return p;}
-function selectState(id){selected=id;const s=states[id];if(!s)return;$('detailTitle').textContent=s.name;$('detailText').innerHTML='<p>'+s.info+'</p><p class="muted">Показан период: '+yearText(currentYear)+'. Контур — учебная реконструкция с разной степенью точности по регионам.</p>';}
 function render(){
  const p=activePeriod(currentYear);$('yearLabel').textContent=yearText(currentYear);$('year').value=currentYear;$('periodTitle').textContent=p.title;$('periodText').textContent=p.text;$('periodDate').textContent='Выбранный год: '+yearText(currentYear)+' · контрольная историческая реконструкция: '+p.y+' год';
  $('prev').disabled=currentYear===395;$('next').disabled=currentYear===950;
@@ -155,7 +154,6 @@ function render(){
  cityLayer.clearLayers();geoLabelLayer.clearLayers();if($('showCities').checked){cities.forEach(c=>L.circleMarker([c[1],c[2]],{radius:3,color:'#273c4b',weight:1,fillColor:'#fff',fillOpacity:1}).bindTooltip(c[0],{permanent:true,direction:'right',className:'city-label',offset:[4,0]}).addTo(cityLayer));seas.forEach(c=>L.marker([c[1],c[2]],{interactive:false,icon:L.divIcon({className:'sea-label',html:c[0],iconSize:[150,18],iconAnchor:[75,9]})}).addTo(geoLabelLayer));regionLabels.forEach(c=>L.marker([c[1],c[2]],{interactive:false,icon:L.divIcon({className:'region-label',html:c[0],iconSize:[130,18],iconAnchor:[65,9]})}).addTo(geoLabelLayer));}
  updatePolityLegend(activePolityFeatures);
  document.querySelectorAll('#milestones button').forEach(b=>b.classList.toggle('active',Number(b.dataset.year)===p.y));
- if(selected&&states[selected]&&p.ids.includes(selected))selectState(selected);
  updateCompare();
  $('chronology').innerHTML=periods.map(e=>'<p><strong>'+e.y+'</strong> — '+e.title+'</p>').join('');
 }
