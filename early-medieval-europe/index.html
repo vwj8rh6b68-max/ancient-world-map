@@ -22,6 +22,12 @@ footer{font-size:.8rem;color:#68737a;padding:4px 2px 20px}
 <body>
 <header><h1>От Рима к средневековой Европе</h1><p>Интерактивный исторический атлас для 6 класса · 395–950 годы. Политическая карта Западной Евразии: разделение Римской империи, Великое переселение народов, новые королевства, Византия, халифат и Франкская империя.</p></header>
 <main>
+<nav class="toolbar" aria-label="Быстрые переходы" style="display:flex;flex-wrap:wrap;gap:7px">
+<button type="button" onclick="document.getElementById('map').scrollIntoView({behavior:'smooth'})">К карте</button>
+<button type="button" onclick="document.getElementById('practicePanel').scrollIntoView({behavior:'smooth'})">Практика</button>
+<button type="button" onclick="document.getElementById('dictionaryPanel').scrollIntoView({behavior:'smooth'})">Словарь</button>
+<button type="button" onclick="document.getElementById('teacherPanel').scrollIntoView({behavior:'smooth'})">Ответы учеников</button>
+</nav>
 <section class="toolbar" aria-label="Управление историческим временем">
 <div class="timeline"><button id="prev">← Назад</button><div><div class="year" id="yearLabel">395 год</div><input id="year" type="range" min="395" max="950" step="1" value="395"></div><button id="next">Вперёд →</button></div>
 <div class="milestones" id="milestones"></div>
@@ -44,6 +50,31 @@ footer{font-size:.8rem;color:#68737a;padding:4px 2px 20px}
 <section class="panel wide"><h2>Проверь себя</h2><p id="question"></p><div id="answers"></div><div id="feedback" class="card hidden" aria-live="polite"></div><button id="newQuestion">Следующий вопрос</button></section>
 <section class="panel wide"><h2>Ключевые даты</h2><div id="chronology"></div></section>
 </aside></div>
+<section class="panel" id="practicePanel">
+<h2>Практика: работаем с исторической картой</h2>
+<p>Задания на чтение карты, установление последовательности и объяснение исторических изменений.</p>
+<div class="two">
+<div class="compare"><strong>Задание 1. Сравни территории</strong><p>Выбери на шкале 395 и 476 годы. Назови одно важное изменение на карте и объясни, почему 476 год не означает исчезновения всей Римской империи.</p><button type="button" class="reveal" data-answer="В 476 году прекратилась власть западного императора; Восточная Римская империя продолжила существовать.">Показать ориентир ответа</button><p class="muted answerReveal hidden"></p></div>
+<div class="compare"><strong>Задание 2. Проследи переселение</strong><p>Включи слой «Переселения и походы». Проследи путь вестготов и объясни, почему их перемещение затронуло несколько областей бывшей Римской империи.</p><button type="button" class="reveal" data-answer="Вестготы двигались через Балканы и Италию, затем закрепились в Галлии и на Пиренейском полуострове.">Показать ориентир ответа</button><p class="muted answerReveal hidden"></p></div>
+<div class="compare"><strong>Задание 3. Установи связь</strong><p>Перейди к 622 и 661 годам. Какое событие произошло в 622 году и что изменилось к 661 году?</p><button type="button" class="reveal" data-answer="В 622 году произошла хиджра. К 661 году в результате завоеваний возник обширный халифат.">Показать ориентир ответа</button><p class="muted answerReveal hidden"></p></div>
+<div class="compare"><strong>Задание 4. Прочитай карту 843 года</strong><p>Включи исследовательские GIS-контуры. Назови три части, на которые была разделена империя Карла Великого.</p><button type="button" class="reveal" data-answer="Западно-Франкское королевство Карла Лысого, владения Лотаря и Восточно-Франкское королевство Людовика Немецкого.">Показать ориентир ответа</button><p class="muted answerReveal hidden"></p></div>
+</div></section>
+<section class="panel" id="dictionaryPanel">
+<h2>Словарь исторических понятий</h2>
+<input id="termSearch" type="search" placeholder="Найти термин…" style="width:100%;padding:9px;border:1px solid #cfc3ad;border-radius:8px">
+<div id="terms" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:8px;margin-top:10px"></div>
+</section>
+<section class="panel" id="teacherPanel">
+<h2>Ответы учеников и оценивание</h2>
+<p class="muted">Локальный журнал текущего занятия: добавляй ответы, комментарии и отметки. Записи можно выгрузить в CSV для дальнейшей обработки.</p>
+<div class="two">
+<label>Ученик <input id="studentName" type="text" placeholder="Фамилия и имя" style="display:block;width:100%;padding:9px;border:1px solid #cfc3ad;border-radius:8px"></label>
+<label>Оценка <select id="studentGrade" style="display:block;width:100%;padding:9px;border:1px solid #cfc3ad;border-radius:8px"><option value="5">5</option><option value="4">4</option><option value="3">3</option><option value="2">2</option><option value="Без отметки">Без отметки</option></select></label>
+</div>
+<label style="display:block;margin:9px 0">Ответ / комментарий<textarea id="studentResponse" rows="3" style="display:block;width:100%;padding:9px;border:1px solid #cfc3ad;border-radius:8px"></textarea></label>
+<div style="display:flex;flex-wrap:wrap;gap:7px"><button type="button" id="saveRecord">Сохранить ответ</button><button type="button" id="exportRecords">Скачать CSV</button><button type="button" id="clearRecords">Очистить журнал</button></div>
+<div id="recordStatus" class="muted" aria-live="polite" style="margin-top:7px"></div><div id="records"></div>
+</section>
 <section class="panel"><h2>Как читать эту карту</h2><p>Цветная заливка показывает территории государств на выбранный момент. Пунктиром обозначены приблизительные рубежи, области нестабильного контроля и зоны расселения. Стрелки показывают основные направления переселений и походов. Точки обозначают города и места событий.</p><div class="note"><strong>Историческая точность.</strong> Карта использует географическую основу с реальными береговыми линиями и рельефом, а не условный рисунок. При этом политические рубежи раннего Средневековья часто не были линейными и устойчивыми. Контуры государств — учебная историко-географическая реконструкция, а не кадастровая граница. Для спорных участков используется пунктир; области влияния не следует принимать за полностью освоенные провинции.</div><p class="muted">Картографическая подложка — Esri World Physical (без современной топонимической подписи); географические названия для урока нанесены отдельно на русском языке. Для отдельных периодов подключены исследовательские GIS-слои Mapping Past Societies / DARMC (Harvard): границы королевств около 814 года, раздел по Верденскому договору 843 года и этапы арабских завоеваний 632–750 годов. Leaflet — библиотека интерактивной карты.</p><p class="muted">Источники данных: <a href="https://darmc.harvard.edu/" target="_blank" rel="noopener">Mapping Past Societies (Harvard)</a> · <a href="https://services1.arcgis.com/qN3V93cYGMKQCOxL/arcgis/rest/services/DARMC_Medieval_World/FeatureServer" target="_blank" rel="noopener">DARMC Medieval World GIS</a>. Исторические контуры являются научными реконструкциями, а не бесспорными точными рубежами.</p></section>
 <footer>Историческая реконструкция для учебного использования. При сопоставлении с учебником учитывайте, что даты и политические границы могут приводиться в обобщённом виде.</footer>
 </main>
@@ -210,5 +241,31 @@ const questions=[
 function newQuestion(){const q=questions[questionIndex++%questions.length];$('question').textContent=q.q;$('answers').innerHTML='';$('feedback').classList.add('hidden');q.a.forEach((a,i)=>{const b=document.createElement('button');b.className='quiz-option';b.textContent=a;b.addEventListener('click',()=>{if($('feedback').dataset.done==='1')return;$('feedback').classList.remove('hidden');$('feedback').dataset.done='1';$('feedback').textContent=(i===q.c?'Верно. ':'Не совсем. Правильный ответ: '+q.a[q.c]+'. ')+q.why;b.classList.add(i===q.c?'correct':'wrong');});$('answers').append(b);});$('feedback').dataset.done='0';}
 $('newQuestion').addEventListener('click',newQuestion);
 render();newQuestion();initResearchGIS();
+// Учебная практика: раскрытие ориентировочных ответов.
+document.querySelectorAll('.reveal').forEach(b=>b.addEventListener('click',()=>{const p=b.nextElementSibling;p.classList.toggle('hidden');p.textContent=p.classList.contains('hidden')?'':b.dataset.answer;b.textContent=p.classList.contains('hidden')?'Показать ориентир ответа':'Скрыть ориентир ответа';}));
+const terms=[
+['Великое переселение народов','Условное название крупных перемещений и миграций народов в Европе в IV–VII веках. Это был длительный процесс, а не одно событие.'],
+['Вестготы','Германская группа, создавшая королевство сначала в Галлии, затем на Пиренейском полуострове.'],
+['Вандалы','Германская группа, создавшая королевство в Северной Африке со столицей в Карфагене.'],
+['Остготы','Германская группа, создавшая королевство в Италии при Теодорихе.'],
+['Византия','Принятое в исторической науке название Восточной Римской империи.'],
+['Хиджра','Переселение Мухаммеда и его сторонников из Мекки в Медину в 622 году.'],
+['Халиф','Глава мусульманской общины и государства после смерти Мухаммеда.'],
+['Халифат','Государство, которым правил халиф; в VII–VIII веках его территория быстро расширялась.'],
+['Омейяды','Династия, правившая халифатом в 661–750 годах.'],
+['Аббасиды','Династия, пришедшая к власти в халифате в 750 году.'],
+['Каролинги','Династия франкских правителей, к которой принадлежал Карл Великий.'],
+['Верденский договор','Соглашение 843 года о разделе империи Карла Великого между его внуками.'],
+['Королевство','Средневековое государство во главе с королём; его границы и реальная власть могли меняться.'],
+['Зона влияния','Территория, на которую государство или правитель оказывали политическое и военное воздействие, не обязательно управляя ею напрямую.']
+];
+function drawTerms(filter=''){const box=$('terms');box.innerHTML='';terms.filter(t=>(t[0]+' '+t[1]).toLowerCase().includes(filter.toLowerCase())).forEach(t=>{const d=document.createElement('div');d.className='compare';const b=document.createElement('strong');b.textContent=t[0];const p=document.createElement('p');p.textContent=t[1];d.append(b,p);box.append(d);});}
+$('termSearch').addEventListener('input',e=>drawTerms(e.target.value));drawTerms();
+let lessonRecords=[];
+function renderRecords(){const box=$('records');box.innerHTML='';lessonRecords.forEach((r,i)=>{const d=document.createElement('div');d.className='card';const h=document.createElement('strong');h.textContent=r.name+' · '+r.grade;const p=document.createElement('p');p.textContent=r.response;const del=document.createElement('button');del.textContent='Удалить';del.addEventListener('click',()=>{lessonRecords.splice(i,1);renderRecords();});d.append(h,p,del);box.append(d);});}
+$('saveRecord').addEventListener('click',()=>{const name=$('studentName').value.trim(),response=$('studentResponse').value.trim();if(!name||!response){$('recordStatus').textContent='Заполни имя ученика и текст ответа.';return;}lessonRecords.push({name,grade:$('studentGrade').value,response});$('studentName').value='';$('studentResponse').value='';$('recordStatus').textContent='Ответ добавлен в журнал.';renderRecords();});
+$('clearRecords').addEventListener('click',()=>{lessonRecords=[];renderRecords();$('recordStatus').textContent='Журнал очищен.';});
+$('exportRecords').addEventListener('click',()=>{if(!lessonRecords.length){$('recordStatus').textContent='В журнале пока нет записей.';return;}const q=v=>'"'+String(v).replace(/"/g,'""')+'"';const csv='Ученик;Оценка;Ответ\\n'+lessonRecords.map(r=>[r.name,r.grade,r.response].map(q).join(';')).join('\\n');const a=document.createElement('a');a.href=URL.createObjectURL(new Blob(['\\ufeff'+csv],{type:'text/csv;charset=utf-8'}));a.download='ответы_учеников_6_класс.csv';a.click();URL.revokeObjectURL(a.href);});
+
 map.fitBounds([[25,-12],[60,52]]);
 </script></body></html>
