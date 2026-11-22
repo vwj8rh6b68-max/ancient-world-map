@@ -3,8 +3,19 @@
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 <title>Интерактивная карта Древнего мира — 5 класс</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
 <style>
 :root{--ink:#243246;--paper:#fbf7ec;--sea:#dcecf0;--accent:#8b4b2f}*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.45 system-ui,-apple-system,Segoe UI,sans-serif}header{padding:18px 16px 12px;background:#efe3ca;border-bottom:1px solid #d4c4a5}h1{font-size:1.35rem;line-height:1.2;margin:0 0 6px}header p{margin:0;font-size:.92rem}.wrap{max-width:1100px;margin:auto;padding:12px}.controls{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:4px 0 10px}.controls button{border:0;border-radius:12px;background:#304d61;color:white;padding:11px 15px;font-weight:650;font-size:1rem}.controls button:disabled{opacity:.35}.period{font-size:1.05rem;font-weight:750;margin-left:auto}.mapbox{background:var(--sea);border:1px solid #b5cbd0;border-radius:14px;overflow:hidden;position:relative}.mapbox svg{display:block;width:100%;height:auto;min-height:250px}.legend{display:flex;flex-wrap:wrap;gap:8px;padding:10px 4px}.legend span{display:inline-flex;align-items:center;gap:5px;font-size:.82rem;background:#fffaf0;border:1px solid #e4d9c5;border-radius:999px;padding:5px 9px}.dot{width:11px;height:11px;border-radius:3px;display:inline-block}.panel{background:#fffdf7;border:1px solid #e1d5bf;border-radius:14px;padding:14px;margin-top:10px}.panel h2{font-size:1.05rem;margin:0 0 6px}.panel p{margin:5px 0}.small{font-size:.82rem;color:#5b6570}.timeline{width:100%;accent-color:#8b4b2f;margin:10px 0 0}.era-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:10px}.era-list button{background:#f5eddd;color:var(--ink);border:1px solid #dfd0b6;text-align:left;border-radius:10px;padding:10px;font-size:.88rem}.era-list button.active{background:#e6d0a9;border-color:#9a7042;font-weight:700}.state{cursor:pointer;stroke:#4c453b;stroke-width:1.2;stroke-linejoin:round;opacity:.9;transition:opacity .15s}.state:hover,.state:focus{opacity:1;stroke:#171d27;stroke-width:2.5;outline:none}.maplabel{font-size:12px;font-weight:700;fill:#26323b;paint-order:stroke;stroke:#f7f2e6;stroke-width:3px;stroke-linejoin:round;pointer-events:none}.place{font-size:10px;fill:#374957;pointer-events:none}.coast{fill:#e8dfc9;stroke:#8ba9ad;stroke-width:1.2}.river{fill:none;stroke:#7fb2c7;stroke-width:2.2;stroke-linecap:round}.sea-label{font-size:13px;fill:#638995;font-style:italic;letter-spacing:1px}.tip{font-size:.84rem;color:#4e5963}.footer{padding:14px 2px 25px;font-size:.82rem;color:#59636c}@media(min-width:760px){.layout{display:grid;grid-template-columns:minmax(0,2fr) minmax(260px,1fr);gap:14px}.era-list{grid-template-columns:1fr}.period{margin-left:auto}}
+
+#asiaMap{height:560px;min-height:420px;width:100%;border-radius:10px;background:#dcecf0}
+.asia-map-note{font-size:.84rem;color:#4e5963}
+.asia-legend{display:flex;flex-wrap:wrap;gap:6px;margin-top:9px;max-height:190px;overflow:auto}
+.asia-legend button{background:#fffaf0;color:#243246;border:1px solid #e4d9c5;border-radius:9px;padding:6px 9px;font-size:.82rem}
+.asia-legend button:hover{background:#f5eddd}
+.asia-label{font-size:12px;font-weight:750;color:#273c4b;background:#fffaf0d9;border:1px solid #c9bda8;border-radius:5px;padding:2px 5px;white-space:nowrap}
+.asia-river-label{font-size:11px;color:#477e99;font-style:italic;text-shadow:1px 1px #fff,-1px -1px #fff}
+.asia-status{font-size:.82rem;color:#5b6570;margin-top:7px}
+@media(max-width:600px){#asiaMap{height:470px;min-height:390px}}
 </style></head>
 <body><header><h1>Интерактивная карта Древнего мира</h1><p>История для 5-го класса · двигайся по времени и наблюдай, как меняются государства</p></header>
 <div class="wrap"><div class="controls"><button id="prev" aria-label="Предыдущий период">← Назад</button><button id="next" aria-label="Следующий период">Вперёд →</button><span class="period" id="period">ок. 3500–3000 гг. до н. э.</span></div>
@@ -23,7 +34,17 @@
 <text x="290" y="410" class="maplabel">АФРИКА</text><text x="450" y="90" class="maplabel">ЕВРОПА</text><text x="675" y="160" class="maplabel">АЗИЯ</text><text x="150" y="215" class="sea-label">Атлантика</text><text x="360" y="220" class="sea-label">Средиземное море</text><text x="500" y="305" class="sea-label">Персидский залив</text>
 <g id="states"></g><g id="labels"></g></svg></div><div class="legend" id="legend"></div><div class="panel"><h2 id="stateTitle">Выбери государство на карте</h2><p id="stateInfo">Нажми на цветную область, чтобы узнать, что это за государство и почему оно важно.</p></div></div>
 <div><div class="panel"><h2 id="eraTitle">Первые цивилизации</h2><p id="eraText">В долинах больших рек возникают первые города и государства.</p><p class="small" id="eraDate">Примерные даты: ок. 3500–3000 гг. до н. э.</p><input class="timeline" id="timeline" type="range" min="0" max="7" step="1" value="0" aria-label="Выбрать исторический период"><div class="era-list" id="eraList"></div></div><div class="panel"><h2>Как читать карту</h2><p class="tip">Цветные области показывают приблизительные территории или зоны влияния в выбранный период. Для некоторых древних государств точные границы неизвестны; схема помогает увидеть общую динамику, но не заменяет исторический атлас.</p><p class="tip">На телефоне можно пользоваться кнопками «Назад» и «Вперёд» или выбрать период ползунком.</p></div></div></div>
+
+<section class="panel" id="asiaHistoryPanel">
+<h2>Индия, Индостан и Китай: исторические границы</h2>
+<p>Здесь показаны не условные фигуры, а исторические контуры политических образований из географической базы Cliopatria. Переключай периоды выше — карта Азии будет обновляться вместе с основной шкалой.</p>
+<div id="asiaMap" role="application" aria-label="Историческая карта Индии, Индостана и Китая"></div>
+<div class="asia-status" id="asiaStatus">Загрузка исторических границ…</div>
+<div class="asia-legend" id="asiaLegend"></div>
+<p class="asia-map-note"><strong>География региона.</strong> На карте отмечены Индостан, Гималаи, долины Инда и Ганга, бассейны Хуанхэ и Янцзы, Тибетское нагорье и Центральная Азия. Границы древних государств реконструированы по письменным и картографическим источникам; они не являются точными современными административными рубежами.</p>
+</section>
 <div class="footer">Учебная схема. Даты и территории ориентировочные; разные государства существовали одновременно, а их границы менялись не одномоментно.</div></div>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script>
 const eras=[
 {date:'ок. 3500–3000 гг. до н. э.',title:'Первые цивилизации',text:'В долинах больших рек возникают первые города и государства. В Египте складываются Верхнее и Нижнее царства, в Южном Междуречье растут шумерские города.',states:[['Египет','Egypt','#d9a441','M270 281 L289 280 301 302 294 332 280 349 269 328 Z','Египет объединяется около 3100 г. до н. э.; Нил — основа земледелия.'],['Шумерские города','Sumer','#c96d55','M419 242 L448 241 456 262 443 277 420 270 Z','Шумер — сеть городов-государств Южного Междуречья, а не единая империя.'],['Индская цивилизация','Indus','#79a86a','M596 276 L623 269 641 287 630 311 604 314 590 295 Z','В долине Инда развиваются крупные города, включая Хараппу и Мохенджо-Даро.'],['Ранний Китай','China','#b98ac7','M724 211 L759 206 784 224 775 245 748 249 727 234 Z','В Китае формируются ранние общества и региональные центры; единой империи ещё нет.']]},
@@ -37,8 +58,97 @@ const eras=[
 ];
 const colors={Egypt:'#d9a441',Sumer:'#c96d55',Akkad:'#e18b65',Indus:'#79a86a',China:'#b98ac7',Babylon:'#c96d55',Hittites:'#6b9bb8',Phoenicia:'#e5a56f',Assyria:'#bd6b48',Israel:'#76a8a0',Greece:'#719acb',Rome:'#c77979',Media:'#d7a05b',Lydia:'#7aa2b9',India:'#79a86a',Persia:'#c9a24f',Carthage:'#8aa66b',Alexander:'#6f91bd',Maurya:'#79a86a',Seleucid:'#d7a05b'};
 const names={Egypt:'Египет',Sumer:'Шумерские города',Akkad:'Аккадская область',Indus:'Индская цивилизация',China:'Древний Китай',Babylon:'Вавилония / Вавилон',Hittites:'Хеттское царство',Phoenicia:'Финикия',Assyria:'Ассирия',Israel:'Израильское царство',Greece:'Греческие полисы',Rome:'Рим',Media:'Мидия',Lydia:'Лидия',India:'Индийские государства',Persia:'Персидская держава',Carthage:'Карфаген',Alexander:'Держава Александра',Maurya:'Империя Маурьев',Seleucid:'Империя Селевкидов'};
+
+/* Дополнительная историческая GIS-карта Индостана и Китая */
+const asiaYears=[-3200,-2500,-1650,-1100,-600,-500,-330,-200];
+const asiaNameRu={
+'Indus Valley Civilization':'Индская цивилизация','Indus Civilization':'Индская цивилизация','Harappan Civilization':'Хараппская цивилизация','Harappan culture':'Хараппская культура',
+'Vedic India':'Ведийская Индия','Early Vedic Period':'Ранний ведийский период','Later Vedic Period':'Поздний ведийский период',
+'Mahajanapadas':'Махаджанапады','Magadha':'Магадха','Nanda Empire':'Держава Нандов','Nanda dynasty':'Династия Нандов',
+'Maurya Empire':'Империя Маурьев','Mauryan Empire':'Империя Маурьев','Mauryan dynasty':'Династия Маурьев','Shunga Empire':'Империя Шунга',
+'Indo-Greek Kingdom':'Индо-греческое царство','Kushan Empire':'Кушанская держава','Kushan Kingdom':'Кушанское царство',
+'Gupta Empire':'Империя Гуптов','Gupta dynasty':'Династия Гуптов','Kalinga':'Калинга','Gandhara':'Гандхара','Kosala':'Косала',
+'Avanti':'Аванти','Vatsa':'Ватса','Vajji':'Вадджи','Malla':'Малла','Anga':'Анга','Panchala':'Панчала','Kuru':'Куру',
+'Shang dynasty':'Династия Шан','Shang':'Шан','Zhou dynasty':'Династия Чжоу','Western Zhou':'Западная Чжоу','Eastern Zhou':'Восточная Чжоу',
+'Spring and Autumn period':'Период Чуньцю','Warring States':'Период Сражающихся царств','Qin dynasty':'Династия Цинь',
+'Qin Empire':'Империя Цинь','Qin':'Цинь','Han dynasty':'Династия Хань','Han Empire':'Империя Хань','Western Han':'Западная Хань',
+'Eastern Han':'Восточная Хань','Chu':'Чу','Qi':'Ци','Yan':'Янь','Zhao':'Чжао','Wei':'Вэй','Korea':'Корея',
+'Tarim Basin':'Таримский бассейн','Xiongnu':'Сюнну','Xiongnu Empire':'Держава сюнну','Yuezhi':'Юэчжи',
+'Bactria':'Бактрия','Sogdiana':'Согдиана','Parthia':'Парфия','Seleucid Empire':'Держава Селевкидов',
+'Persian Empire':'Персидская держава','Achaemenid Empire':'Держава Ахеменидов','Babylonian Empire':'Вавилонская держава',
+'Assyrian Empire':'Ассирийская держава','Egypt':'Египет'
+};
+const asiaMap=L.map('asiaMap',{zoomControl:true,preferCanvas:true,attributionControl:false}).setView([29,91],3);
+L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Physical_Map/MapServer/tile/{z}/{y}/{x}',{maxZoom:8,attribution:'Картографическая основа: Esri'}).addTo(asiaMap);
+L.control.attribution({prefix:false}).addTo(asiaMap);
+const asiaPolityLayer=L.layerGroup().addTo(asiaMap),asiaGeoLayer=L.layerGroup().addTo(asiaMap);
+const asiaCache=new Map();let asiaYearsAvailable=null,asiaRequest=0;
+function asiaTranslate(name){return asiaNameRu[name]||name;}
+function asiaColor(value){const v=String(value||'').trim();return /^#[0-9a-f]{6}$/i.test(v)?v:'#b79a69';}
+function addAsiaGeography(){
+ const labels=[
+  ['ИНДОСТАН',23,79],['ГИМАЛАИ',31,86],['ТИБЕТСКОЕ НАГОРЬЕ',32,91],['ЦЕНТРАЛЬНАЯ АЗИЯ',42,68],
+  ['КИТАЙ',35,108],['ДОЛИНА ИНДА',27,70],['ДОЛИНА ГАНГА',26,83],['БАССЕЙН ХУАНХЭ',36,105],['БАССЕЙН ЯНЦЗЫ',30,111]
+ ];
+ labels.forEach(([t,lat,lon])=>L.marker([lat,lon],{interactive:false,icon:L.divIcon({className:'',html:'<span class="asia-label">'+t+'</span>',iconSize:[150,22],iconAnchor:[75,11]})}).addTo(asiaGeoLayer));
+ const rivers=[
+  {name:'Инд',ll:[[31,78],[29,74],[27,70],[24,68],[22,68]]},
+  {name:'Ганг',ll:[[30,79],[28,82],[26,85],[25,88],[23,91]]},
+  {name:'Хуанхэ',ll:[[35,96],[36,101],[37,105],[38,109],[37,113]]},
+  {name:'Янцзы',ll:[[31,91],[30,97],[30,103],[30,108],[31,114]]}
+ ];
+ rivers.forEach(r=>L.polyline(r.ll,{color:'#3e8daf',weight:2.1,opacity:.85,dashArray:'5 4'}).bindTooltip(r.name,{permanent:true,direction:'center',className:'asia-river-label'}).addTo(asiaGeoLayer));
+}
+addAsiaGeography();
+async function getAsiaYears(){
+ if(asiaYearsAvailable)return asiaYearsAvailable;
+ const q=new URLSearchParams({where:"Type = 'POLITY' AND Year < 0",outFields:'Year',returnDistinctValues:'true',returnGeometry:'false',orderByFields:'Year ASC',f:'json'});
+ const res=await fetch('https://services2.arcgis.com/wx8u046p68e0iGuj/arcgis/rest/services/Aligned_Cliopatria_v1.1_WGS84/FeatureServer/0/query?'+q.toString());
+ if(!res.ok)throw new Error('Не удалось получить список исторических срезов');
+ const data=await res.json();
+ if(data.error||!Array.isArray(data.features))throw new Error(data.error?.message||'Не получен список годов');
+ asiaYearsAvailable=[...new Set(data.features.map(f=>Number(f.attributes?.Year)).filter(Number.isFinite))].sort((a,b)=>a-b);
+ if(!asiaYearsAvailable.length)throw new Error('В исторической базе не найдены годы до нашей эры');
+ return asiaYearsAvailable;
+}
+async function loadAsiaPolities(targetYear){
+ const request=++asiaRequest,status=document.getElementById('asiaStatus'),legend=document.getElementById('asiaLegend');
+ status.textContent='Загружаются исторические границы для '+Math.abs(targetYear)+' года до н. э.…';
+ try{
+  const available=await getAsiaYears();
+  const snapshot=available.reduce((best,y)=>Math.abs(y-targetYear)<Math.abs(best-targetYear)?y:best,available[0]);
+  let data=asiaCache.get(snapshot);
+  if(!data){
+   const all=[];let offset=0,more=true;
+   while(more&&offset<12000){
+    const p=new URLSearchParams({where:"Year = "+snapshot+" AND Type = 'POLITY'",outFields:'OBJECTID,Year,AreaSqKM,Name,Color,Type,Wikipedia',returnGeometry:'true',outSR:'4326',geometry:JSON.stringify({xmin:48,ymin:-12,xmax:142,ymax:62,spatialReference:{wkid:4326}}),geometryType:'esriGeometryEnvelope',inSR:'4326',spatialRel:'esriSpatialRelIntersects',resultRecordCount:'2000',resultOffset:String(offset),orderByFields:'AreaSqKM DESC',returnExceededLimitFeatures:'true',f:'geojson'});
+    const res=await fetch('https://services2.arcgis.com/wx8u046p68e0iGuj/arcgis/rest/services/Aligned_Cliopatria_v1.1_WGS84/FeatureServer/0/query?'+p.toString());
+    if(!res.ok)throw new Error('Ошибка загрузки контуров');
+    const page=await res.json();
+    if(page.error||!Array.isArray(page.features))throw new Error(page.error?.message||'Не получены контуры');
+    all.push(...page.features);offset+=page.features.length;more=page.exceededTransferLimit===true&&page.features.length>0;
+   }
+   data={type:'FeatureCollection',features:all};asiaCache.set(snapshot,data);
+  }
+  if(request!==asiaRequest)return;
+  asiaPolityLayer.clearLayers();legend.innerHTML='';
+  const visible=data.features.filter(f=>{const p=f.properties||{};return p.Name;});
+  L.geoJSON({type:'FeatureCollection',features:visible},{
+   style:f=>({color:'#39464c',weight:1.1,opacity:.95,fillColor:asiaColor(f.properties?.Color),fillOpacity:.32}),
+   onEachFeature:(f,l)=>{
+    const p=f.properties||{},name=asiaTranslate(p.Name||'Политическое образование');
+    l.bindTooltip(name,{sticky:true});
+    l.bindPopup('<strong>'+name+'</strong><br>Исторический срез: '+Math.abs(snapshot)+' год до н. э.<br>Источник: Cliopatria / UC Merced GIS Center');
+    const b=document.createElement('button');b.type='button';b.textContent=name;b.addEventListener('click',()=>{asiaMap.fitBounds(l.getBounds(),{padding:[20,20],maxZoom:6});l.openPopup();});legend.appendChild(b);
+   }
+  }).addTo(asiaPolityLayer);
+  status.textContent='Показан срез базы '+Math.abs(snapshot)+' года до н. э. · '+visible.length+' политических образований в пределах региона. Выбранный учебный период: около '+Math.abs(targetYear)+' года до н. э.';
+  if(!visible.length)status.textContent+=' Контуры для этого региона не найдены.';
+ }catch(e){if(request!==asiaRequest)return;console.warn(e);status.textContent='Исторические контуры временно недоступны: '+e.message+'. Географическая основа и подписи региона остаются на карте.';}
+}
+
 let idx=0;const statesG=document.getElementById('states'),labelsG=document.getElementById('labels');
-function render(){const e=eras[idx];document.getElementById('period').textContent=e.date;document.getElementById('eraTitle').textContent=e.title;document.getElementById('eraText').textContent=e.text;document.getElementById('eraDate').textContent='Примерные даты: '+e.date;document.getElementById('timeline').value=idx;document.getElementById('prev').disabled=idx===0;document.getElementById('next').disabled=idx===eras.length-1;statesG.innerHTML='';labelsG.innerHTML='';document.getElementById('legend').innerHTML='';e.states.forEach((s,i)=>{let [label,id,color,d,info]=s;let parts=d.split(/(?=M)/).filter(Boolean);parts.forEach((path,j)=>{let p=document.createElementNS('http://www.w3.org/2000/svg','path');p.setAttribute('d',path);p.setAttribute('fill',color);p.setAttribute('class','state');p.setAttribute('tabindex','0');p.setAttribute('role','button');p.setAttribute('aria-label',label);p.addEventListener('click',()=>selectState(label,info));p.addEventListener('keydown',ev=>{if(ev.key==='Enter'||ev.key===' '){ev.preventDefault();selectState(label,info)}});statesG.appendChild(p)});let labelPos={Egypt:[280,310],Sumer:[437,254],Akkad:[444,235],Indus:[616,295],China:[755,229],Babylon:[440,258],Hittites:[405,210],Phoenicia:[380,237],Assyria:[443,238],Israel:[384,258],Greece:[368,209],Rome:[340,216],Media:[469,223],Lydia:[402,210],India:[616,295],Persia:[454,214],Carthage:[254,279],Alexander:[447,219],Maurya:[617,296],Seleucid:[450,218]};let pos=labelPos[id]||[450,250];let t=document.createElementNS('http://www.w3.org/2000/svg','text');t.setAttribute('x',pos[0]);t.setAttribute('y',pos[1]+(i%2)*12);t.setAttribute('class','maplabel');t.textContent=label;labelsG.appendChild(t);let l=document.createElement('span');l.innerHTML='<i class="dot" style="background:'+color+'"></i>'+label;document.getElementById('legend').appendChild(l)});document.getElementById('stateTitle').textContent='Выбери государство на карте';document.getElementById('stateInfo').textContent='Нажми на цветную область или её название в легенде, чтобы узнать больше.';document.getElementById('eraList').innerHTML='';eras.forEach((er,i)=>{let b=document.createElement('button');b.textContent=(i+1)+'. '+er.date+' — '+er.title;b.className=i===idx?'active':'';b.onclick=()=>{idx=i;render()};document.getElementById('eraList').appendChild(b)});}
+function render(){const e=eras[idx];loadAsiaPolities(asiaYears[idx]);document.getElementById('period').textContent=e.date;document.getElementById('eraTitle').textContent=e.title;document.getElementById('eraText').textContent=e.text;document.getElementById('eraDate').textContent='Примерные даты: '+e.date;document.getElementById('timeline').value=idx;document.getElementById('prev').disabled=idx===0;document.getElementById('next').disabled=idx===eras.length-1;statesG.innerHTML='';labelsG.innerHTML='';document.getElementById('legend').innerHTML='';e.states.forEach((s,i)=>{let [label,id,color,d,info]=s;let parts=d.split(/(?=M)/).filter(Boolean);parts.forEach((path,j)=>{let p=document.createElementNS('http://www.w3.org/2000/svg','path');p.setAttribute('d',path);p.setAttribute('fill',color);p.setAttribute('class','state');p.setAttribute('tabindex','0');p.setAttribute('role','button');p.setAttribute('aria-label',label);p.addEventListener('click',()=>selectState(label,info));p.addEventListener('keydown',ev=>{if(ev.key==='Enter'||ev.key===' '){ev.preventDefault();selectState(label,info)}});statesG.appendChild(p)});let labelPos={Egypt:[280,310],Sumer:[437,254],Akkad:[444,235],Indus:[616,295],China:[755,229],Babylon:[440,258],Hittites:[405,210],Phoenicia:[380,237],Assyria:[443,238],Israel:[384,258],Greece:[368,209],Rome:[340,216],Media:[469,223],Lydia:[402,210],India:[616,295],Persia:[454,214],Carthage:[254,279],Alexander:[447,219],Maurya:[617,296],Seleucid:[450,218]};let pos=labelPos[id]||[450,250];let t=document.createElementNS('http://www.w3.org/2000/svg','text');t.setAttribute('x',pos[0]);t.setAttribute('y',pos[1]+(i%2)*12);t.setAttribute('class','maplabel');t.textContent=label;labelsG.appendChild(t);let l=document.createElement('span');l.innerHTML='<i class="dot" style="background:'+color+'"></i>'+label;document.getElementById('legend').appendChild(l)});document.getElementById('stateTitle').textContent='Выбери государство на карте';document.getElementById('stateInfo').textContent='Нажми на цветную область или её название в легенде, чтобы узнать больше.';document.getElementById('eraList').innerHTML='';eras.forEach((er,i)=>{let b=document.createElement('button');b.textContent=(i+1)+'. '+er.date+' — '+er.title;b.className=i===idx?'active':'';b.onclick=()=>{idx=i;render()};document.getElementById('eraList').appendChild(b)});}
 function selectState(title,info){document.getElementById('stateTitle').textContent=title;document.getElementById('stateInfo').textContent=info}
 document.getElementById('prev').onclick=()=>{if(idx>0){idx--;render()}};document.getElementById('next').onclick=()=>{if(idx<eras.length-1){idx++;render()}};document.getElementById('timeline').oninput=e=>{idx=+e.target.value;render()};render();
 </script></body></html>
