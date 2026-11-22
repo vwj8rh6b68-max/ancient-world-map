@@ -21,6 +21,8 @@ button{background:#304d61;color:white;border:0;font-weight:650}.curriculum-panel
 .practice{background:#f3f6f2;border:1px solid #cbd9ce;border-radius:14px;padding:13px;margin-top:10px}.practice h2{font-size:1.03rem;margin:0 0 6px}.practice-controls{display:flex;flex-wrap:wrap;gap:7px;margin-top:8px}.practice select{width:100%;margin-top:6px}.practice button{padding:8px 10px}.practice .answer{margin-top:9px;padding:9px;background:#fffdf7;border-radius:8px;border:1px dashed #9db5a3}.practice .answer[hidden]{display:none}.practice-status{font-size:.85rem;color:#4b6254;margin-top:6px}
 
 .boundary-mode{display:flex;align-items:flex-start;gap:8px;padding:9px 11px;background:#fff4d9;border:1px solid #d9c49a;border-radius:10px;font-size:.9rem;max-width:100%}.boundary-mode input{margin-top:4px;accent-color:#8b4b2f;transform:scale(1.15)}.boundary-guide{background:#f2f5f7;border-left:4px solid #496b82;padding:10px 12px;border-radius:8px;margin:10px 0}.boundary-guide strong{display:block;margin-bottom:3px}.border-key{display:flex;flex-wrap:wrap;gap:10px;font-size:.82rem;margin-top:8px}.border-key span{display:inline-flex;align-items:center;gap:5px}.border-line{display:inline-block;width:24px;height:0;border-top:3px solid #8b4b2f}.border-dash{display:inline-block;width:24px;height:0;border-top:3px dashed #8b4b2f}#campaignButton[hidden]{display:none}#campaignButton{background:#8b4b2f}
+.campaign-player{flex:1 1 100%;background:#fffaf0;border:1px solid #d9c6a4;border-radius:12px;padding:11px 12px;margin-top:3px}.campaign-player[hidden]{display:none}.campaign-player-head{display:flex;justify-content:space-between;gap:8px;align-items:center;flex-wrap:wrap}.campaign-player-head strong{font-size:.98rem}.campaign-player p{margin:6px 0 9px}.campaign-player-actions{display:flex;gap:7px;flex-wrap:wrap}.campaign-player-actions button{border:0;border-radius:8px;padding:9px 12px;background:#304d61;color:#fff;font:inherit;font-weight:650}.campaign-player-actions button#campaignPlay{background:#8b4b2f}.campaign-player-actions button.secondary{background:#e9e0d0;color:#304052}.campaign-progress{height:7px;background:#e6dccb;border-radius:99px;overflow:hidden;margin-top:10px}.campaign-progress div{height:100%;width:0;background:#8b4b2f;transition:width .35s ease}
+@media(max-width:650px){.campaign-player-actions button{flex:1 1 calc(50% - 7px)}}
 
 .quick-actions{display:flex;flex-wrap:wrap;gap:7px;padding:9px;margin:10px 0;background:#e9e2d2;border:1px solid #d4c4a5;border-radius:12px}.quick-actions button{padding:9px 12px}.quick-actions .action-primary{background:#8b4b2f}
 .workflow-panel[hidden]{display:none}.workflow-panel{scroll-margin-top:12px}.student-fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:10px 0}
@@ -53,6 +55,17 @@ button{background:#304d61;color:white;border:0;font-weight:650}.curriculum-panel
 <option value="9">476 г. н. э. — падение Западной Римской империи</option>
 </select><span class="period" id="period">Период 1 из 10</span>
 <label class="boundary-mode" for="boundaryFocus"><input id="boundaryFocus" type="checkbox" checked><span><strong>Акцент на границах государств</strong><span class="small">Чёткие контуры и более прозрачная заливка — удобнее сравнивать территории.</span></span></label><button id="campaignButton" type="button" hidden>Показать поход Александра</button>
+<div id="campaignPlayer" class="campaign-player" hidden aria-live="polite">
+ <div class="campaign-player-head"><strong id="campaignPlayerTitle">Исторические походы и завоевания</strong><span id="campaignPlayerCount" class="small">Эпизод 1</span></div>
+ <p id="campaignPlayerInfo" class="small">Последовательно просматривайте исторические эпизоды и их остановки.</p>
+ <div class="campaign-player-actions">
+  <button id="campaignPrev" type="button">← Назад</button>
+  <button id="campaignPlay" type="button">▶ Воспроизвести</button>
+  <button id="campaignNext" type="button">Вперёд →</button>
+  <button id="campaignClose" type="button" class="secondary">Свернуть</button>
+ </div>
+ <div class="campaign-progress"><div id="campaignProgressBar"></div></div>
+</div>
 
 </div>
 
@@ -371,8 +384,18 @@ const g5Names={
 'Indus Civilization':'Индская цивилизация','Indus Valley Civilisation':'Индская цивилизация','Harappan culture':'Хараппская культура','Harappan':'Хараппская цивилизация','Vedic period':'Ведийский период','Mahajanapadas':'Махаджанапады','Magadha Kingdom':'Магадхское царство','Nanda dynasty':'Династия Нандов','Mauryan Empire':'Держава Маурьев','Shunga Empire':'Держава Шунгов','Indo-Greek Kingdom':'Индо-греческое царство','Indo-Scythian Kingdom':'Индо-скифское царство','Indo-Parthian Kingdom':'Индо-парфянское царство','Greco-Bactrian Kingdom':'Греко-Бактрийское царство','Satavahana':'Сатаваханы','Satavahana Empire':'Держава Сатаваханов','Kalinga':'Калинга','Gandhara':'Гандхара','Kosala':'Кошала','Avanti':'Аванти','Vatsa':'Ватса','Vajji':'Вадджи','Malla':'Малла','Anga':'Анга','Panchala':'Панчала','Kuru':'Куру','Matsya':'Матсья','Assaka':'Ассака','Surasena':'Шурасена','Shishunaga dynasty':'Династия Шишунага','Pradyota dynasty':'Династия Прадьёта',
 'Xia dynasty':'Династия Ся','Shang dynasty':'Династия Шан','Western Zhou':'Западная Чжоу','Eastern Zhou':'Восточная Чжоу','Qin':'Цинь','Qin state':'Царство Цинь','Han (state)':'Царство Хань','Zhao':'Чжао','Wei':'Вэй','Qi':'Ци','Yan':'Янь','Chu':'Чу','Zhongshan':'Чжуншань','Song':'Сун','Lu':'Лу','Wu':'У','Yue':'Юэ','Baiyue':'Байюэ','Dian':'Дянь','Nanyue':'Наньюэ','Minyue':'Миньюэ','Gojoseon':'Кочосон','Yuezhi':'Юэчжи','Xiongnu Empire':'Держава сюнну','Xiongnu Confederation':'Союз сюнну',
 'Mycenaean civilization':'Микенская цивилизация','Minoan Crete':'Минойский Крит','Achaean League':'Ахейский союз','Aetolian League':'Этолийский союз','Macedon':'Македония','Kingdom of Macedon':'Македонское царство','Ptolemaic Egypt':'Египет Птолемеев','Seleucid Empire':'Держава Селевкидов','Antigonid Kingdom':'Держава Антигонидов','Pergamon':'Пергамское царство','Bactrian Kingdom':'Бактрийское царство'
+,'Neo-Babylonian Empire':'Нововавилонская держава','Neo-Babylonian Kingdom':'Нововавилонское царство','Babylonian Empire':'Вавилонская держава','Old Assyrian Empire':'Староассирийское царство','Middle Assyrian Empire':'Среднеассирийское царство','Assyrian Empire':'Ассирийская держава','Ur III dynasty':'Держава III династии Ура','Third Dynasty of Ur':'III династия Ура','Akkadian Kingdom':'Аккадское царство','Gutian dynasty':'Гутии','Larsa':'Ларса','Isin':'Исин','Eshnunna':'Эшнунна','Mari':'Мари','Ebla':'Эбла','Yamhad':'Ямхад','Qatna':'Катна','Ugarit':'Угарит','Arzawa':'Арцава','Kizzuwatna':'Киццуватна','Kassites':'Касситы','Chaldea':'Халдея','Chaldean dynasty':'Халдейская династия','Urartu Kingdom':'Царство Урарту','Kingdom of Urartu':'Царство Урарту','Phrygian Kingdom':'Фригийское царство','Lydian Kingdom':'Лидийское царство','Kingdom of Lydia':'Лидийское царство','Median Empire':'Мидийская держава','Medes':'Мидяне','Cimmerian Kingdom':'Киммерийское царство','Kingdom of Kush':'Царство Куш','Kerma culture':'Керма','Kingdom of Meroe':'Мероитское царство','Meroe':'Мероэ','Nubian Kingdom':'Нубийское царство','Hyksos':'Гиксосы','Kingdom of Mitanni':'Царство Митанни','Mitanni Empire':'Держава Митанни','Hittite Kingdom':'Хеттское царство','New Hittite Kingdoms':'Позднехеттские царства','Israelite Kingdom':'Израильское царство','Judah Kingdom':'Иудейское царство','Philistia':'Филистия','Ammon':'Аммон','Moab':'Моав','Edom':'Эдом','Aramean states':'Арамейские царства','Phoenician States':'Финикийские города-государства','Kingdom of Tyre':'Тирское царство','Kingdom of Sidon':'Сидонское царство','Cilicia':'Киликия','Caria':'Кария','Ionia':'Иония','Dorian Greece':'Дорийская Греция','Achaean Greece':'Ахейская Греция','Athens':'Афины','Sparta':'Спарта','Corinth':'Коринф','Thebes':'Фивы','Macedon':'Македония','Macedonian Kingdom':'Македонское царство','Thrace':'Фракия','Epirus':'Эпир','Aetolia':'Этолия','Achaea':'Ахайя','Pergamon':'Пергамское царство','Bithynia':'Вифиния','Pontus':'Понт','Cappadocia':'Каппадокия','Galatia':'Галатия','Armenian Kingdom':'Армянское царство','Kingdom of Armenia':'Армянское царство','Commagene':'Коммагена','Nabatean Kingdom':'Набатейское царство','Sabaean Kingdom':'Сабейское царство','Himyar':'Химьяр','Gandhara Kingdom':'Гандхарское царство','Kuru Kingdom':'Царство Куру','Panchala Kingdom':'Царство Панчала','Kosala Kingdom':'Царство Кошала','Avanti Kingdom':'Царство Аванти','Vatsa Kingdom':'Царство Ватса','Anga Kingdom':'Царство Анга','Kalinga Kingdom':'Царство Калинга','Shishunaga Empire':'Держава Шишунагов','Nanda Empire':'Держава Нандов','Shunga Empire':'Держава Шунгов','Kanva dynasty':'Династия Канва','Satavahana dynasty':'Династия Сатаваханов','Indo-Greek Kingdom':'Индо-греческое царство','Greco-Bactrian Kingdom':'Греко-Бактрийское царство','Yavana Kingdom':'Яванское царство','Western Zhou':'Западная Чжоу','Eastern Zhou':'Восточная Чжоу','Spring and Autumn period':'Период Вёсен и Осеней','Warring States period':'Период Сражающихся царств','Qin state':'Царство Цинь','Han state':'Царство Хань','Wei state':'Царство Вэй','Zhao state':'Царство Чжао','Qi state':'Царство Ци','Chu state':'Царство Чу','Yan state':'Царство Янь','Lu state':'Царство Лу','Wu state':'Царство У','Yue state':'Царство Юэ','Shu':'Шу','Ba':'Ба','Zhongshan':'Чжуншань','Nanyue':'Наньюэ','Minyue':'Миньюэ','Dian Kingdom':'Царство Дянь','Gojoseon':'Кочосон','Xiongnu Confederation':'Союз сюнну','Xiongnu Empire':'Держава сюнну','Yuezhi':'Юэчжи','Tocharians':'Тохары','Saka':'Саки','Saka Kingdom':'Сакское царство','Scythian Kingdom':'Скифское царство','Sogdian city-states':'Согдийские города-государства','Bactrian Kingdom':'Бактрийское царство','Greco-Bactrian Kingdom':'Греко-Бактрийское царство','Indo-Parthian Kingdom':'Индо-парфянское царство','Indo-Scythian Kingdom':'Индо-скифское царство','Western Satraps':'Западные сатрапы','Kushan Empire':'Кушанская держава','Gupta Empire':'Держава Гуптов','Western Kshatrapas':'Западные кшатрапы','Shatavahana':'Сатаваханы','Roman Republic':'Римская республика','Roman Empire':'Римская империя','Carthaginian Empire':'Карфагенская держава','Carthage':'Карфаген','Etruscan city-states':'Этрусские города-государства','Samnites':'Самниты','Latins':'Латины','Macedonian Empire':'Держава Александра Македонского','Seleucid Empire':'Держава Селевкидов','Antigonid Kingdom':'Держава Антигонидов','Ptolemaic Kingdom':'Царство Птолемеев','Ptolemaic Egypt':'Египет Птолемеев','Parthian Empire':'Парфянская держава','Arsacid Empire':'Парфянская держава Аршакидов','Sassanid Empire':'Держава Сасанидов','Sasanian Empire':'Держава Сасанидов','Hunnic Empire':'Гуннская держава','Visigothic Kingdom':'Вестготское королевство','Ostrogothic Kingdom':'Остготское королевство','Vandal Kingdom':'Королевство вандалов','Western Roman Empire':'Западная Римская империя','Eastern Roman Empire':'Восточная Римская империя','Byzantine Empire':'Византийская империя','Sarmatian Kingdom':'Сарматское царство','Alans':'Аланы','Goths':'Готы','Vandals':'Вандалы','Franks':'Франки','Saxons':'Саксы','Lombards':'Лангобарды','Burgundians':'Бургунды','Avars':'Авары','Slavs':'Славяне','Kingdom of Armenia':'Армянское царство','Cappadocian Kingdom':'Каппадокийское царство','Commagene Kingdom':'Царство Коммагена','Osroene':'Осроена','Adiabene':'Адиабена','Characene':'Харакена','Elymais':'Элимаида','Media Atropatene':'Атропатена','Parthia':'Парфия','Syria':'Сирия','Levant':'Левант','Nubia':'Нубия','Kush':'Куш','Achaemenid Empire':'Держава Ахеменидов','Persian Empire':'Персидская держава','Macedonian Kingdom':'Македонское царство','Minoan civilization':'Минойская цивилизация','Mycenaean Greece':'Микенская Греция','Harappan Civilization':'Хараппская цивилизация','Indus Valley Civilization':'Индская цивилизация','Maurya Empire':'Держава Маурьев','Mauryan Empire':'Держава Маурьев','Han dynasty':'Династия Хань','Qin dynasty':'Династия Цинь','Shang dynasty':'Династия Шан','Zhou dynasty':'Династия Чжоу','Jin dynasty':'Династия Цзинь','Western Jin':'Западная Цзинь','Eastern Jin':'Восточная Цзинь','Northern Wei':'Северная Вэй','Sixteen Kingdoms':'Шестнадцать царств'
+
 };
-function g5Translate(n){const v=String(n||'').trim();if(!v)return 'Название не установлено';if(g5Names[v])return g5Names[v];const key=Object.keys(g5Names).find(k=>k.toLocaleLowerCase('en')===v.toLocaleLowerCase('en'));return key?g5Names[key]:'Название требует проверки';}
+function g5TransliterateName(v){
+ const words={'A':'А','B':'Б','C':'К','D':'Д','E':'Э','F':'Ф','G':'Г','H':'Х','I':'И','J':'Дж','K':'К','L':'Л','M':'М','N':'Н','O':'О','P':'П','Q':'К','R':'Р','S':'С','T':'Т','U':'У','V':'В','W':'В','X':'Кс','Y':'Й','Z':'З'};
+ return String(v).replace(/sch/gi,'ш').replace(/sh/gi,'ш').replace(/ch/gi,'ч').replace(/zh/gi,'ж').replace(/kh/gi,'х').replace(/th/gi,'т').replace(/ph/gi,'ф').replace(/ck/gi,'к').replace(/qu/gi,'кв').replace(/c(?=[eiy])/gi,'с').replace(/c/gi,'к').replace(/j/gi,'дж').replace(/w/gi,'в').replace(/x/gi,'кс').replace(/[A-Z]/g,c=>words[c]||c).replace(/([a-z])/g,c=>c).replace(/\s+/g,' ').trim();
+}
+function g5Translate(n){const v=String(n||'').trim();if(!v)return 'Название не установлено';if(g5Names[v])return g5Names[v];const key=Object.keys(g5Names).find(k=>k.toLocaleLowerCase('en')===v.toLocaleLowerCase('en'));if(key)return g5Names[key];
+ const patterns=[[/^Kingdom of (.+)$/i,(_,x)=>'Царство '+g5TransliterateName(x)],[/^(.+) Kingdom$/i,(_,x)=>'Царство '+g5TransliterateName(x)],[/^(.+) Empire$/i,(_,x)=>'Держава '+g5TransliterateName(x)],[/^(.+) Dynasty$/i,(_,x)=>'Династия '+g5TransliterateName(x)],[/^(.+) dynasty$/i,(_,x)=>'Династия '+g5TransliterateName(x)],[/^(.+) city-states$/i,(_,x)=>'Города-государства '+g5TransliterateName(x)],[/^(.+) Civilization$/i,(_,x)=>'Цивилизация '+g5TransliterateName(x)],[/^(.+) civilization$/i,(_,x)=>'Цивилизация '+g5TransliterateName(x)]];
+ for(const [re,fn] of patterns){const m=v.match(re);if(m)return fn(...m);}
+ return '≈ '+g5TransliterateName(v);
+}
 function g5Color(v){let c=String(v??'').trim();if(/^0x[0-9a-f]{6}$/i.test(c))c='#'+c.slice(2);if(/^#[0-9a-f]{6}$/i.test(c))return c;if(/^\d+$/.test(c)){const n=Number(c);if(n>=0&&n<=0xffffff)return '#'+n.toString(16).padStart(6,'0');}return '#82939a';}
 function renderG5Legend(){
  const box=document.getElementById('key'),count=document.getElementById('g5LegendCount'),term=(document.getElementById('g5LegendSearch')?.value||'').trim().toLocaleLowerCase('ru');
@@ -542,60 +565,88 @@ function selectPolity(key){const d=getDescription(key);document.getElementById('
 <img src="https://commons.wikimedia.org/wiki/Special:FilePath/King_Narmer.jpg?width=600" alt="Древнее изображение царя Нармера на палетке Нармера" loading="lazy" style="margin-top:10px" onerror="this.style.display='none'">
 <p class="small">На палетке Нармера царь изображён в обеих коронах. Это древнее художественное изображение, а не портрет, достоверно передающий внешность правителя. Нармера часто отождествляют с Менесом, известным по более поздним источникам, однако учёные не считают это установленным фактом.</p>
 <p class="small">Источник изображения: <a href="https://commons.wikimedia.org/wiki/File:King_Narmer.jpg" target="_blank" rel="noopener">Wikimedia Commons — деталь палетки Нармера</a>.</p>`;}else{media.hidden=true;media.innerHTML='';}}
-function clearCampaign(){if(window.campaignTimer){clearInterval(window.campaignTimer);window.campaignTimer=null;}if(window.campaignLayer){map.removeLayer(window.campaignLayer);window.campaignLayer=null;}const b=document.getElementById('campaignButton');if(b)b.textContent='Показать поход Александра';}
-function animateAlexanderCampaign(){
- clearCampaign();
- const campaigns={
-  1:{title:'Походы Тутмоса III',note:'Схема общего направления египетских походов в Левант; не точный маршрут одного дня или одной кампании.',stops:[
-   {name:'Фивы',lat:25.7,lon:32.65,date:'XV в. до н. э.',info:'Один из главных царских центров Египта; походы отправлялись на север через долину Нила и Синай.'},
-   {name:'Газа',lat:31.5,lon:34.47,date:'XV в. до н. э.',info:'Левантинский коридор связывал Египет с городами Южной Сирии и Палестины.'},
-   {name:'Мегиддо',lat:32.58,lon:35.18,date:'ок. 1457 г. до н. э.',info:'Победа Тутмоса III при Мегиддо укрепила египетское влияние в Ханаане.'},
-   {name:'Кадеш',lat:34.56,lon:36.52,date:'XV–XIII вв. до н. э.',info:'Район важен для соперничества Египта и Хеттского царства. Не все точки на схеме относятся к одной кампании.'},
-   {name:'Район Евфрата',lat:36.0,lon:38.0,date:'XV в. до н. э.',info:'Египетские походы достигали северной Сирии и района Евфрата; устойчивость контроля менялась.'}
-  ]},
-  2:{title:'Расширение Ассирийской державы',note:'Обобщённая схема экспансии VIII–VII вв. до н. э.; точки относятся к разным походам и царям.',stops:[
-   {name:'Ашшур',lat:35.46,lon:43.26,date:'VIII–VII вв. до н. э.',info:'Один из древних религиозных и политических центров Ассирии.'},
-   {name:'Ниневия',lat:36.36,lon:43.15,date:'VIII–VII вв. до н. э.',info:'Столица державы в период её расцвета; дворцовые рельефы изображают войны и осады.'},
-   {name:'Вавилон',lat:32.54,lon:44.42,date:'VIII–VII вв. до н. э.',info:'Ассирийские цари неоднократно вмешивались в дела Вавилонии и захватывали город.'},
-   {name:'Дамаск',lat:33.51,lon:36.29,date:'732 г. до н. э.',info:'Дамаск был захвачен ассирийцами при Тиглатпаласаре III.'},
-   {name:'Мемфис',lat:29.85,lon:31.25,date:'671 г. до н. э.',info:'Ассирийский царь Асархаддон вторгся в Египет и захватил Мемфис; контроль над Египтом был непрочным.'}
-  ]},
-  4:{title:'Расширение державы Ахеменидов',note:'Схема ключевых направлений завоеваний VI–V вв. до н. э.; отдельные линии относятся к разным завоеваниям, а не к непрерывному маршу одного войска.',segments:[[[30.2,53.18],[34.8,48.5]],[[30.2,53.18],[38.49,28.04]],[[30.2,53.18],[32.54,44.42]],[[32.54,44.42],[29.85,31.25]]],stops:[
-   {name:'Пасаргады',lat:30.2,lon:53.18,date:'VI в. до н. э.',info:'Ранний центр державы Кира II.'},
-   {name:'Сарды',lat:38.49,lon:28.04,date:'546 г. до н. э.',info:'После победы над Лидией западная часть Малой Азии вошла в державу Кира II.'},
-   {name:'Вавилон',lat:32.54,lon:44.42,date:'539 г. до н. э.',info:'Кир II овладел Вавилоном; город и его жители стали частью Ахеменидской державы.'},
-   {name:'Мемфис',lat:29.85,lon:31.25,date:'525 г. до н. э.',info:'Камбис II завоевал Египет. Завоевание произошло позже основных походов Кира II.'},
-   {name:'Персеполь',lat:29.93,lon:52.89,date:'VI–V вв. до н. э.',info:'Церемониальный центр державы; при Дарии I и его преемниках империя управлялась через сатрапии.'}
-  ]},
-  5:{title:'Поход Александра Македонского',note:'Поход 334–330 гг. до н. э.; завоевания в Средней Азии и Индии здесь не показаны.',stops:[
-   {name:'Пелла',lat:40.75,lon:22.52,date:'334 г. до н. э.',info:'Отправная точка похода Александра.'},
-   {name:'Граник',lat:40.25,lon:27.15,date:'334 г. до н. э.',info:'Победа у реки Граник открыла путь в Малую Азию.'},
-   {name:'Сарды',lat:38.49,lon:28.04,date:'334 г. до н. э.',info:'Сарды перешли под власть Александра.'},
-   {name:'Гордион',lat:39.72,lon:31.77,date:'333 г. до н. э.',info:'Важный пункт продвижения через Малую Азию.'},
-   {name:'Исс',lat:36.86,lon:36.2,date:'333 г. до н. э.',info:'Победа над войском Дария III.'},
-   {name:'Тир',lat:33.27,lon:35.2,date:'332 г. до н. э.',info:'После осады Тир был взят Александром.'},
-   {name:'Газа',lat:31.5,lon:34.47,date:'332 г. до н. э.',info:'После похода вдоль восточного побережья Средиземного моря Александр двинулся в Египет.'},
-   {name:'Мемфис',lat:29.85,lon:31.25,date:'332 г. до н. э.',info:'Египет перешёл под власть Александра.'},
-   {name:'Гавгамелы',lat:36.36,lon:43.25,date:'331 г. до н. э.',info:'Решающее поражение державы Ахеменидов.'},
-   {name:'Вавилон',lat:32.54,lon:44.42,date:'331 г. до н. э.',info:'Вавилон стал одним из центров державы Александра.'},
-   {name:'Сузы',lat:32.19,lon:48.25,date:'331–330 гг. до н. э.',info:'Важный административный центр Ахеменидов.'},
-   {name:'Персеполь',lat:29.93,lon:52.89,date:'330 г. до н. э.',info:'К 330 г. до н. э. Александр овладел Персеполем.'}
-  ]}
- };
- const campaign=campaigns[idx];if(!campaign)return;
- const stops=campaign.stops,coords=stops.map(p=>[p.lat,p.lon]);
- window.campaignLayer=L.layerGroup();
- if(campaign.segments){campaign.segments.forEach(segment=>L.polyline(segment,{color:'#8b4b2f',weight:4,opacity:.9,dashArray:'8 7'}).addTo(window.campaignLayer));}else{L.polyline(coords,{color:'#8b4b2f',weight:4,opacity:.9,dashArray:'8 7'}).addTo(window.campaignLayer);}
- const marker=L.circleMarker(coords[0],{radius:8,color:'#fff',weight:3,fillColor:'#d94b36',fillOpacity:1}).addTo(window.campaignLayer);
- window.campaignLayer.addTo(map);map.flyToBounds(L.latLngBounds(coords),{padding:[24,24],duration:1.8,easeLinearity:0.18});
- let i=0;marker.bindPopup('<strong>'+campaign.title+'</strong><br>'+stops[0].name+' — '+stops[0].date+'<br>'+stops[0].info+'<br><em>'+campaign.note+'</em>').openPopup();
- const button=document.getElementById('campaignButton');button.textContent='Повторить: '+campaign.title;
- window.campaignTimer=window.setInterval(()=>{i++;if(i>=stops.length){clearInterval(window.campaignTimer);window.campaignTimer=null;i=stops.length-1;}
-  marker.setLatLng(coords[i]);marker.bindPopup('<strong>'+campaign.title+'</strong><br>'+stops[i].name+' — '+stops[i].date+'<br>'+stops[i].info+'<br><em>'+campaign.note+'</em>').openPopup();
- },1700);
+const campaigns={
+ 1:{title:'Походы Тутмоса III',period:'XV век до н. э.',note:'Это последовательность ключевых ориентиров нескольких походов Тутмоса III. Она не изображает один непрерывный марш. Кадеш не включён: знаменитая битва при Кадеше произошла при Рамсесе II.',segments:[[[25.7,32.65],[31.5,34.47],[32.58,35.18]],[[32.58,35.18],[34.0,36.5],[36.0,38.0]]],stops:[
+ {name:'Фивы',lat:25.7,lon:32.65,date:'XV в. до н. э.',info:'Царский и религиозный центр Египта. Отсюда начинался путь на север через долину Нила и Синай.'},
+ {name:'Газа',lat:31.5,lon:34.47,date:'XV в. до н. э.',info:'Важный пункт на пути из Египта в Южную Сирию и Палестину.'},
+ {name:'Мегиддо',lat:32.58,lon:35.18,date:'ок. 1457 г. до н. э.',info:'Здесь Тутмос III одержал важную победу над коалицией правителей Ханаана. После осады город подчинился Египту.'},
+ {name:'Северная Сирия',lat:34.0,lon:36.5,date:'XV в. до н. э.',info:'Египетские походы расширяли влияние фараона в Сирии. Конкретные рубежи контроля менялись.'},
+ {name:'Район Евфрата',lat:36.0,lon:38.0,date:'XV в. до н. э.',info:'В ходе походов Тутмос III достиг района Евфрата. Это был северный предел отдельных военных экспедиций, а не постоянная граница Египта.'}
+ ]},
+ 2:{title:'Расширение Новоассирийской державы',period:'IX–VII века до н. э.',note:'Ориентиры относятся к разным царям и кампаниям. Линии разделены, чтобы не создавать впечатление единого похода по всем точкам.',segments:[[[35.46,43.26],[36.10,43.33],[36.36,43.15]],[[36.36,43.15],[33.51,36.29]],[[36.36,43.15],[32.54,44.42]],[[36.36,43.15],[29.85,31.25]]],stops:[
+ {name:'Ашшур',lat:35.46,lon:43.26,date:'IX–VII вв. до н. э.',info:'Древний религиозный и политический центр Ассирии; название города связано с названием государства.'},
+ {name:'Кальху (Нимруд)',lat:36.10,lon:43.33,date:'IX в. до н. э.',info:'Ашшурнасирпал II превратил Кальху в царскую столицу. Позднее резиденция переносилась в другие города.'},
+ {name:'Ниневия',lat:36.36,lon:43.15,date:'конец VIII–VII вв. до н. э.',info:'При Синаххерибе Ниневия стала главной царской столицей Новоассирийской державы.'},
+ {name:'Дамаск',lat:33.51,lon:36.29,date:'732 г. до н. э.',info:'Тиглатпаласар III захватил Дамаск; арамейское царство было включено в ассирийскую систему управления.'},
+ {name:'Вавилон',lat:32.54,lon:44.42,date:'VIII–VII вв. до н. э.',info:'Ассирийские цари неоднократно вмешивались в дела Вавилонии; город переходил под их контроль.'},
+ {name:'Мемфис',lat:29.85,lon:31.25,date:'671 г. до н. э.',info:'Асархаддон захватил Мемфис. Ассирийское господство в Египте оставалось непрочным и сопровождалось сопротивлением.'}
+ ]},
+ 4:{title:'Завоевания державы Ахеменидов',period:'VI–V века до н. э.',note:'Показаны отдельные этапы расширения державы Кира II и Камбиса II. Это не маршрут одного войска: завоевание Лидии, Вавилона и Египта происходило в разные годы.',segments:[[[30.2,53.18],[38.49,28.04]],[[30.2,53.18],[32.54,44.42]],[[32.54,44.42],[29.85,31.25]]],stops:[
+ {name:'Пасаргады',lat:30.2,lon:53.18,date:'VI в. до н. э.',info:'Один из ранних центров Кира II и важнейшая царская резиденция Ахеменидов.'},
+ {name:'Сарды',lat:38.49,lon:28.04,date:'546 г. до н. э.',info:'После победы Кира II над Крезом Лидийское царство было присоединено к Персидской державе.'},
+ {name:'Вавилон',lat:32.54,lon:44.42,date:'539 г. до н. э.',info:'Кир II овладел Вавилоном. Город сохранил большое административное и религиозное значение.'},
+ {name:'Мемфис',lat:29.85,lon:31.25,date:'525 г. до н. э.',info:'Камбис II завоевал Египет; страна стала частью державы Ахеменидов.'},
+ {name:'Персеполь',lat:29.93,lon:52.89,date:'конец VI–V вв. до н. э.',info:'Царский церемониальный центр, строительство которого развернулось при Дарии I. Это не точка завоевания, а важный центр уже сложившейся державы.'}
+ ]},
+ 5:{title:'Поход Александра Македонского',period:'334–330 годы до н. э.',note:'Показан путь завоевания державы Ахеменидов до 330 г. до н. э. Дальнейшие походы в Бактрию, Согдиану и Индию относятся к последующим годам и не включены в этот срез.',segments:[[[40.75,22.52],[40.25,27.15],[38.49,28.04],[39.72,31.77],[36.86,36.2]],[[36.86,36.2],[33.27,35.2],[31.5,34.47],[29.85,31.25]],[[29.85,31.25],[36.36,43.25],[32.54,44.42],[32.19,48.25],[29.93,52.89]]],stops:[
+ {name:'Пелла',lat:40.75,lon:22.52,date:'334 г. до н. э.',info:'Столица Македонского царства и исходный пункт похода Александра.'},
+ {name:'Река Граник',lat:40.25,lon:27.15,date:'334 г. до н. э.',info:'Победа у Граника открыла македонской армии путь в Малую Азию.'},
+ {name:'Сарды',lat:38.49,lon:28.04,date:'334 г. до н. э.',info:'Сарды сдались Александру; город стал опорным пунктом в Малой Азии.'},
+ {name:'Гордион',lat:39.72,lon:31.77,date:'333 г. до н. э.',info:'Город во внутренней Малой Азии, где Александр провёл зиму перед дальнейшим продвижением.'},
+ {name:'Исс',lat:36.86,lon:36.2,date:'333 г. до н. э.',info:'Победа над армией Дария III открыла путь к восточному побережью Средиземного моря.'},
+ {name:'Тир',lat:33.27,lon:35.2,date:'332 г. до н. э.',info:'После длительной осады Александр овладел островным городом Тиром.'},
+ {name:'Газа',lat:31.5,lon:34.47,date:'332 г. до н. э.',info:'После взятия Газы путь в Египет оказался открыт.'},
+ {name:'Мемфис',lat:29.85,lon:31.25,date:'332 г. до н. э.',info:'Египет признал власть Александра; он был принят как фараон.'},
+ {name:'Гавгамелы',lat:36.36,lon:43.25,date:'331 г. до н. э.',info:'Решающая победа Александра над войском Дария III привела к крушению центральной власти Ахеменидов.'},
+ {name:'Вавилон',lat:32.54,lon:44.42,date:'331 г. до н. э.',info:'Город открыл ворота Александру и стал одним из важнейших центров его державы.'},
+ {name:'Сузы',lat:32.19,lon:48.25,date:'331 г. до н. э.',info:'Александр получил контроль над царской казной и важным административным центром Ахеменидов.'},
+ {name:'Персеполь',lat:29.93,lon:52.89,date:'330 г. до н. э.',info:'Захват Персеполя стал одним из символических завершений завоевания основной территории державы Ахеменидов.'}
+ ]}
+};
+const campaignOrder=[1,2,4,5];
+let campaignTourIndex=0,campaignStopIndex=0,campaignTourTimer=null,campaignTourPlaying=false,campaignTourLayer=null,campaignTourMarker=null,campaignTourLineLayers=[];
+function campaignStopTimer(){if(campaignTourTimer){clearTimeout(campaignTourTimer);campaignTourTimer=null;}campaignTourPlaying=false;const p=document.getElementById('campaignPlay');if(p)p.textContent='▶ Воспроизвести';}
+function clearCampaign(){campaignStopTimer();if(campaignTourLayer){map.removeLayer(campaignTourLayer);campaignTourLayer=null;}campaignTourMarker=null;campaignTourLineLayers=[];}
+function campaignUpdatePanel(){
+ const campaign=campaigns[campaignOrder[campaignTourIndex]],stop=campaign.stops[campaignStopIndex],total=campaignOrder.reduce((n,k)=>n+campaigns[k].stops.length,0);
+ const done=campaignOrder.slice(0,campaignTourIndex).reduce((n,k)=>n+campaigns[k].stops.length,0)+campaignStopIndex+1;
+ document.getElementById('campaignPlayerTitle').textContent=campaign.title+' · '+campaign.period;
+ document.getElementById('campaignPlayerCount').textContent='Остановка '+(campaignStopIndex+1)+' из '+campaign.stops.length+' · общий ход '+done+' из '+total;
+ document.getElementById('campaignPlayerInfo').textContent=stop.name+' — '+stop.date+'. '+stop.info+' '+campaign.note;
+ document.getElementById('campaignProgressBar').style.width=(done/total*100)+'%';
+ document.getElementById('campaignButton').textContent='Продолжить просмотр завоеваний';
 }
-document.getElementById('campaignButton').addEventListener('click',animateAlexanderCampaign);
-function render(){clearCampaign();idx=Math.max(0,Math.min(eraData.length-1,idx));const e=eraData[idx];loadGrade5Cliopatria(g5TargetYears[idx]);document.getElementById('campaignButton').hidden=![1,2,4,5].includes(idx);document.getElementById('campaignButton').textContent=idx===1?'Показать походы Тутмоса III':idx===2?'Показать расширение Ассирии':idx===4?'Показать направления завоеваний Персии':'Показать поход Александра';document.getElementById('era').value=idx;document.getElementById('period').textContent='Период '+(idx+1)+' из '+eraData.length;document.getElementById('eraTitle').textContent=e.title;document.getElementById('eraText').textContent=e.text;document.getElementById('eraDate').textContent='Ориентировочная дата: '+e.date;document.getElementById('prev').disabled=idx===0;document.getElementById('next').disabled=idx===eraData.length-1;
+function campaignDrawCurrent(animate=true){
+ const eraIndex=campaignOrder[campaignTourIndex],campaign=campaigns[eraIndex],stop=campaign.stops[campaignStopIndex];
+ if(idx!==eraIndex){idx=eraIndex;render();}
+ if(campaignTourLayer){map.removeLayer(campaignTourLayer);campaignTourLayer=null;}
+ campaignTourLayer=L.layerGroup().addTo(map);
+ campaign.segments.forEach(segment=>L.polyline(segment,{color:'#8b4b2f',weight:4,opacity:.88,dashArray:'8 7'}).addTo(campaignTourLayer));
+ const prior=campaign.stops.slice(0,campaignStopIndex+1).map(p=>[p.lat,p.lon]);
+ if(prior.length>1)L.polyline(prior,{color:'#c04f2f',weight:4,opacity:.95}).addTo(campaignTourLayer);
+ campaignTourMarker=L.circleMarker([stop.lat,stop.lon],{radius:9,color:'#fff',weight:3,fillColor:'#d94b36',fillOpacity:1}).addTo(campaignTourLayer);
+ const popup='<strong>'+campaign.title+'</strong><br><b>'+stop.name+'</b><br>'+stop.date+'<br>'+stop.info;
+ campaignTourMarker.bindPopup(popup).openPopup();
+ if(animate)map.flyTo([stop.lat,stop.lon],Math.max(map.getZoom(),5),{duration:1.35,easeLinearity:.22});
+ campaignUpdatePanel();
+}
+function campaignMove(delta){
+ campaignStopTimer();
+ let si=campaignStopIndex+delta,ci=campaignTourIndex;
+ while(si<0&&ci>0){ci--;si=campaigns[campaignOrder[ci]].stops.length-1;}
+ while(ci<campaignOrder.length-1&&si>=campaigns[campaignOrder[ci]].stops.length){si-=campaigns[campaignOrder[ci]].stops.length;ci++;}
+ si=Math.max(0,Math.min(campaigns[campaignOrder[ci]].stops.length-1,si));
+ campaignTourIndex=ci;campaignStopIndex=si;campaignDrawCurrent(true);
+}
+function campaignTick(){const c=campaigns[campaignOrder[campaignTourIndex]];if(campaignStopIndex<c.stops.length-1){campaignStopIndex++;campaignDrawCurrent(true);}else if(campaignTourIndex<campaignOrder.length-1){campaignTourIndex++;campaignStopIndex=0;campaignDrawCurrent(true);}else{campaignStopTimer();return;}campaignTourTimer=setTimeout(campaignTick,2800);}
+function campaignTogglePlay(){if(campaignTourPlaying){campaignStopTimer();return;}campaignTourPlaying=true;document.getElementById('campaignPlay').textContent='Ⅱ Пауза';campaignTourTimer=setTimeout(campaignTick,600);}
+function campaignStart(){document.getElementById('campaignPlayer').hidden=false;campaignTourIndex=0;campaignStopIndex=0;campaignDrawCurrent(true);campaignTogglePlay();}
+document.getElementById('campaignButton').addEventListener('click',campaignStart);
+document.getElementById('campaignPrev').addEventListener('click',()=>campaignMove(-1));
+document.getElementById('campaignNext').addEventListener('click',()=>campaignMove(1));
+document.getElementById('campaignPlay').addEventListener('click',campaignTogglePlay);
+document.getElementById('campaignClose').addEventListener('click',()=>{campaignStopTimer();document.getElementById('campaignPlayer').hidden=true;clearCampaign();});
+function render(){clearCampaign();idx=Math.max(0,Math.min(eraData.length-1,idx));const e=eraData[idx];loadGrade5Cliopatria(g5TargetYears[idx]);document.getElementById('campaignButton').hidden=![1,2,4,5].includes(idx);document.getElementById('campaignButton').textContent='Показать все походы и завоевания';document.getElementById('era').value=idx;document.getElementById('period').textContent='Период '+(idx+1)+' из '+eraData.length;document.getElementById('eraTitle').textContent=e.title;document.getElementById('eraText').textContent=e.text;document.getElementById('eraDate').textContent='Ориентировочная дата: '+e.date;document.getElementById('prev').disabled=idx===0;document.getElementById('next').disabled=idx===eraData.length-1;
 layers.forEach(l=>map.removeLayer(l));layers=[];if(window.nileLayer)map.removeLayer(window.nileLayer);if(window.mesopotamiaRiverLayer)map.removeLayer(window.mesopotamiaRiverLayer);if(window.cityLayer)map.removeLayer(window.cityLayer);if(window.mesoCityLayer)map.removeLayer(window.mesoCityLayer);if(window.worldCityLayer)map.removeLayer(window.worldCityLayer);if(window.practiceMarker){map.removeLayer(window.practiceMarker);window.practiceMarker=null;}if(window.geographyLabelLayer)map.removeLayer(window.geographyLabelLayer);if(window.geoLabelLayer)map.removeLayer(window.geoLabelLayer);if(window.egyptLabels)map.removeLayer(window.egyptLabels);if(window.historyLabelLayer)map.removeLayer(window.historyLabelLayer);const keyEl=document.getElementById('key');keyEl.innerHTML='';
 window.setTimeout(()=>map.invalidateSize({pan:false}),140);
 
