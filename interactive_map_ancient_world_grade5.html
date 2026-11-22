@@ -83,7 +83,7 @@ L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Physical
 L.control.attribution({prefix:false}).addTo(asiaMap);
 const asiaPolityLayer=L.layerGroup().addTo(asiaMap),asiaGeoLayer=L.layerGroup().addTo(asiaMap);
 const asiaCache=new Map();let asiaYearsAvailable=null,asiaRequest=0;
-function asiaTranslate(name){return asiaNameRu[name]||name;}
+function asiaTranslate(name){return asiaNameRu[name]||'Название требует проверки';}
 function asiaColor(value){const v=String(value||'').trim();return /^#[0-9a-f]{6}$/i.test(v)?v:'#b79a69';}
 function addAsiaGeography(){
  const labels=[
