@@ -396,9 +396,10 @@ function renderG5Legend(){
  if(!rows.length)box.textContent='В этом срезе нет образований с таким названием.';
 }
 function g5SelectPolity(p){
- const name=g5Translate(p.Name),year=Number(p.Year),area=Number(p.AreaSqKM);
+ const name=g5Translate(p.Name),year=Number(p.Year),area=Number(p.AreaSqKM),rawName=String(p.Name||''),isPeriod=/period|civilization|culture|world|region/i.test(rawName);
  document.getElementById('stateTitle').textContent=name;
- const parts=['Политическое образование в историческом срезе Cliopatria.'];
+ const parts=[isPeriod?'Это название исторического периода или культурно-географической области, а не обязательно самостоятельного государства. Контур показан пунктиром и бледной заливкой.':'Политическое образование в историческом срезе Cliopatria.'];
+ if(name==='Название требует проверки')parts.push('Название в исходной базе требует отдельной исторической и языковой проверки; английская подпись намеренно не выводится.');
  if(Number.isFinite(year))parts.push('Дата среза: '+(year<0?Math.abs(year)+' г. до н. э.':year+' г. н. э.')+'.');
  if(Number.isFinite(area)&&area>0)parts.push('Площадь по базе: '+Math.round(area).toLocaleString('ru-RU')+' км² (приблизительная оценка).');
  parts.push('Контур — научная реконструкция. Он не означает одинаково плотного контроля над всей территорией.');
