@@ -71,7 +71,7 @@ button{background:#304d61;color:white;border:0;font-weight:650}.curriculum-panel
 
 
 <div class="columns"><section><div class="map-toolbar"><button id="cityLabelsToggle" type="button" aria-pressed="false">Показать названия городов</button><span class="small">Подписи отмеченных городов можно включать и скрывать</span></div><div id="map" role="application" aria-label="Интерактивная географическая карта Древнего мира"></div>
-<div class="g5-legend-tools"><input class="g5-legend-search" id="g5LegendSearch" type="search" placeholder="Найти государство…" aria-label="Найти государство в легенде"><span class="g5-legend-count" id="g5LegendCount">Загрузка исторических образований…</span></div><div class="key" id="key" aria-live="polite"></div><p class="small" style="margin:5px 0 12px">Цвета помогают различать политические образования. Исторические контуры являются научными реконструкциями; их точность и степень контроля над окрашенной территорией могут различаться.</p></section>
+<div class="g5-legend-tools"><input class="g5-legend-search" id="g5LegendSearch" type="search" placeholder="Найти государство…" aria-label="Найти государство в легенде"><span class="g5-legend-count" id="g5LegendCount">Загрузка исторических образований…</span></div><div class="key" id="key" aria-live="polite"></div><p class="small" style="margin:0 0 12px">Знак ≈ перед названием означает ориентировочную русскую передачу исходного имени; такие подписи требуют дополнительной историко-лингвистической проверки.</p><p class="small" style="margin:5px 0 12px">Цвета помогают различать политические образования. Исторические контуры являются научными реконструкциями; их точность и степень контроля над окрашенной территорией могут различаться.</p></section>
 <aside><div class="panel"><h2 id="eraTitle">Египет и Междуречье</h2><p id="eraText">Нажми на цветную область, чтобы открыть справку.</p><p class="small" id="eraDate"></p></div>
 <div class="panel"><h2 id="stateTitle">Выбери государство</h2><p id="stateInfo">Нажми на цветную территорию на карте или на элемент легенды.</p><div id="stateMedia" class="history-media" hidden></div></div>
 
@@ -391,7 +391,7 @@ function g5TransliterateName(v){
  const words={'A':'А','B':'Б','C':'К','D':'Д','E':'Э','F':'Ф','G':'Г','H':'Х','I':'И','J':'Дж','K':'К','L':'Л','M':'М','N':'Н','O':'О','P':'П','Q':'К','R':'Р','S':'С','T':'Т','U':'У','V':'В','W':'В','X':'Кс','Y':'Й','Z':'З'};
  return String(v).replace(/sch/gi,'ш').replace(/sh/gi,'ш').replace(/ch/gi,'ч').replace(/zh/gi,'ж').replace(/kh/gi,'х').replace(/th/gi,'т').replace(/ph/gi,'ф').replace(/ck/gi,'к').replace(/qu/gi,'кв').replace(/c(?=[eiy])/gi,'с').replace(/c/gi,'к').replace(/j/gi,'дж').replace(/w/gi,'в').replace(/x/gi,'кс').replace(/[A-Za-z]/g,c=>{const r=words[c.toUpperCase()]||c;return c===c.toLowerCase()?r.toLowerCase():r;}).replace(/\s+/g,' ').trim();
 }
-function g5IsApproximateName(n){return !Object.prototype.hasOwnProperty.call(g5Names,String(n||'').trim());}
+function g5IsApproximateName(n){const v=String(n||'').trim();return !Object.keys(g5Names).some(k=>k.toLocaleLowerCase('en')===v.toLocaleLowerCase('en'));}
 function g5Translate(n){const v=String(n||'').trim();if(!v)return 'Название не установлено';if(g5Names[v])return g5Names[v];const key=Object.keys(g5Names).find(k=>k.toLocaleLowerCase('en')===v.toLocaleLowerCase('en'));if(key)return g5Names[key];
  const patterns=[[/^Kingdom of (.+)$/i,(_,x)=>'Царство '+g5TransliterateName(x)],[/^(.+) Kingdom$/i,(_,x)=>'Царство '+g5TransliterateName(x)],[/^(.+) Empire$/i,(_,x)=>'Держава '+g5TransliterateName(x)],[/^(.+) Dynasty$/i,(_,x)=>'Династия '+g5TransliterateName(x)],[/^(.+) dynasty$/i,(_,x)=>'Династия '+g5TransliterateName(x)],[/^(.+) city-states$/i,(_,x)=>'Города-государства '+g5TransliterateName(x)],[/^(.+) Civilization$/i,(_,x)=>'Цивилизация '+g5TransliterateName(x)],[/^(.+) civilization$/i,(_,x)=>'Цивилизация '+g5TransliterateName(x)]];
  for(const [re,fn] of patterns){const m=v.match(re);if(m)return fn(...m);}
@@ -410,7 +410,7 @@ function renderG5Legend(){
   b.addEventListener('click',activate);b.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();activate();}});
   box.appendChild(b);
  });
- count.textContent='Показано '+rows.length+' подписанных образований'+(unknownCount?' · '+unknownCount+' названий скрыто до проверки':'');
+ count.textContent='Показано '+rows.length+' образований'+(unknownCount?' · '+unknownCount+' названий требуют проверки':'');
  if(!rows.length)box.textContent='В этом срезе нет образований с таким названием.';
 }
 function g5SelectPolity(p){
@@ -590,7 +590,7 @@ const campaigns={
  {name:'Мемфис',lat:29.85,lon:31.25,date:'525 г. до н. э.',info:'Камбис II завоевал Египет; страна стала частью державы Ахеменидов.'},
  {name:'Персеполь',lat:29.93,lon:52.89,date:'конец VI–V вв. до н. э.',info:'Царский церемониальный центр, строительство которого развернулось при Дарии I. Это не точка завоевания, а важный центр уже сложившейся державы.'}
  ]},
- 5:{title:'Поход Александра Македонского',period:'334–330 годы до н. э.',note:'Показан путь завоевания державы Ахеменидов до 330 г. до н. э. Дальнейшие походы в Бактрию, Согдиану и Индию относятся к последующим годам и не включены в этот срез.',segments:[[[40.75,22.52],[40.25,27.15],[38.49,28.04],[39.72,31.77],[36.86,36.2]],[[36.86,36.2],[33.27,35.2],[31.5,34.47],[29.85,31.25]],[[29.85,31.25],[36.36,43.25],[32.54,44.42],[32.19,48.25],[29.93,52.89]]],stops:[
+ 5:{title:'Поход Александра Македонского',period:'334–330 годы до н. э.',note:'Показан путь завоевания державы Ахеменидов до 330 г. до н. э. Дальнейшие походы в Бактрию, Согдиану и Индию относятся к последующим годам и не включены в этот срез.',segments:[[[40.75,22.52],[40.25,27.15],[38.49,28.04],[39.72,31.77],[36.86,36.2]],[[36.86,36.2],[33.27,35.2],[31.5,34.47],[29.85,31.25]],[[29.85,31.25],[31.5,34.47],[33.27,35.2],[36.36,43.25],[32.54,44.42],[32.19,48.25],[29.93,52.89]]],stops:[
  {name:'Пелла',lat:40.75,lon:22.52,date:'334 г. до н. э.',info:'Столица Македонского царства и исходный пункт похода Александра.'},
  {name:'Река Граник',lat:40.25,lon:27.15,date:'334 г. до н. э.',info:'Победа у Граника открыла македонской армии путь в Малую Азию.'},
  {name:'Сарды',lat:38.49,lon:28.04,date:'334 г. до н. э.',info:'Сарды сдались Александру; город стал опорным пунктом в Малой Азии.'},
@@ -609,7 +609,7 @@ const campaignOrder=[1,2,4,5];
 let campaignTourIndex=0,campaignStopIndex=0,campaignTourTimer=null,campaignTourPlaying=false,campaignTourLayer=null,campaignTourMarker=null,campaignTourLineLayers=[];
 let campaignSwitchingEra=false;
 function campaignStopTimer(){if(campaignTourTimer){clearTimeout(campaignTourTimer);campaignTourTimer=null;}campaignTourPlaying=false;const p=document.getElementById('campaignPlay');if(p)p.textContent='▶ Воспроизвести';}
-function clearCampaign(){if(!campaignSwitchingEra)campaignStopTimer();if(campaignTourLayer){map.removeLayer(campaignTourLayer);campaignTourLayer=null;}campaignTourMarker=null;campaignTourLineLayers=[];}
+function clearCampaign(){if(!campaignSwitchingEra){campaignStopTimer();const player=document.getElementById('campaignPlayer');if(player)player.hidden=true;}if(campaignTourLayer){map.removeLayer(campaignTourLayer);campaignTourLayer=null;}campaignTourMarker=null;campaignTourLineLayers=[];}
 function campaignUpdatePanel(){
  const campaign=campaigns[campaignOrder[campaignTourIndex]],stop=campaign.stops[campaignStopIndex],total=campaignOrder.reduce((n,k)=>n+campaigns[k].stops.length,0);
  const done=campaignOrder.slice(0,campaignTourIndex).reduce((n,k)=>n+campaigns[k].stops.length,0)+campaignStopIndex+1;
