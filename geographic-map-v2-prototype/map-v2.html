@@ -376,7 +376,7 @@ function g5Transliterate(value){
  digraphs.forEach(([re,to])=>v=v.replace(re,to));
  const map={a:'а',b:'б',c:'к',d:'д',e:'е',f:'ф',g:'г',h:'х',i:'и',j:'дж',k:'к',l:'л',m:'м',n:'н',o:'о',p:'п',q:'к',r:'р',s:'с',t:'т',u:'у',v:'в',w:'в',x:'кс',y:'й',z:'з'};
  v=v.split('').map(ch=>map[ch.toLowerCase()]??ch).join('').replace(/\s+/g,' ');
- return v.replace(/(^|[\\s-])([а-яё])/g,(m,sep,ch)=>sep+ch.toLocaleUpperCase('ru'));
+ return v.replace(/(^|[\s-])([а-яё])/g,(m,sep,ch)=>sep+ch.toLocaleUpperCase('ru'));
 }
 function g5Translate(n){const v=String(n||'').trim();if(!v)return 'Неизвестное образование';if(g5Names[v])return g5Names[v];return g5Transliterate(v);}
 function g5Color(v){let c=String(v??'').trim();if(/^0x[0-9a-f]{6}$/i.test(c))c='#'+c.slice(2);if(/^#[0-9a-f]{6}$/i.test(c))return c;if(/^\d+$/.test(c)){const n=Number(c);if(n>=0&&n<=0xffffff)return '#'+n.toString(16).padStart(6,'0');}return '#82939a';}
