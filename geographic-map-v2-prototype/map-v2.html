@@ -393,7 +393,7 @@ function g5TransliterateName(v){
 }
 function g5IsApproximateName(n){const v=String(n||'').trim();return !Object.keys(g5Names).some(k=>k.toLocaleLowerCase('en')===v.toLocaleLowerCase('en'));}
 function g5Translate(n){const v=String(n||'').trim();if(!v)return 'Название не установлено';if(g5Names[v])return g5Names[v];const key=Object.keys(g5Names).find(k=>k.toLocaleLowerCase('en')===v.toLocaleLowerCase('en'));if(key)return g5Names[key];
- const patterns=[[/^Kingdom of (.+)$/i,(_,x)=>'Царство '+g5TransliterateName(x)],[/^(.+) Kingdom$/i,(_,x)=>'Царство '+g5TransliterateName(x)],[/^(.+) Empire$/i,(_,x)=>'Держава '+g5TransliterateName(x)],[/^(.+) Dynasty$/i,(_,x)=>'Династия '+g5TransliterateName(x)],[/^(.+) dynasty$/i,(_,x)=>'Династия '+g5TransliterateName(x)],[/^(.+) city-states$/i,(_,x)=>'Города-государства '+g5TransliterateName(x)],[/^(.+) Civilization$/i,(_,x)=>'Цивилизация '+g5TransliterateName(x)],[/^(.+) civilization$/i,(_,x)=>'Цивилизация '+g5TransliterateName(x)]];
+ const patterns=[[/^Kingdom of (.+)$/i,(_,x)=>'≈ Царство '+g5TransliterateName(x)],[/^(.+) Kingdom$/i,(_,x)=>'Царство '+g5TransliterateName(x)],[/^(.+) Empire$/i,(_,x)=>'≈ Держава '+g5TransliterateName(x)],[/^(.+) Dynasty$/i,(_,x)=>'≈ Династия '+g5TransliterateName(x)],[/^(.+) dynasty$/i,(_,x)=>'Династия '+g5TransliterateName(x)],[/^(.+) city-states$/i,(_,x)=>'≈ города-государства '+g5TransliterateName(x)],[/^(.+) Civilization$/i,(_,x)=>'≈ цивилизация '+g5TransliterateName(x)],[/^(.+) civilization$/i,(_,x)=>'Цивилизация '+g5TransliterateName(x)]];
  for(const [re,fn] of patterns){const m=v.match(re);if(m)return fn(...m);}
  return '≈ '+g5TransliterateName(v);
 }
