@@ -353,7 +353,7 @@ map.attributionControl.remove();
 L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Physical_Map/MapServer/tile/{z}/{y}/{x}',{maxZoom:8,attribution:''}).addTo(map);
 
 const G5_CLI_URL='https://services2.arcgis.com/wx8u046p68e0iGuj/arcgis/rest/services/Aligned_Cliopatria_v1.1_WGS84/FeatureServer/0/query';
-const g5PolityLayer=L.layerGroup().addTo(map),g5PolityCache=new Map();
+const g5PolityLayer=L.featureGroup().addTo(map),g5PolityCache=new Map();
 let g5PolityRequest=0,g5AvailableYears=null,g5ActiveFeatures=[];
 const g5TargetYears=[-3050,-1500,-650,-600,-500,-330,-250,100,350,476];
 const g5Names={
