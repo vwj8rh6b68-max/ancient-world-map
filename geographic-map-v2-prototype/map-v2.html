@@ -389,8 +389,9 @@ const g5Names={
 };
 function g5TransliterateName(v){
  const words={'A':'А','B':'Б','C':'К','D':'Д','E':'Э','F':'Ф','G':'Г','H':'Х','I':'И','J':'Дж','K':'К','L':'Л','M':'М','N':'Н','O':'О','P':'П','Q':'К','R':'Р','S':'С','T':'Т','U':'У','V':'В','W':'В','X':'Кс','Y':'Й','Z':'З'};
- return String(v).replace(/sch/gi,'ш').replace(/sh/gi,'ш').replace(/ch/gi,'ч').replace(/zh/gi,'ж').replace(/kh/gi,'х').replace(/th/gi,'т').replace(/ph/gi,'ф').replace(/ck/gi,'к').replace(/qu/gi,'кв').replace(/c(?=[eiy])/gi,'с').replace(/c/gi,'к').replace(/j/gi,'дж').replace(/w/gi,'в').replace(/x/gi,'кс').replace(/[A-Z]/g,c=>words[c]||c).replace(/([a-z])/g,c=>c).replace(/\s+/g,' ').trim();
+ return String(v).replace(/sch/gi,'ш').replace(/sh/gi,'ш').replace(/ch/gi,'ч').replace(/zh/gi,'ж').replace(/kh/gi,'х').replace(/th/gi,'т').replace(/ph/gi,'ф').replace(/ck/gi,'к').replace(/qu/gi,'кв').replace(/c(?=[eiy])/gi,'с').replace(/c/gi,'к').replace(/j/gi,'дж').replace(/w/gi,'в').replace(/x/gi,'кс').replace(/[A-Za-z]/g,c=>{const r=words[c.toUpperCase()]||c;return c===c.toLowerCase()?r.toLowerCase():r;}).replace(/\s+/g,' ').trim();
 }
+function g5IsApproximateName(n){return !Object.prototype.hasOwnProperty.call(g5Names,String(n||'').trim());}
 function g5Translate(n){const v=String(n||'').trim();if(!v)return 'Название не установлено';if(g5Names[v])return g5Names[v];const key=Object.keys(g5Names).find(k=>k.toLocaleLowerCase('en')===v.toLocaleLowerCase('en'));if(key)return g5Names[key];
  const patterns=[[/^Kingdom of (.+)$/i,(_,x)=>'Царство '+g5TransliterateName(x)],[/^(.+) Kingdom$/i,(_,x)=>'Царство '+g5TransliterateName(x)],[/^(.+) Empire$/i,(_,x)=>'Держава '+g5TransliterateName(x)],[/^(.+) Dynasty$/i,(_,x)=>'Династия '+g5TransliterateName(x)],[/^(.+) dynasty$/i,(_,x)=>'Династия '+g5TransliterateName(x)],[/^(.+) city-states$/i,(_,x)=>'Города-государства '+g5TransliterateName(x)],[/^(.+) Civilization$/i,(_,x)=>'Цивилизация '+g5TransliterateName(x)],[/^(.+) civilization$/i,(_,x)=>'Цивилизация '+g5TransliterateName(x)]];
  for(const [re,fn] of patterns){const m=v.match(re);if(m)return fn(...m);}
@@ -416,6 +417,7 @@ function g5SelectPolity(p){
  const name=g5Translate(p.Name),year=Number(p.Year),area=Number(p.AreaSqKM),rawName=String(p.Name||''),isPeriod=/period|civilization|culture|world|region/i.test(rawName);
  document.getElementById('stateTitle').textContent=name;
  const parts=[isPeriod?'Это название исторического периода или культурно-географической области, а не обязательно самостоятельного государства. Контур показан пунктиром и бледной заливкой.':'Политическое образование в историческом срезе Cliopatria.'];
+ if(g5IsApproximateName(rawName))parts.push('Русская подпись передана ориентировочной транслитерацией исходного названия; её следует уточнить по специализированному историческому источнику.');
  if(name==='Название требует проверки')parts.push('Русское название объекта пока не подтверждено. Ошибочная подпись намеренно не показывается.');
  if(Number.isFinite(year))parts.push('Дата среза: '+(year<0?Math.abs(year)+' г. до н. э.':year+' г. н. э.')+'.');
  if(Number.isFinite(area)&&area>0)parts.push('Площадь по базе: '+Math.round(area).toLocaleString('ru-RU')+' км² (приблизительная оценка).');
@@ -605,8 +607,9 @@ const campaigns={
 };
 const campaignOrder=[1,2,4,5];
 let campaignTourIndex=0,campaignStopIndex=0,campaignTourTimer=null,campaignTourPlaying=false,campaignTourLayer=null,campaignTourMarker=null,campaignTourLineLayers=[];
+let campaignSwitchingEra=false;
 function campaignStopTimer(){if(campaignTourTimer){clearTimeout(campaignTourTimer);campaignTourTimer=null;}campaignTourPlaying=false;const p=document.getElementById('campaignPlay');if(p)p.textContent='▶ Воспроизвести';}
-function clearCampaign(){campaignStopTimer();if(campaignTourLayer){map.removeLayer(campaignTourLayer);campaignTourLayer=null;}campaignTourMarker=null;campaignTourLineLayers=[];}
+function clearCampaign(){if(!campaignSwitchingEra)campaignStopTimer();if(campaignTourLayer){map.removeLayer(campaignTourLayer);campaignTourLayer=null;}campaignTourMarker=null;campaignTourLineLayers=[];}
 function campaignUpdatePanel(){
  const campaign=campaigns[campaignOrder[campaignTourIndex]],stop=campaign.stops[campaignStopIndex],total=campaignOrder.reduce((n,k)=>n+campaigns[k].stops.length,0);
  const done=campaignOrder.slice(0,campaignTourIndex).reduce((n,k)=>n+campaigns[k].stops.length,0)+campaignStopIndex+1;
@@ -618,7 +621,7 @@ function campaignUpdatePanel(){
 }
 function campaignDrawCurrent(animate=true){
  const eraIndex=campaignOrder[campaignTourIndex],campaign=campaigns[eraIndex],stop=campaign.stops[campaignStopIndex];
- if(idx!==eraIndex){idx=eraIndex;render();}
+ if(idx!==eraIndex){campaignSwitchingEra=true;idx=eraIndex;render();campaignSwitchingEra=false;}
  if(campaignTourLayer){map.removeLayer(campaignTourLayer);campaignTourLayer=null;}
  campaignTourLayer=L.layerGroup().addTo(map);
  campaign.segments.forEach(segment=>L.polyline(segment,{color:'#8b4b2f',weight:4,opacity:.88,dashArray:'8 7'}).addTo(campaignTourLayer));
