@@ -673,8 +673,6 @@ const eraData=[
 {date:'ок. 350 г. н. э.',title:'Держава Гуптов и поздняя Римская империя',text:'В IV в. н. э. в Северной Индии усилилась держава Гуптов. Римская империя оставалась единой, хотя после реформ Диоклетиана и Константина управление стало сложнее; окончательное разделение на Западную и Восточную империи относится к 395 г. н. э. В Китае после падения Хань давно существовали разные государства; контур показывает регион Северного Китая, а не единую империю.',keys:['gupta','roman_empire','jin_china','sarmatians']},
 {date:'476 г. н. э.',title:'Падение Западной Римской империи',text:'В 476 г. н. э. был смещён последний западный император Ромул Августул. Эта дата традиционно обозначает конец Западной Римской империи, но не исчезновение римской государственности: Восточная Римская империя продолжила существовать. В Северной Индии ещё существовала держава Гуптов, а Китай был разделён между несколькими государствами. Границы на карте обобщены.',keys:['west_rome','east_rome','gupta']}
  ];
-function removeEraIndex(rows,at){rows.forEach(row=>{if(Array.isArray(row.eras))row.eras=row.eras.filter(v=>v!==at).map(v=>v>at?v-1:v);if(Array.isArray(row[4]))row[4]=row[4].filter(v=>v!==at).map(v=>v>at?v-1:v);if(row[5]&&typeof row[5]==='object'){const shifted={};Object.entries(row[5]).forEach(([k,v])=>{const n=Number(k);if(!Number.isNaN(n)&&n===at)return;shifted=!Number.isNaN(n)&&n>at?String(n-1):k;shifted[shifted]=v;});row[5]=shifted;}});}
-removeEraIndex(territories,4);
 eraData.splice(4,1);
 let idx=0,layers=[],boundaryFocus=true;
 document.getElementById('boundaryFocus').addEventListener('change',e=>{boundaryFocus=e.target.checked;render();});
@@ -818,7 +816,6 @@ shiftEraIndices(cities);
 ['Мемфис','Фивы','Асуан'].forEach(name=>{const city=cities.find(row=>row[0]===name);if(city){[1,3,4,5].forEach(period=>{if(!city[4].includes(period))city[4].push(period);});}});
 const memphisCity=cities.find(row=>row[0]==='Мемфис');if(memphisCity)memphisCity[3]='Один из важнейших политических центров Египта у начала дельты Нила. В 671 г. до н. э. город был захвачен ассирийским царём Асархаддоном; этот эпизод был частью расширения Ассирийской державы и не означал прочного подчинения всей долины Нила.';
 const saisCity=cities.find(row=>row[0]==='Саис');if(saisCity&&saisCity[5]){delete saisCity[5][3];saisCity[5][4]='столица Египта при XXVI династии';}
-removeEraIndex(cities,4);
 // Срез ок. 2300 г. до н. э.: Мемфис — главный политический центр Египта эпохи Древнего царства.
 ['Мемфис','Гиза','Фивы','Асуан'].forEach(name=>{
  const city=cities.find(row=>row[0]===name);
