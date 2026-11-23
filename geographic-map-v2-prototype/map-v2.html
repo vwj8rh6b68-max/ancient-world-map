@@ -13,6 +13,7 @@ main{max-width:1200px;margin:auto;padding:12px}.controls{display:flex;flex-wrap:
 button,select{font:inherit;border:1px solid #c8b89a;border-radius:10px;padding:10px;background:#fffaf0;color:var(--ink)}
 button{background:#304d61;color:white;border:0;font-weight:650}.curriculum-panel details{border-top:1px solid #e2d8c6;padding:10px 0}.curriculum-panel details:first-of-type{border-top:0}.curriculum-panel summary{cursor:pointer;line-height:1.4}.curriculum-panel p{margin:8px 0}.curriculum-panel ul{padding-left:22px}.curriculum-panel li{margin:6px 0}.period{font-weight:750;margin-left:auto}.controls #prev,.controls #next{min-width:92px}.controls #era{flex:1 1 320px;min-width:0;max-width:100%}.controls label[for="era"]{font-weight:700}
 #map{height:min(68vh,680px);min-height:380px;scroll-margin-top:8px;border:1px solid #b5cbd0;border-radius:14px;overflow:hidden}
+.map-workspace{display:grid;grid-template-columns:minmax(260px,.72fr) minmax(0,2fr);gap:14px;align-items:start;margin:14px 0 22px}.map-workspace>.practice{position:sticky;top:10px;margin:0;min-width:0}.map-workspace>.columns{min-width:0;margin:0}@media(max-width:980px){.map-workspace{grid-template-columns:1fr}.map-workspace>.practice{position:static}.map-workspace>.columns{grid-template-columns:1fr}}
 .columns{display:grid;grid-template-columns:minmax(0,2fr) minmax(250px,1fr);gap:12px}.panel{background:#fffdf7;border:1px solid #e1d5bf;border-radius:14px;padding:13px;margin-top:10px}.panel h2{font-size:1.03rem;margin:0 0 6px}.panel p{margin:5px 0}.small{font-size:.82rem;color:#59636c}.key{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0}.key span{display:inline-flex;gap:6px;align-items:center;background:#fffaf0;border:1px solid #e4d9c5;border-radius:999px;padding:5px 9px;font-size:.82rem}.swatch{width:12px;height:12px;border-radius:3px;display:inline-block}
 .map-toolbar{display:flex;align-items:center;gap:9px;flex-wrap:wrap;margin:0 0 8px}.map-toolbar button{padding:9px 13px;background:#304d61;color:#fff;border:0;border-radius:9px;font:inherit;font-weight:700}.map-toolbar button[aria-pressed="true"]{background:#8b4b2f}.map-toolbar .small{margin:0;color:#59636c}.g5-legend-tools{display:flex;gap:9px;align-items:center;flex-wrap:wrap;margin:10px 0 6px}.g5-legend-search{flex:1 1 220px;min-width:0;padding:9px 11px;border:1px solid #d6c7ad;border-radius:9px;background:#fffdf7;color:#243246;font:inherit}.g5-legend-count{font-size:.82rem;color:#59636c}.key span[role=button]{cursor:pointer}.key span[role=button]:focus-visible{outline:3px solid #47718c;outline-offset:2px}.key .swatch{flex:0 0 12px}
 .leaflet-popup-content{font:14px/1.45 system-ui,-apple-system,Segoe UI,sans-serif}.polity-label{max-width:min(220px,58vw);white-space:normal;overflow-wrap:anywhere;text-align:center;font:600 11px/1.2 system-ui,-apple-system,Segoe UI,sans-serif;background:rgba(255,253,247,.94);border:1px solid #bda980;border-radius:6px;padding:3px 6px;color:#243246;box-shadow:0 1px 3px #0002}.leaflet-tooltip.polity-label:before{display:none}.geo-label{background:transparent;border:0}.history-media{margin-top:10px;border-top:1px solid #e1d5bf;padding-top:10px}.history-media img{display:block;width:100%;max-height:240px;object-fit:contain;border-radius:8px;background:#f2ead9}.crowns{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}.crown-card{background:#f8f1e3;border:1px solid #e1d5bf;border-radius:10px;padding:8px;text-align:center;font-size:.82rem}.crown-card svg{width:100%;height:70px;display:block}.map-history-label{background:rgba(255,253,247,.88);border:1px solid #bda980;border-radius:6px;padding:4px 7px;color:#243246;font-size:12px;font-weight:700;white-space:nowrap;box-shadow:0 1px 3px #0002}.map-geography-label{background:rgba(245,242,228,.7);border:0;box-shadow:none;color:#4c6876;font-style:italic;font-weight:500;}.city-legend-note{font-size:.82rem;color:#5b6268;margin:5px 0 10px}.city-tooltip{font:700 12px/1.2 system-ui,-apple-system,Segoe UI,sans-serif;border:1px solid #c9b58d;border-radius:5px;background:rgba(255,253,247,.94);color:#243246;box-shadow:0 1px 3px #0002;padding:3px 5px;}.note{background:#fff4d9;border-left:4px solid #b7863d;padding:10px 12px;border-radius:8px}
@@ -75,6 +76,21 @@ button{background:#304d61;color:white;border:0;font-weight:650}.curriculum-panel
 </div>
 
 
+<div class="map-workspace" id="mapWorkspace">
+<div class="practice" aria-labelledby="practiceTitle">
+<h2 id="practiceTitle">Практика: атлас и контурная карта</h2>
+<p class="small">Короткие задания для 5-го класса: сначала попробуй найти объект самостоятельно, затем открой самопроверку. Задания составлены по темам карты и не заменяют точные задания на страницах вашего пособия.</p>
+<label for="practiceMode">Тип задания</label>
+<select id="practiceMode">
+<option value="atlas">Работа с атласом — найди объект</option>
+<option value="contour">Контурная карта — вспомни подпись</option>
+<option value="compare">Сравни эпохи</option><option value="terms">Термины — проверь себя</option><option value="sources">Исторические источники — определи значение</option>
+</select>
+<p id="practiceQuestion">Нажми «Новое задание», чтобы начать.</p>
+<div class="practice-controls"><button id="newTask" type="button">Новое задание</button><button id="showAnswer" type="button">Показать ответ</button><button id="focusTask" type="button">Показать на карте</button></div>
+<div id="practiceAnswer" class="answer" hidden></div>
+<p id="practiceStatus" class="practice-status" aria-live="polite">Подсказка: используй масштаб карты и подписи морей, рек и городов.</p>
+</div>
 <div class="columns"><section><div class="map-toolbar"><button id="cityLabelsToggle" type="button" aria-pressed="false">Показать названия городов</button><span class="small">Подписи отмеченных городов можно включать и скрывать</span></div><div id="map" role="application" aria-label="Интерактивная географическая карта Древнего мира"></div>
 <div class="g5-legend-tools"><input class="g5-legend-search" id="g5LegendSearch" type="search" placeholder="Найти государство…" aria-label="Найти государство в легенде"><span class="g5-legend-count" id="g5LegendCount">Загрузка исторических образований…</span></div><div class="key" id="key" aria-live="polite"></div><p class="small" style="margin:5px 0 12px">В легенде оставлены только государства и политические образования, относящиеся к темам курса 5-го класса. Контуры древних территорий — научные реконструкции; они не означают одинаково плотного контроля над всей окрашенной областью.</p></section>
 <aside><div class="panel"><h2 id="eraTitle">Египет и Междуречье</h2><p id="eraText">Нажми на цветную область, чтобы открыть справку.</p><p class="small" id="eraDate"></p></div>
@@ -94,7 +110,7 @@ button{background:#304d61;color:white;border:0;font-weight:650}.curriculum-panel
 .photo-card figcaption{padding:8px;font-size:.84rem;line-height:1.35}
 .photo-card figcaption small{display:block;color:#59636c;margin-top:4px}
 .term-search{width:100%;padding:10px;border:1px solid #c8b89a;border-radius:8px;font:inherit;margin:8px 0}
-.term-group{margin:12px 0}
+.term-group-buttons{display:flex;flex-wrap:wrap;gap:7px;margin:8px 0}.term-group-buttons button{background:#e9e2d2;color:#26384b;border:1px solid #c8b89a;border-radius:9px;padding:9px 12px;font:inherit;font-size:.9rem;font-weight:650}.term-group-buttons button[aria-pressed="true"]{background:#304d61;color:#fff;border-color:#304d61}.term-group{margin:12px 0}
 .term-group h3{font-size:.98rem;margin:10px 0 6px}
 .term-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}
 .term-item{border:1px solid #e2d8c6;background:#fffaf0;border-radius:8px;padding:8px}
@@ -116,11 +132,13 @@ button{background:#304d61;color:white;border:0;font-weight:650}.curriculum-panel
 <figure class="photo-card"><a href="https://commons.wikimedia.org/wiki/File:Colosseum_(Rome).jpg" target="_blank" rel="noopener"><img loading="lazy" src="https://commons.wikimedia.org/wiki/Special:FilePath/Colosseum_%28Rome%29.jpg?width=900" alt="Колизей в Риме"><figcaption><strong>Колизей</strong><small>Римская империя · амфитеатр</small></figcaption></a></figure>
 </div>
 <p class="small">Изображения загружаются с Wikimedia Commons; если внешний источник временно недоступен, нажми на подпись, чтобы открыть страницу файла. Подписи и ссылки сохранены рядом с каждой фотографией.</p>
+</div><!-- /map-workspace -->
 </div>
 <div class="panel" id="termDictionary">
 <h2>Словарь терминов с объяснениями</h2>
 <p>Здесь каждое понятие объяснено отдельно. Формулировки адаптированы для 5-го класса; значения некоторых слов менялись от эпохи к эпохе.</p>
 <input id="termSearch" class="term-search" type="search" placeholder="Найти термин, например «полис» или «дань»" aria-label="Поиск термина">
+<div id="termGroupButtons" class="term-group-buttons" aria-label="Группы терминов"></div><p class="small" id="termGroupHint">Выбери тематическую группу, чтобы открыть только её термины.</p>
 <div id="termList">
 <section class="term-group"><h3>История и источники</h3><dl class="term-list">
 <div class="term-item"><dt>Исторический источник</dt><dd>Всё, что сохранило сведения о прошлом: предмет, сооружение, текст, изображение или устное предание.</dd></div>
@@ -316,14 +334,12 @@ button{background:#304d61;color:white;border:0;font-weight:650}.curriculum-panel
 </div>
 <script>
 (function(){
- const input=document.getElementById('termSearch');
- const items=Array.from(document.querySelectorAll('#termList .term-item'));
- const groups=Array.from(document.querySelectorAll('#termList .term-group'));
- input.addEventListener('input',function(){
-  const q=this.value.trim().toLocaleLowerCase('ru');
-  items.forEach(item=>{item.hidden=!!q&&!item.textContent.toLocaleLowerCase('ru').includes(q);});
-  groups.forEach(group=>{group.hidden=!Array.from(group.querySelectorAll('.term-item')).some(item=>!item.hidden);});
- });
+ const input=document.getElementById('termSearch'),host=document.getElementById('termGroupButtons');
+ const groups=Array.from(document.querySelectorAll('#termList .term-group'));let active=0;
+ function filter(){const q=input.value.trim().toLocaleLowerCase('ru');groups.forEach((g,i)=>g.querySelectorAll('.term-item').forEach(item=>{item.hidden=i===active&&!!q&&!item.textContent.toLocaleLowerCase('ru').includes(q);}));}
+ function selectGroup(i){active=i;groups.forEach((g,n)=>g.hidden=n!==active);host.querySelectorAll('button').forEach((b,n)=>b.setAttribute('aria-pressed',String(n===active)));document.getElementById('termGroupHint').textContent=(groups[active].querySelector('h3')?.textContent||'Группа терминов')+' — выбери нужный термин ниже.';filter();}
+ groups.forEach((g,i)=>{const b=document.createElement('button');b.type='button';b.textContent=g.querySelector('h3')?.textContent||('Группа '+(i+1));b.setAttribute('aria-pressed','false');b.addEventListener('click',()=>selectGroup(i));host.append(b);});
+ input.addEventListener('input',filter);if(groups.length)selectGroup(0);
 })();
 </script>
 
@@ -341,20 +357,7 @@ button{background:#304d61;color:white;border:0;font-weight:650}.curriculum-panel
 </div>
 <div class="boundary-guide"><strong>Как изучать границы</strong><span>Выбери эпоху и сравни очертания цветных территорий. Нажми на область, чтобы узнать, какому государству она принадлежала. Переключение эпох помогает увидеть изменения владений.</span><div class="border-key"><span><i class="border-line"></i> контур территории</span><span><i class="border-dash"></i> зона влияния или условный рубеж</span></div><p class="small">Важно: границы древних государств часто менялись и известны приблизительно. Сплошной контур на этой учебной карте тоже может быть реконструкцией, а не точно установленной линией.</p></div>
 <div class="panel"><h2>Как читать границы</h2><p class="note">Это географический прототип. Исторические полигоны — учебные реконструкции, а не точные административные границы. Для древних эпох рубежи часто спорны или известны приблизительно; особенно условны контуры Персидской державы и державы Александра.</p><h3 style="font-size:.92rem;margin:10px 0 4px">Федеральные требования и учебные источники</h3><ul><li><a href="https://publication.pravo.gov.ru/document/0001202107050027" target="_blank" rel="noopener">ФГОС основного общего образования: приказ Минпросвещения России от 31.05.2021 № 287, редакция с изменениями по состоянию на 2025 год.</a></li><li><a href="https://publication.pravo.gov.ru/document/0001202307140040" target="_blank" rel="noopener">Федеральная образовательная программа основного общего образования: приказ Минпросвещения России от 18.05.2023 № 370.</a></li><li><a href="https://www.consultant.ru/document/cons_doc_LAW_526439/" target="_blank" rel="noopener">Изменения к федеральным образовательным программам: приказ Минпросвещения России от 10.11.2025 № 808, зарегистрирован в Минюсте 11.02.2026; учитывать положения, вступившие в силу в 2026 году.</a></li><li><a href="https://edsoo.ru/wp-content/uploads/2025/07/istoriya_5-9_ooo_2025.pdf" target="_blank" rel="noopener">Федеральная рабочая программа «История» для 5–9 классов, редакция 2025 года (официальный ресурс «Единое содержание общего образования»).</a></li><li><a href="https://edu.gov.ru/press/9421/vneseny-izmeneniya-v-federalnye-programmy-nachalnogo-osnovnogo-i-srednego-obrazovaniya/" target="_blank" rel="noopener">Минпросвещения России: изменения федеральных программ, вступающие в силу с 1 сентября 2025 года.</a></li><li><a href="https://historyrussia.org/istoriko-kulturnyj-standart" target="_blank" rel="noopener">Историко-культурный стандарт Российского исторического общества — дополнительный тематический ориентир, не замена действующей федеральной рабочей программе.</a></li><li><a href="https://prosv.ru/product/istoriya-vseobschaya-istoriya-istoriya-drevnego-mira-5-klass191588401/" target="_blank" rel="noopener">Учебник «История Древнего мира. 5 класс» В. Р. Мединского и А. О. Чубарьяна, издание 2026 года, УМК госучебника.</a></li></ul><p class="small">Карта помогает отрабатывать предусмотренные программой умения: читать историческую карту и легенду, находить объекты, сравнивать эпохи, связывать природные условия и занятия людей. Она не заменяет учебник, атлас, работу с источниками и школьную программу. Сверка выполнена по ФГОС ООО (приказ № 287 от 31.05.2021 с изменениями, действующими с 01.09.2025), ФОП ООО (приказ № 370 от 18.05.2023 с изменениями, включая приказ № 808 от 10.11.2025) и федеральной рабочей программе «История» для 5–9 классов в редакции 2025 года. Это тематическая проверка назначения карты, а не государственная экспертиза или подтверждение полного соответствия каждого исторического контура.</p><h3 style="font-size:.92rem;margin:10px 0 4px">Российские атласы для сверки</h3><ul><li><a href="https://www.roslit.ru/catalog/atlasy_konturnye_karty/65740231/" target="_blank" rel="noopener">Б. С. Ляпустин. «История Древнего мира. Атлас» к госучебнику Мединского и Чубарьяна, «Просвещение», 2026, ISBN 978-5-09-128388-4.</a></li><li><a href="https://prosv.ru/product/istoriya-drevnego-mira-atlas-5-klass-istoriko-kul-turnii-standart01/" target="_blank" rel="noopener">«История Древнего мира. Атлас. 5 класс», «Просвещение», 2026, ISBN 978-5-09-129294-7.</a></li><li><a href="https://www.roslit.ru/catalog/atlasy_konturnye_karty/65740446/" target="_blank" rel="noopener">И. Л. Друбачевская, И. Е. Уколова. «История Древнего мира. 5 класс. Контурные карты» к госучебнику, «Просвещение», 2026, ISBN 978-5-09-128389-1 — дополнительная опора для учебных заданий.</a></li><li><a href="https://www.roslit.ru/catalog/906/55623618/" target="_blank" rel="noopener">Б. С. Ляпустин. «Атлас. История Древнего мира. 5 класс» (ФП2022), «Просвещение», 2025, ISBN 978-5-09-120471-1 — дополнительный российский атлас для сопоставления.</a></li></ul><p class="small">Библиографические данные этих российских изданий 2025–2026 годов подтверждены. Страницы с самими картами и контурными заданиями в открытом доступе сейчас не удалось прочитать, поэтому постраничная сверка границ не завершена. Крупные территории империй теперь показаны более лёгкой заливкой и пунктирным контуром как обобщённые зоны контроля; это не проверенные копии атласов. Для окончательной постраничной сверки нужны читаемые страницы соответствующих атласов. Новые обзорные слои Индии, Китая и Рима добавлены для охвата основных тем федеральной программы, но также требуют сверки с картами соответствующих эпох.</p><p class="small">Физическая подложка: Esri и поставщики географических данных. Цветные области — схематические исторические реконструкции.</p></div></aside></div>
-<div class="practice" aria-labelledby="practiceTitle">
-<h2 id="practiceTitle">Практика: атлас и контурная карта</h2>
-<p class="small">Короткие задания для 5-го класса: сначала попробуй найти объект самостоятельно, затем открой самопроверку. Задания составлены по темам карты и не заменяют точные задания на страницах вашего пособия.</p>
-<label for="practiceMode">Тип задания</label>
-<select id="practiceMode">
-<option value="atlas">Работа с атласом — найди объект</option>
-<option value="contour">Контурная карта — вспомни подпись</option>
-<option value="compare">Сравни эпохи</option><option value="terms">Термины — проверь себя</option><option value="sources">Исторические источники — определи значение</option>
-</select>
-<p id="practiceQuestion">Нажми «Новое задание», чтобы начать.</p>
-<div class="practice-controls"><button id="newTask" type="button">Новое задание</button><button id="showAnswer" type="button">Показать ответ</button><button id="focusTask" type="button">Показать на карте</button></div>
-<div id="practiceAnswer" class="answer" hidden></div>
-<p id="practiceStatus" class="practice-status" aria-live="polite">Подсказка: используй масштаб карты и подписи морей, рек и городов.</p>
-</div>
+
 <section id="quizPanel" class="panel workflow-panel" hidden aria-labelledby="quizTitle">
 <h2 id="quizTitle">Тест по истории Древнего мира</h2><p class="small">Выбери ответы на вопросы. После проверки результат сохранится в журнале этого браузера. Для передачи учителю выгрузи журнал кнопкой «Скачать CSV».</p>
 <div class="student-fields"><label>Имя ученика <input id="quizStudentName" type="text" maxlength="100" autocomplete="name" placeholder="Имя и фамилия"></label><label>Класс <input id="quizStudentClass" type="text" maxlength="30" placeholder="Например, 5А"></label></div>
