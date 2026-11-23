@@ -45,16 +45,15 @@ button{background:#304d61;color:white;border:0;font-weight:650}.curriculum-panel
 <button id="prev" type="button">← Назад</button><button id="next" type="button">Вперёд →</button>
 <label for="era">Исторический период:</label><select id="era">
 <option value="0">ок. 3000 г. до н. э. — ранний Египет и города Междуречья</option>
-<option value="1">ок. 2300 г. до н. э. — Аккадская держава</option>
-<option value="2">ок. 1500 г. до н. э. — Египет Нового царства</option>
-<option value="3">ок. 650 г. до н. э. — расцвет Новоассирийской державы</option>
-<option value="4">ок. 600 г. до н. э. — Вавилон и государства Восточного Средиземноморья</option>
-<option value="5">ок. 500 г. до н. э. — Персидская держава</option>
-<option value="6">ок. 330 г. до н. э. — завоевания Александра</option>
-<option value="7">ок. 250 г. до н. э. — держава Маурьев, царства Китая и Римская республика</option>
-<option value="8">ок. 100 г. н. э. — Римская империя, Ханьский Китай и кушаны</option>
-<option value="9">ок. 350 г. н. э. — держава Гуптов и поздняя Римская империя</option>
-<option value="10">476 г. н. э. — падение Западной Римской империи</option>
+<option value="1">ок. 1500 г. до н. э. — Египет Нового царства</option>
+<option value="2">ок. 650 г. до н. э. — расцвет Новоассирийской державы</option>
+<option value="3">ок. 600 г. до н. э. — Вавилон и государства Восточного Средиземноморья</option>
+<option value="4">ок. 500 г. до н. э. — Персидская держава</option>
+<option value="5">ок. 330 г. до н. э. — завоевания Александра</option>
+<option value="6">ок. 250 г. до н. э. — держава Маурьев, царства Китая и Римская республика</option>
+<option value="7">ок. 100 г. н. э. — Римская империя, Ханьский Китай и кушаны</option>
+<option value="8">ок. 350 г. н. э. — держава Гуптов и поздняя Римская империя</option>
+<option value="9">476 г. н. э. — падение Западной Римской империи</option>
 </select><span class="period" id="period">Период 1 из 10</span>
 <label class="boundary-mode" for="boundaryFocus"><input id="boundaryFocus" type="checkbox" checked><span><strong>Акцент на границах государств</strong><span class="small">Чёткие контуры и более прозрачная заливка — удобнее сравнивать территории.</span></span></label><div id="campaignButtons" class="campaign-selectors" aria-label="Исторические походы и завоевания">
 <button type="button" data-campaign="1">Походы Тутмоса III</button>
@@ -377,11 +376,11 @@ map.attributionControl.remove();
 L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Physical_Map/MapServer/tile/{z}/{y}/{x}',{maxZoom:8,attribution:''}).addTo(map);
 
 const G5_CLI_URL='https://services2.arcgis.com/wx8u046p68e0iGuj/arcgis/rest/services/Aligned_Cliopatria_v1.1_WGS84/FeatureServer/0/query';
-const g5PolityLayer=L.featureGroup().addTo(map),g5PolityCache=new Map(),g5HistoricalOutlineLayer=L.featureGroup().addTo(map);
+const g5PolityLayer=L.featureGroup().addTo(map),g5PolityCache=new Map();
 let g5PolityRequest=0,g5AvailableYears=null,g5ActiveFeatures=[],g5LegendEntries=[],g5HasInitialFit=false;
 let cityLabelsVisible=false;
 function setCityLabelsVisible(visible){cityLabelsVisible=!!visible;['cityLayer','mesoCityLayer','worldCityLayer'].forEach(key=>{const group=window[key];if(!group)return;group.eachLayer(marker=>{if(cityLabelsVisible)marker.openTooltip();else marker.closeTooltip();});});const button=document.getElementById('cityLabelsToggle');if(button){button.setAttribute('aria-pressed',String(cityLabelsVisible));button.textContent=cityLabelsVisible?'Скрыть названия городов':'Показать названия городов';}}
-const g5TargetYears=[-3050,-2300,-1500,-650,-600,-500,-330,-250,100,350,476];
+const g5TargetYears=[-3050,-1500,-650,-600,-500,-330,-250,100,350,476];
 const g5Names={
 'Early Dynastic Period Of Egypt':'Раннединастический период Египта','The Early Dynastic Period Of Egypt':'Раннединастический период Египта','Early Dynastic Period of Egypt':'Раннединастический период Египта','Early Dynastic Period':'Раннединастический период','Archaic Egypt':'Раннединастический Египет','Predynastic Egypt':'Додинастический Египет','Old Kingdom of Egypt':'Древнее царство Египта','Middle Kingdom of Egypt':'Среднее царство Египта','New Kingdom of Egypt':'Новое царство Египта','First Intermediate Period':'Первый переходный период Египта','Second Intermediate Period':'Второй переходный период Египта','Third Intermediate Period':'Третий переходный период Египта','Late Period of Egypt':'Поздний период Египта','Ancient Egyptian Kingdom':'Древнеегипетское царство','Upper Egypt':'Верхний Египет','Lower Egypt':'Нижний Египет','Egypt':'Египет','Early Dynastic Egypt':'Раннединастический Египет','Old Kingdom':'Древнее царство Египта','Middle Kingdom':'Среднее царство Египта','New Kingdom':'Новое царство Египта',
 'Sumer':'Шумер','Sumerian city-states':'Шумерские города-государства','Uruk':'Урук','Ur':'Ур','Lagash':'Лагаш','Akkad':'Аккад','Akkadian Empire':'Аккадская держава','Babylonia':'Вавилония','Babylon':'Вавилон','Kassite Babylonia':'Вавилония касситов','Assyria':'Ассирия','Neo-Assyrian Empire':'Новоассирийская держава','Hittite Empire':'Хеттская держава','Hittites':'Хетты','Mitanni':'Митанни','Elam':'Элам','Phoenicia':'Финикия','Phoenician city-states':'Финикийские города','Kingdom of Israel':'Израильское царство','Kingdom of Judah':'Иудейское царство',
@@ -601,15 +600,8 @@ const territories=[
 {key:'north_black_sea_greek',eras:[3,4,5,6],coords:[[47.0,28.0],[47.5,33.0],[46.0,37.0],[43.0,36.5],[42.0,32.0],[44.0,28.5],[47.0,28.0]]},
 {key:'sarmatians',eras:[7,8],coords:[[50.0,27.0],[53.0,36.0],[52.0,47.0],[48.0,55.0],[44.0,47.0],[43.0,38.0],[46.0,30.0],[50.0,27.0]]}
 ];
-// Existing outline epochs move one position later because a dedicated Akkadian period was inserted.
-territories.forEach(t=>{t.eras=t.eras.map(i=>i>=1?i+1:i);});
-territories.push({
- key:'akkad',eras:[1],
- coords:[[36.3,36.5],[36.0,39.5],[35.0,42.0],[34.0,45.5],[32.0,48.0],[29.5,48.5],[27.0,48.0],[25.0,46.0],[24.5,43.5],[26.0,40.5],[28.5,38.0],[31.0,36.5],[34.0,35.5],[36.3,36.5]]
-});
 const eraData=[
 {date:'ок. 3100–3000 гг. до н. э.',title:'Ранний Египет и города Междуречья',text:'На юге долины Нила находился Верхний Египет, а на севере, в дельте, — Нижний Египет. Около 3100 г. до н. э. правитель Нармер связан с объединением двух земель. Его нередко отождествляют с Менесом, известным по более поздней традиции, однако такое отождествление остаётся предметом научной дискуссии. В Южном Междуречье развивались города-государства, в том числе Ур, Урук и Лагаш. Их не следует изображать как единую империю.',keys:['egypt','sumer']},
-{date:'ок. 2300 г. до н. э.',title:'Аккадская держава и объединение Междуречья',text:'В XXIV–XXIII веках до н. э. Саргон Аккадский подчинил ряд городов-государств Южного и Центрального Междуречья. При его преемниках власть Аккада распространилась на значительную часть Междуречья и соседние области. На карте показана приблизительная зона наибольшего расширения державы, а не точная линия постоянной границы: контроль над окраинами менялся.',keys:['akkad']},
 {date:'ок. 1500 г. до н. э.',title:'Египет Нового царства и соседние регионы',text:'Египет Нового царства расширял влияние на Нубию и Левант. В северной Месопотамии находились Ашшур и Ниневия: Ниневия уже была древним городским центром, но ещё не являлась царской столицей Ассирии. Ашшур был главным политическим центром ранней Ассирии; примерно с XIV в. до н. э. регион оказался под сильным влиянием Митанни. Вавилон был столицей касситской Вавилонии. В микенской Греции существовали отдельные дворцовые центры, а не единое государство. Золотые маркеры со звездой обозначают столичные центры и царские резиденции; обычные точки — города, не являвшиеся столицами в выбранную дату.',keys:['egypt','nubia','levant_egypt','babylon_kassite','assyria','hittites','phoenicia','greek']},
 {date:'ок. 650 г. до н. э.',title:'Расцвет Новоассирийской державы',text:'Около 650 г. до н. э. Ассирийская держава контролировала значительную часть Передней Азии; её влияние распространялось на Месопотамию, Левант и в отдельные годы Египет. После падения Ниневии в 612 г. до н. э. империя быстро распалась. Следующая эпоха показывает уже усиление Нововавилонского царства. Контур ассирийских владений схематичен.',keys:['assyria_peak','phoenicia','greek']},
 {date:'ок. 600 г. до н. э.',title:'Вавилон и государства Восточного Средиземноморья',text:'Новоассирийская держава пала в конце VII века до н. э. Поэтому около 600 г. до н. э. Ассирия уже не показана как действующая империя: важнейшей силой в Южном Междуречье было Нововавилонское царство со столицей в Вавилоне; его власть распространялась на значительную часть Месопотамии и Леванта. Египет в этот период восстановил самостоятельность после ассирийского господства. На карте показаны основные регионы, а не точные административные границы.',keys:['egypt','babylon','phoenicia','greek','judah','scythians','north_black_sea_greek']},
@@ -717,19 +709,6 @@ document.getElementById('campaignPlay').addEventListener('click',campaignToggleP
 document.getElementById('campaignClose').addEventListener('click',()=>{campaignStopTimer();document.getElementById('campaignPlayer').hidden=true;clearCampaign();});
 function render(){clearCampaign();idx=Math.max(0,Math.min(eraData.length-1,idx));const e=eraData[idx];loadGrade5Cliopatria(g5TargetYears[idx]);document.getElementById('era').value=idx;document.getElementById('period').textContent='Период '+(idx+1)+' из '+eraData.length;document.getElementById('eraTitle').textContent=e.title;document.getElementById('eraText').textContent=e.text;document.getElementById('eraDate').textContent='Ориентировочная дата: '+e.date;document.getElementById('prev').disabled=idx===0;document.getElementById('next').disabled=idx===eraData.length-1;
 layers.forEach(l=>map.removeLayer(l));layers=[];if(window.nileLayer)map.removeLayer(window.nileLayer);if(window.mesopotamiaRiverLayer)map.removeLayer(window.mesopotamiaRiverLayer);if(window.cityLayer)map.removeLayer(window.cityLayer);if(window.mesoCityLayer)map.removeLayer(window.mesoCityLayer);if(window.worldCityLayer)map.removeLayer(window.worldCityLayer);if(window.practiceMarker){map.removeLayer(window.practiceMarker);window.practiceMarker=null;}if(window.geographyLabelLayer)map.removeLayer(window.geographyLabelLayer);if(window.geoLabelLayer)map.removeLayer(window.geoLabelLayer);if(window.egyptLabels)map.removeLayer(window.egyptLabels);if(window.historyLabelLayer)map.removeLayer(window.historyLabelLayer);const keyEl=document.getElementById('key');keyEl.innerHTML='';
-g5HistoricalOutlineLayer.clearLayers();
-const selectedOutlines=territories.filter(t=>['egypt','persian_egypt','alexander_egypt','akkad'].includes(t.key)&&t.eras.includes(idx));
-selectedOutlines.forEach(t=>{
- const color=t.key==='akkad'?'#a84b32':'#b47b28';
- const options={color,weight:2.4,opacity:.98,fillColor:color,fillOpacity:t.key==='akkad'?.20:.25,lineJoin:'round',dashArray:t.key==='akkad'?'6 4':null};
- const pieces=t.parts||[t.coords];
- pieces.filter(Boolean).forEach(coords=>{
-  const polygon=L.polygon(coords,options).addTo(g5HistoricalOutlineLayer);
-  polygon.bindPopup(t.key==='akkad'
-   ?'<strong>Аккадская держава</strong><br>Ориентировочная зона наибольшего расширения при Саргоне и его преемниках (XXIV–XXIII вв. до н. э.). Это учебная реконструкция зоны влияния, а не точная административная граница.'
-   :'<strong>Древний Египет</strong><br>Показаны дельта и долина Нила — историческое ядро государства. Контур схематичен; политические рубежи и южная граница менялись в разные эпохи.');
- });
-});
 window.setTimeout(()=>map.invalidateSize({pan:false}),140);
 
 // Русские названия исторических областей; современных названий стран на подложке нет.
@@ -743,8 +722,8 @@ window.geographyLabelLayer=L.layerGroup(geographyLabels.map(([name,lat,lon,width
 
 // Nile is drawn as a geographic line, with the delta branching northwards.
 const nileCoords=[[4.0,32.5],[9.0,32.5],[15.0,32.5],[18.0,32.6],[20.5,32.8],[22.0,31.7],[23.0,32.7],[24.1,32.9],[25.7,32.65],[27.0,32.5],[28.5,32.4],[29.8,31.2],[30.2,31.0],[30.7,30.8],[31.2,30.5]];
-window.nileLayer=L.polyline(nileCoords,{color:'#1688b5',weight:2.5,opacity:.78,lineCap:'round',lineJoin:'round'}).addTo(map);
-window.nileLayer.bindPopup('<strong>Нил</strong><br>Река течёт с юга на север и образует дельту у Средиземного моря. Поселения Древнего Египта тянулись вдоль её долины. Голубая линия показывает только русло реки, а не границу государства.');
+window.nileLayer=L.polyline(nileCoords,{color:'#1688b5',weight:3,opacity:.9,dashArray:'7 4'}).addTo(map);
+window.nileLayer.bindPopup('<strong>Нил</strong><br>Река течёт с юга на север и образует дельту у Средиземного моря. Поселения Древнего Египта тянулись вдоль её долины.');
 
 // Тигр и Евфрат — ориентировочные линии русел для учебной географической ориентации.
 window.mesopotamiaRiverLayer=L.layerGroup([
@@ -752,8 +731,6 @@ window.mesopotamiaRiverLayer=L.layerGroup([
  L.polyline([[38.0,38.0],[37.0,38.5],[36.0,38.0],[35.0,38.2],[34.0,39.0],[33.0,40.0],[32.5,42.5],[32.0,44.0],[31.5,45.5],[30.9,47.0],[30.4,47.7]],{color:'#1688b5',weight:3,opacity:.9,dashArray:'7 4'}).bindPopup('<strong>Евфрат</strong><br>Западная из двух главных рек Месопотамии. Вавилон располагался на Евфрате; ниже по течению Евфрат соединяется с Тигром. Линия русла схематична.')
 ]).addTo(map);
 const cities=[['Саис',30.97,30.77,'Город в западной дельте Нила. При XXVI династии (Саисской династии) в VII–VI вв. до н. э. был царской резиденцией и столицей Египта.',[3],{3:'столица Египта при XXVI династии'}],['Мемфис',29.85,31.25,'Один из важнейших политических и административных центров Египта у начала дельты Нила; его значение менялось в разные эпохи.',[0,1,3,4,5]],['Гиза',29.98,31.13,'Древний некрополь пирамид рядом с Мемфисом. Пирамидный комплекс относится к эпохе Древнего царства, а не к Новому царству.',[1,3,4,5]],['Фивы',25.7,32.65,'Один из главных царских и религиозных центров Египта; в эпоху Нового царства здесь находилась важнейшая царская резиденция.',[1,3,4,5],{1:'важнейшая царская резиденция Нового царства'}],['Асуан',24.09,32.9,'Район первого порога Нила и южной границы Египта в разные периоды.',[0,1,3,4,5]],['Аварис',30.8,32.0,'Бывший центр гиксосов. После их изгнания около 1550 г. до н. э. город утратил прежнее политическое значение; здесь он отмечен как исторический ориентир, а не столица Нового царства.',[1]]];
-function shiftEpochs(rows){rows.forEach(row=>{if(Array.isArray(row[4]))row[4]=row[4].map(v=>v>=1?v+1:v);if(row[5]&&typeof row[5]==='object'){const shifted={};Object.entries(row[5]).forEach(([k,v])=>shifted[Number(k)>=1?String(Number(k)+1):k]=v);row[5]=shifted;}});}
-shiftEpochs(cities);
 window.cityLayer=L.layerGroup(cities.filter(c=>c[4].includes(idx)).map(([name,lat,lon,info,eras,roles])=>{const role=roles?.[idx],capital=!!role,marker=L.circleMarker([lat,lon],{radius:capital?7:4,color:'#fff',weight:capital?2.2:1,fillColor:capital?'#d39a27':'#273746',fillOpacity:1});marker.bindPopup('<strong>'+name+'</strong><br><b>'+(role?role[0].toUpperCase()+role.slice(1):'Город / исторический центр; не столица в данном срезе')+'</b><br>'+info);marker.bindTooltip((capital?'★ ':'')+name,{permanent:false,direction:'top',offset:[0,-5],className:'city-tooltip'});return marker;})).addTo(map);
 const mesopotamiaCities=[
  ['Ур',30.962,46.103,'Важный город Южного Междуречья; в ранний период — центр самостоятельного шумерского города-государства.',[0],{0:'центр города-государства'}],
@@ -764,8 +741,6 @@ const mesopotamiaCities=[
  ['Ниневия',36.359,43.152,'Древний город северной Месопотамии. Столицей царской державы стал при Синаххерибе в конце VIII — начале VII в. до н. э.; разрушен в 612 г. до н. э.',[1,2],{2:'царская столица Новоассирийской державы'}],
  ['Кальху (Нимруд)',36.10,43.33,'Ашшурнасирпал II сделал город царской столицей в IX в. до н. э. После переноса двора в Дур-Шаррукин, а затем в Ниневию он сохранял значение крупного ассирийского центра.',[2],{2:'прежняя царская столица Ассирии'}]
 ];
-function shiftEpochs(rows){rows.forEach(row=>{if(Array.isArray(row[4]))row[4]=row[4].map(v=>v>=1?v+1:v);if(row[5]&&typeof row[5]==='object'){const shifted={};Object.entries(row[5]).forEach(([k,v])=>shifted[Number(k)>=1?String(Number(k)+1):k]=v);row[5]=shifted;}});}
-shiftEpochs(mesopotamiaCities);
 window.mesoCityLayer=L.layerGroup(mesopotamiaCities.filter(c=>c[4].includes(idx)).map(([name,lat,lon,info,eras,roles])=>{const role=roles?.[idx],capital=!!role,marker=L.circleMarker([lat,lon],{radius:capital?7:4.5,color:'#fff',weight:capital?2.2:1.5,fillColor:capital?'#d39a27':'#7b382b',fillOpacity:1});marker.bindPopup('<strong>'+name+'</strong><br><b>'+(role?role[0].toUpperCase()+role.slice(1):'Город / исторический центр; не столица в данном срезе')+'</b><br>'+info);marker.bindTooltip((capital?'★ ':'')+name,{permanent:false,direction:'top',offset:[0,-5],className:'city-tooltip'});return marker;})).addTo(map);
 const worldCities=[
  ['Рим',41.89,12.49,'Политический центр Рима; в 250 г. до н. э. — столица республики, позднее — важнейший город империи. В 476 г. последний западный император был смещён в Равенне, а не в Риме.',[6,7,8,9],{6:'столица Римской республики',7:'столица Римской империи'}],
@@ -791,8 +766,6 @@ const worldCities=[
  ['Сузы',32.19,48.25,'Древний город Элама, при Ахеменидах — важный административный и царский центр; двор перемещался между несколькими резиденциями.',[4],{4:'один из главных административных и царских центров Ахеменидов'}],
  ['Экбатаны',34.80,48.52,'Древний город Мидии, использовавшийся Ахеменидами как сезонная летняя царская резиденция.',[4],{4:'сезонная летняя царская резиденция Ахеменидов'}]
 ];
-function shiftEpochs(rows){rows.forEach(row=>{if(Array.isArray(row[4]))row[4]=row[4].map(v=>v>=1?v+1:v);if(row[5]&&typeof row[5]==='object'){const shifted={};Object.entries(row[5]).forEach(([k,v])=>shifted[Number(k)>=1?String(Number(k)+1):k]=v);row[5]=shifted;}});}
-shiftEpochs(worldCities);
 window.worldCityLayer=L.layerGroup(worldCities.filter(c=>c[4].includes(idx)).map(([name,lat,lon,info,eras,roles])=>{const role=roles?.[idx],capital=!!role,marker=L.circleMarker([lat,lon],{radius:capital?7:4.5,color:'#fff',weight:capital?2.2:1.5,fillColor:capital?'#d39a27':'#4a5d8a',fillOpacity:1});marker.bindPopup('<strong>'+name+'</strong><br><b>'+(role?role[0].toUpperCase()+role.slice(1):'Город / исторический центр; не столица в данном срезе')+'</b><br>'+info);marker.bindTooltip((capital?'★ ':'')+name,{permanent:false,direction:'top',offset:[0,-5],className:'city-tooltip'});return marker;})).addTo(map);document.getElementById('cityLegendNote')?.remove();const cityNote=document.createElement('p');cityNote.id='cityLegendNote';cityNote.className='city-legend-note';cityNote.textContent='Золотая точка со звездой — столица, царская резиденция или главный политический центр именно выбранной эпохи; синие и тёмно-красные точки — другие города. Статус города менялся со временем.';document.getElementById('eraText').after(cityNote);setCityLabelsVisible(cityLabelsVisible);
 const geoLabels=[['Синай',29.8,34.1],['Ливийская пустыня',26.8,27.8]];
 window.geoLabelLayer=L.layerGroup(geoLabels.map(([name,lat,lon])=>L.marker([lat,lon],{interactive:false,icon:L.divIcon({className:'geo-label',html:'<span style="color:#426c7b;font-style:italic;font-size:12px;white-space:nowrap;text-shadow:0 1px #fff">'+name+'</span>',iconSize:[130,18],iconAnchor:[65,9]})}))).addTo(map);
