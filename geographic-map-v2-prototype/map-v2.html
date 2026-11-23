@@ -555,7 +555,8 @@ async function loadGrade5Cliopatria(targetYear){
   else if(!courseFeatures.length)periodDate.textContent+=' · данные источника получены, но в этом срезе не найдено название из списка тем 5-го класса';
   if(targetYear===-700&&!courseFeatures.some(f=>/assyria/i.test(String(f.properties?.Name||''))))periodDate.textContent+=' · Новоассирийская держава в данных этого среза не найдена';
   if((targetYear===-500||targetYear===-330)&&!courseFeatures.some(f=>/greek.?city.?states/i.test(String(f.properties?.Name||''))))periodDate.textContent+=' · контур греческих полисов в данных этого среза не найден';
-  periodDate.textContent+=' · Египет: '+(egyptFeatures.length?'найдено '+egyptFeatures.length+' контуров':'контур в источнике не найден')+' · Финикия: '+(phoeniciaFeatures.length?'найдено '+phoeniciaFeatures.length+' контуров':'городские центры отмечены отдельными точками');
+  periodDate.textContent+=' · Египет: '+(egyptFeatures.length?'найдено '+egyptFeatures.length+' контуров':'контур в источнике не найден; географическое ядро показано отдельным слоем')+' · Финикия: '+(phoeniciaFeatures.length?'найдено '+phoeniciaFeatures.length+' контуров':'городские центры отмечены отдельными точками');
+  if(targetYear===-671)periodDate.textContent+=' · Нижний Египет выделен отдельной исторической реконструкцией; Верхний Египет не показан как постоянное владение Ассирии';
  }catch(e){
   if(request!==g5PolityRequest)return;console.warn(e);
   periodDate.textContent+=' · исторические контуры не загрузились: '+e.message;
@@ -832,6 +833,8 @@ const mesopotamiaCities=[
  ['Кальху (Нимруд)',36.10,43.33,'Ашшурнасирпал II сделал город царской столицей в IX в. до н. э. После переноса двора в Дур-Шаррукин, а затем в Ниневию он сохранял значение крупного ассирийского центра.',[2],{2:'прежняя царская столица Ассирии'}]
 ];
 shiftEraIndices(mesopotamiaCities);insertEraIndex(mesopotamiaCities,4);
+['Ниневия','Кальху (Нимруд)','Ашшур'].forEach(name=>{const city=mesopotamiaCities.find(row=>row[0]===name);if(city&&!city[4].includes(4))city[4].push(4);});
+const ninevehCity=mesopotamiaCities.find(row=>row[0]==='Ниневия');if(ninevehCity){ninevehCity[5]=ninevehCity[5]||{};ninevehCity[5][4]='царская столица Новоассирийской державы при Асархаддоне';}
 // Города Шумера сохраняются на срезе Аккадской державы, но уже без статуса самостоятельных городов-государств.
 ['Ур','Урук','Лагаш','Вавилон'].forEach(name=>{
  const city=mesopotamiaCities.find(row=>row[0]===name);
