@@ -55,7 +55,7 @@ button{background:#304d61;color:white;border:0;font-weight:650}.curriculum-panel
 <option value="8">ок. 100 г. н. э. — Римская империя, Ханьский Китай и кушаны</option>
 <option value="9">ок. 350 г. н. э. — держава Гуптов и поздняя Римская империя</option>
 <option value="10">476 г. н. э. — падение Западной Римской империи</option>
-</select><span class="period" id="period">Период 1 из 10</span>
+</select><span class="period" id="period">Период 1 из 11</span>
 <label class="boundary-mode" for="boundaryFocus"><input id="boundaryFocus" type="checkbox" checked><span><strong>Акцент на границах государств</strong><span class="small">Чёткие контуры и более прозрачная заливка — удобнее сравнивать территории.</span></span></label><div id="campaignButtons" class="campaign-selectors" aria-label="Исторические походы и завоевания">
 <button type="button" data-campaign="1">Походы Тутмоса III</button>
 <button type="button" data-campaign="2">Расширение Ассирийской державы</button>
@@ -92,7 +92,7 @@ button{background:#304d61;color:white;border:0;font-weight:650}.curriculum-panel
 <div id="practiceAnswer" class="answer" hidden></div>
 <p id="practiceStatus" class="practice-status" aria-live="polite">Подсказка: используй масштаб карты и подписи морей, рек и городов.</p>
 </div>
-<div class="columns"><section><div class="map-toolbar"><button id="cityLabelsToggle" type="button" aria-pressed="false">Показать названия городов</button><span class="small">Подписи отмеченных городов можно включать и скрывать</span></div><div id="map" role="application" aria-label="Интерактивная географическая карта Древнего мира"></div>
+<div class="columns"><section><div class="map-toolbar"><button id="cityLabelsToggle" type="button" aria-pressed="true">Скрыть названия городов</button><span class="small">Подписи отмеченных городов можно включать и скрывать</span></div><div id="map" role="application" aria-label="Интерактивная географическая карта Древнего мира"></div>
 <div class="g5-legend-tools"><input class="g5-legend-search" id="g5LegendSearch" type="search" placeholder="Найти государство…" aria-label="Найти государство в легенде"><span class="g5-legend-count" id="g5LegendCount">Загрузка исторических образований…</span></div><div class="key" id="key" aria-live="polite"></div><p class="small" style="margin:5px 0 12px">В легенде оставлены только государства и политические образования, относящиеся к темам курса 5-го класса. Контуры древних территорий — научные реконструкции; они не означают одинаково плотного контроля над всей окрашенной областью.</p></section>
 <aside><div class="panel"><h2 id="eraTitle">Египет и Междуречье</h2><p id="eraText">Нажми на цветную область, чтобы открыть справку.</p><p class="small" id="eraDate"></p></div>
 <div class="panel"><h2 id="stateTitle">Выбери государство</h2><p id="stateInfo">Нажми на цветную территорию на карте или на элемент легенды.</p><div id="stateMedia" class="history-media" hidden></div></div>
@@ -486,7 +486,7 @@ function renderG5Legend(){
   const b=document.createElement('span'),sw=document.createElement('i');
   b.tabIndex=0;b.setAttribute('role','button');b.setAttribute('aria-label','Показать на карте: '+g5Translate(raw));
   sw.className='swatch';sw.style.background=g5Color(p.Color);b.append(sw,document.createTextNode(g5Translate(raw)));
-  const activate=()=>{const feature=g5ActiveFeatures.find(f=>f.properties?.Name===raw);if(!feature)return;const bounds=L.geoJSON(feature).getBounds();if(bounds.isValid())map.fitBounds(bounds.pad(.2),{maxZoom:6});g5SelectPolity(p);};
+  const activate=()=>{const feature=g5ActiveFeatures.find(f=>f.properties?.Name===raw);if(!feature&&raw==='Egypt'&&idx===0&&window.earlyEgyptStateLayer){const bounds=window.earlyEgyptStateLayer.getBounds();if(bounds.isValid())map.fitBounds(bounds.pad(.2),{maxZoom:6});g5SelectPolity({Name:'Egypt',Year:-3050,AreaSqKM:0});return;}if(!feature)return;const bounds=L.geoJSON(feature).getBounds();if(bounds.isValid())map.fitBounds(bounds.pad(.2),{maxZoom:6});g5SelectPolity(p);};
   b.addEventListener('click',activate);b.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();activate();}});
   box.appendChild(b);
  });
@@ -503,7 +503,7 @@ function g5SelectPolity(p){
  parts.push('Контур — научная реконструкция. Он не означает одинаково плотного контроля над всей территорией.');
  document.getElementById('stateInfo').textContent=parts.join(' ');
  const media=document.getElementById('stateMedia');
- if(/egypt|egyptian/i.test(rawName)){
+ if(/egypt|egyptian/i.test(rawName)&&idx===0){
   media.hidden=false;
   media.innerHTML=`
   <h3 style="font-size:.98rem;margin:0 0 6px">Объединение Верхнего и Нижнего Египта</h3>
@@ -557,6 +557,7 @@ async function loadGrade5Cliopatria(targetYear){
    l.bindPopup('<strong>'+name+'</strong><br><b>Краткая историческая справка</b><br>'+g5HistoricalBrief(p.Name,name,Number(p.Year))+'<br><span class=\'small\'>Дата исторического среза: '+(Number(p.Year)<0?Math.abs(Number(p.Year))+' г. до н. э.':Number(p.Year)+' г. н. э.')+'</span>');
   }}).addTo(g5PolityLayer);
   const unique=new Map();courseFeatures.forEach(f=>{const p=f.properties||{};if(p.Name&&!unique.has(p.Name))unique.set(p.Name,p);});
+  if(targetYear===-3050&&!unique.has('Egypt'))unique.set('Egypt',{Name:'Egypt',Year:-3050,AreaSqKM:0,Color:'#d9a441'});
   g5LegendEntries=[...unique.entries()].sort((a,b)=>g5Translate(a[0]).localeCompare(g5Translate(b[0]),'ru'));renderG5Legend();
   const bounds=g5PolityLayer.getBounds();
   if(!g5HasInitialFit&&bounds.isValid()){map.fitBounds(bounds,{padding:[18,18],maxZoom:4.5});g5HasInitialFit=true;}
@@ -685,7 +686,7 @@ const eraData=[
 {date:'ок. 350 г. н. э.',title:'Держава Гуптов и поздняя Римская империя',text:'В IV в. н. э. в Северной Индии усилилась держава Гуптов. Римская империя оставалась единой, хотя после реформ Диоклетиана и Константина управление стало сложнее; окончательное разделение на Западную и Восточную империи относится к 395 г. н. э. В Китае после падения Хань давно существовали разные государства; контур показывает регион Северного Китая, а не единую империю.',keys:['gupta','roman_empire','jin_china','sarmatians']},
 {date:'476 г. н. э.',title:'Падение Западной Римской империи',text:'В 476 г. н. э. был смещён последний западный император Ромул Августул. Эта дата традиционно обозначает конец Западной Римской империи, но не исчезновение римской государственности: Восточная Римская империя продолжила существовать. В Северной Индии ещё существовала держава Гуптов, а Китай был разделён между несколькими государствами. Границы на карте обобщены.',keys:['west_rome','east_rome','gupta']}
  ];
-eraData.splice(4,1);
+/* Срез около 600 г. до н. э. сохранён: он нужен для показа Нововавилонского царства. */
 let idx=0,layers=[],boundaryFocus=true;
 document.getElementById('boundaryFocus').addEventListener('change',e=>{boundaryFocus=e.target.checked;render();});
 function getDescription(key){const d=descriptions[key];if(key==='egypt'&&idx===0)return {name:'Единое государство Египет',info:'Около 3100 г. до н. э. Верхний и Нижний Египет объединены в одно царство. На карте они показаны одной территорией вдоль долины и в дельте Нила; точная граница раннего государства реконструируется приблизительно.'};if(key==='egypt'&&idx===2)return {name:'Египет Нового царства',info:'Около 1500 г. до н. э. Египет был крупной державой. Основное ядро показано вдоль Нила, а расширение власти на юг и северо-восток отмечено отдельными зонами Нубии и Леванта. Это учебная схема, не точная административная карта.'};if(key==='egypt'&&idx===4)return {name:'Египет около 600 г. до н. э.',info:'После падения Ассирии Египет восстановил самостоятельность при XXVI династии. На карте показано единое ядро государства вдоль Нила; исторические рубежи обозначены схематично.'};if(key==='greek'&&idx===2)return {name:'Микенский мир',info:'Около 1500 г. до н. э. в материковой Греции существовали микенские дворцовые центры. Это обозначение культурного региона, а не единого государства.'};if(key==='greek'&&idx>=5)return {name:'Греческие полисы',info:'В I тысячелетии до н. э. греческий мир состоял из самостоятельных полисов и регионов. Контур обозначает культурно-географическую область, а не единую империю.'};return d;}
@@ -717,19 +718,19 @@ const campaigns={
  {name:'Нижнее море — Персидский залив',lat:29.0,lon:48.5,date:'предел державы',info:'В учебнике Нижнее море отождествляется с Персидским заливом — южным пределом державы.'},
  {name:'Египет — исторический контекст',lat:29.85,lon:31.25,date:'VII в. до н. э.',info:'В период наибольшего могущества Ассирия вмешивалась и в дела Египта. На короткое время ассирийская власть распространилась на Нижний Египет, но для школьной карты важнее общий масштаб державы в Передней Азии; Египет не следует изображать как её постоянную территорию.'}
  ]},
- 3:{eraIndex:4,title:'Поход Асархаддона в Египет',period:'671 г. до н. э.',note:'Важное уточнение для карты: ассирийцы подчинили Нижний Египет и захватили Мемфис. Нельзя закрашивать всю долину Нила как одинаково и надолго присоединённую территорию.',segments:[[[36.36,43.15],[31.5,34.47],[29.85,31.25]]],overlay:{fromStop:2,label:'Нижний Египет под властью Ассирии · 671 г. до н. э.'},stops:[
+ 3:{eraIndex:3,title:'Поход Асархаддона в Египет',period:'671 г. до н. э.',note:'Важное уточнение для карты: ассирийцы подчинили Нижний Египет и захватили Мемфис. Нельзя закрашивать всю долину Нила как одинаково и надолго присоединённую территорию.',segments:[[[36.36,43.15],[31.5,34.47],[29.85,31.25]]],overlay:{fromStop:2,label:'Нижний Египет под властью Ассирии · 671 г. до н. э.'},stops:[
  {name:'Ниневия',lat:36.36,lon:43.15,date:'671 г. до н. э.',info:'Царская столица Ассирии при Асархаддоне.'},
  {name:'Южный Левант',lat:31.5,lon:34.47,date:'671 г. до н. э.',info:'Ассирийская армия продвинулась через подвластные и зависимые области к Египту.'},
  {name:'Мемфис',lat:29.85,lon:31.25,date:'671 г. до н. э.',info:'Асархаддон захватил Мемфис. Ассирийская власть распространилась на Нижний Египет; Тахарка сохранил опору южнее.'}
  ]},
- 4:{eraIndex:6,title:'Завоевания державы Ахеменидов',period:'VI–V века до н. э.',note:'Показаны отдельные этапы расширения державы Кира II и Камбиса II. Это не маршрут одного похода: завоевание Лидии, Вавилона и Египта происходило в разные годы.',segments:[[[30.2,53.18],[38.49,28.04]],[[30.2,53.18],[32.54,44.42]],[[32.54,44.42],[29.85,31.25]]],stops:[
+ 4:{eraIndex:5,title:'Завоевания державы Ахеменидов',period:'VI–V века до н. э.',note:'Показаны отдельные этапы расширения державы Кира II и Камбиса II. Это не маршрут одного похода: завоевание Лидии, Вавилона и Египта происходило в разные годы.',segments:[[[30.2,53.18],[38.49,28.04]],[[30.2,53.18],[32.54,44.42]],[[32.54,44.42],[29.85,31.25]]],stops:[
  {name:'Пасаргады',lat:30.2,lon:53.18,date:'VI в. до н. э.',info:'Один из ранних центров Кира II и важнейшая царская резиденция Ахеменидов.'},
  {name:'Сарды',lat:38.49,lon:28.04,date:'546 г. до н. э.',info:'После победы Кира II над Крезом Лидийское царство было присоединено к Персидской державе.'},
  {name:'Вавилон',lat:32.54,lon:44.42,date:'539 г. до н. э.',info:'Кир II овладел Вавилоном. Город сохранил большое административное и религиозное значение.'},
  {name:'Мемфис',lat:29.85,lon:31.25,date:'525 г. до н. э.',info:'Камбис II завоевал Египет; страна стала частью державы Ахеменидов.'},
  {name:'Персеполь',lat:29.93,lon:52.89,date:'конец VI–V вв. до н. э.',info:'Царский церемониальный центр, строительство которого развернулось при Дарии I.'}
  ]},
- 5:{eraIndex:7,title:'Поход Александра Македонского',period:'334–330 годы до н. э.',note:'Показан путь завоевания державы Ахеменидов до 330 г. до н. э. Дальнейшие походы в Бактрию, Согдиану и Индию относятся к последующим годам.',segments:[[[40.75,22.52],[40.25,27.15],[38.49,28.04],[39.72,31.77],[36.86,36.2]],[[36.86,36.2],[33.27,35.2],[31.5,34.47],[29.85,31.25]],[[29.85,31.25],[31.5,34.47],[33.27,35.2],[36.36,43.25],[32.54,44.42],[32.19,48.25],[29.93,52.89]]],stops:[
+ 5:{eraIndex:6,title:'Поход Александра Македонского',period:'334–330 годы до н. э.',note:'Показан путь завоевания державы Ахеменидов до 330 г. до н. э. Дальнейшие походы в Бактрию, Согдиану и Индию относятся к последующим годам.',segments:[[[40.75,22.52],[40.25,27.15],[38.49,28.04],[39.72,31.77],[36.86,36.2]],[[36.86,36.2],[33.27,35.2],[31.5,34.47],[29.85,31.25]],[[29.85,31.25],[31.5,34.47],[33.27,35.2],[36.36,43.25],[32.54,44.42],[32.19,48.25],[29.93,52.89]]],stops:[
  {name:'Пелла',lat:40.75,lon:22.52,date:'334 г. до н. э.',info:'Столица Македонского царства и исходный пункт похода Александра.'},
  {name:'Река Граник',lat:40.25,lon:27.15,date:'334 г. до н. э.',info:'Победа у Граника открыла македонской армии путь в Малую Азию.'},
  {name:'Сарды',lat:38.49,lon:28.04,date:'334 г. до н. э.',info:'Сарды сдались Александру; город стал опорным пунктом в Малой Азии.'},
@@ -743,7 +744,7 @@ const campaigns={
  {name:'Сузы',lat:32.19,lon:48.25,date:'331 г. до н. э.',info:'Александр получил контроль над царской казной и административным центром Ахеменидов.'},
  {name:'Персеполь',lat:29.93,lon:52.89,date:'330 г. до н. э.',info:'Захват Персеполя стал символическим завершением завоевания основной территории державы Ахеменидов.'}
  ]},
- 6:{eraIndex:4,title:'Походы Ашшурбанапала в Египет',period:'667–663 гг. до н. э.',note:'Это повторные военные вмешательства, а не доказательство устойчивого присоединения всей долины Нила. Ассирийское влияние сопровождалось восстаниями; местные правители сохраняли важную роль.',segments:[[[29.85,31.25],[25.7,32.65]]],stops:[
+ 6:{eraIndex:3,title:'Походы Ашшурбанапала в Египет',period:'667–663 гг. до н. э.',note:'Это повторные военные вмешательства, а не доказательство устойчивого присоединения всей долины Нила. Ассирийское влияние сопровождалось восстаниями; местные правители сохраняли важную роль.',segments:[[[29.85,31.25],[25.7,32.65]]],stops:[
  {name:'Мемфис',lat:29.85,lon:31.25,date:'667 г. до н. э.',info:'Ашшурбанапал вернул город под ассирийский контроль после нового выступления Тахарки.'},
  {name:'Фивы',lat:25.7,lon:32.65,date:'ок. 663 г. до н. э.',info:'Ассирийское войско достигло Фив. Поход показал пределы сопротивления Египта и Куша, но не создал долговечной и бесспорной границы империи.'}
  ]}
