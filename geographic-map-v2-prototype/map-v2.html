@@ -968,7 +968,6 @@ async function loadGrade5Cliopatria(targetYear){
  const request=++g5PolityRequest,periodDate=document.getElementById('eraDate'),keyEl=document.getElementById('key');
  g5PolityLayer.clearLayers();g5ActiveFeatures=[];g5LegendEntries=[];keyEl.textContent='Загружаем исторические границы…';document.getElementById('g5LegendCount').textContent='Подключение к исторической базе…';
  periodDate.textContent='Ориентировочная дата: '+(targetYear<0?Math.abs(targetYear)+' г. до н. э.':targetYear+' г. н. э.')+' · загружаются исторические контуры…';
-   if(untranslatedNames.length)periodDate.textContent+=' · не показано объектов без проверенного перевода: '+untranslatedNames.length;
  try{
   const years=await g5GetYears(),snapshot=years.reduce((best,y)=>Math.abs(y-targetYear)<Math.abs(best-targetYear)?y:best,years[0]);
   let data=g5PolityCache.get(snapshot);
