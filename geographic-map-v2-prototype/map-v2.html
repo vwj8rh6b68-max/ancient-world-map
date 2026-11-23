@@ -840,7 +840,7 @@ const historicalEvents=[
 ];
 const historicalTradeRoutes=[
  {eras:[1],name:'Торговые связи Индской цивилизации',coords:[[27.32,68.14],[26.4,69.3],[24.8,70.4],[22.52,72.25]],note:'Схема внутренних и прибрежных связей городов долины Инда; точный маршрут не установлен.'},
- {eras:[4,5],name:'Финикийские морские связи',coords:[[33.27,35.20],[34.67,33.04],[35.2,24.9],[36.85,10.32]],note:'Условная линия между восточным побережьем Средиземного моря, Кипром, Критом и Карфагеном. Финикийская торговля представляла собой сеть морских маршрутов.'},
+ {eras:[4,5,6],name:'Финикийские морские связи',coords:[[33.27,35.20],[34.67,33.04],[35.2,24.9],[36.85,10.32]],note:'Условная линия между восточным побережьем Средиземного моря, Кипром, Критом и Карфагеном. Финикийская торговля представляла собой сеть морских маршрутов.'},
  {eras:[6],name:'Царская дорога Ахеменидов',coords:[[38.49,28.04],[38.0,36.0],[36.36,43.15],[32.54,44.42],[32.19,48.25]],note:'Схематическое направление между Сардами и Сузами; реальные дороги имели ответвления и менялись со временем.'},
  {eras:[10],name:'Великий шёлковый путь',coords:[[34.27,108.94],[40.14,94.66],[39.47,75.99],[36.7,67.1],[36.2,36.16]],note:'Один из условных сухопутных коридоров между Китаем, Центральной Азией и Средиземноморьем. Исторически это была разветвлённая сеть путей.'}
 ];
@@ -871,9 +871,9 @@ async function loadComparisonOverlay(targetIndex){
   if(request!==comparisonRequest||comparisonTargetIndex!==targetIndex)return;
   const features=data.features.filter(f=>g5IsInGrade5Course(f.properties?.Name)&&g5Translate(String(f.properties?.Name||''))!=='Название не установлено'&&!(targetYear===-3050&&/egypt|egyptian/i.test(String(f.properties?.Name||''))));
   const group=L.layerGroup();
-  L.geoJSON({type:'FeatureCollection',features},{style:f=>({color:'#604a91',weight:2.4,opacity:.95,fillColor:'#8b78b4',fillOpacity:.035,dashArray:'6 5',lineJoin:'round'}),onEachFeature:(f,l)=>{const name=g5Translate(f.properties?.Name||'');l.bindTooltip('Сравнение: '+name,{sticky:true,className:'polity-label'});l.bindPopup('<strong>Сравнение: '+name+'</strong><br>Срез базы: '+(Number(f.properties?.Year)<0?Math.abs(Number(f.properties?.Year))+' г. до н. э.':Number(f.properties?.Year)+' г. н. э.'));}}).addTo(group);
+  L.geoJSON({type:'FeatureCollection',features},{style:f=>({color:'#604a91',weight:2.4,opacity:.95,fillColor:'#8b78b4',fillOpacity:.035,dashArray:'6 5',lineJoin:'round',interactive:false})}).addTo(group);
   if(targetIndex===0){
-   L.polygon([[31.55,29.70],[31.65,31.15],[31.45,32.35],[30.95,32.55],[30.35,32.55],[29.85,32.15],[29.7,31.75],[28.5,32.05],[27.0,32.35],[25.5,32.65],[24.0,32.9],[24.0,32.55],[25.5,32.35],[27.0,32.05],[28.5,31.75],[29.7,31.0],[30.05,30.8],[30.55,30.3],[31.55,29.70]],{color:'#604a91',weight:2.4,opacity:.98,fillColor:'#8b78b4',fillOpacity:.04,dashArray:'6 5'}).bindTooltip('Сравнение: объединённый Египет около 3100 г. до н. э.').addTo(group);
+   L.polygon([[31.55,29.70],[31.65,31.15],[31.45,32.35],[30.95,32.55],[30.35,32.55],[29.85,32.15],[29.7,31.75],[28.5,32.05],[27.0,32.35],[25.5,32.65],[24.0,32.9],[24.0,32.55],[25.5,32.35],[27.0,32.05],[28.5,31.75],[29.7,31.0],[30.05,30.8],[30.55,30.3],[31.55,29.70]],{color:'#604a91',weight:2.4,opacity:.98,fillColor:'#8b78b4',fillOpacity:.04,dashArray:'6 5',interactive:false}).addTo(group);
   }
   group.addTo(map);window.comparisonLayer=group;
   if(status)status.textContent='Основная эпоха: '+eraData[idx].date+'. Пунктиром показана эпоха сравнения: '+eraData[targetIndex].date+'. Срез базы: '+(snapshot<0?Math.abs(snapshot)+' г. до н. э.':snapshot+' г. н. э.')+'.';
