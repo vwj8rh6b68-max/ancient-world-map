@@ -939,7 +939,7 @@ function g5ContextLine(raw,periodIndex){
  return '';
 }
 function g5SelectPolity(p){
- const name=g5Translate(p.Name),year=Number(p.Year),area=Number(p.AreaSqKM),rawName=String(p.Name||''),isPeriod=/period|civilization|culture|world|region/i.test(rawName);
+ const translatedName=g5Translate(p.Name),name=translatedName==='Название не переведено'?'Политическое образование (название уточняется)':translatedName,year=Number(p.Year),area=Number(p.AreaSqKM),rawName=String(p.Name||''),isPeriod=/period|civilization|culture|world|region/i.test(rawName);
  document.getElementById('stateTitle').textContent=name;
  const parts=[g5HistoricalBrief(rawName,name,year)];const contextLine=g5ContextLine(rawName,idx);if(contextLine)parts.push(contextLine);
  if(name==='Название требует проверки')parts.push('Русское название объекта пока не подтверждено. Ошибочная подпись намеренно не показывается.');
@@ -990,7 +990,7 @@ async function loadGrade5Cliopatria(targetYear){
   }
   if(request!==g5PolityRequest)return;
   const untranslatedNames=[...new Set(data.features.filter(f=>g5IsInGrade5Course(f.properties?.Name)&&g5Translate(String(f.properties?.Name||''))==='Название не переведено').map(f=>String(f.properties?.Name||'')))];
-  const courseFeatures=data.features.filter(f=>g5IsInGrade5Course(f.properties?.Name)&&g5Translate(String(f.properties?.Name||''))!=='Название не переведено'&&!(targetYear===-3050&&/egypt|egyptian/i.test(String(f.properties?.Name||''))));
+  const courseFeatures=data.features.filter(f=>g5IsInGrade5Course(f.properties?.Name)&&!(targetYear===-3050&&/egypt|egyptian/i.test(String(f.properties?.Name||''))));
   const egyptFeatures=courseFeatures.filter(f=>/egypt|egyptian/i.test(String(f.properties?.Name||'')));
   const phoeniciaFeatures=courseFeatures.filter(f=>/phoenicia|phoenician|tyre|sidon|byblos|arwad/i.test(String(f.properties?.Name||'')));
   g5ActiveFeatures=courseFeatures;g5PolityLayer.clearLayers();
@@ -999,9 +999,9 @@ async function loadGrade5Cliopatria(targetYear){
    return{color:periodOrCulture?'#66757b':'#35444d',weight:periodOrCulture?1.15:(boundaryFocus?1.45:.75),opacity:.98,fillColor:g5Color(f.properties?.Color),fillOpacity:periodOrCulture?.055:(uncertain?(boundaryFocus?.2:.12):(boundaryFocus?.34:.25)),lineJoin:'round',dashArray:periodOrCulture?'3 5':(uncertain?'5 4':null)};
   },onEachFeature:(f,l)=>{
    const p=f.properties||{},name=g5Translate(p.Name||'');
-   if(name!=='Название требует проверки')l.bindTooltip(name,{sticky:true,direction:'center',className:'polity-label',opacity:.97});
+   if(name!=='Название не переведено'&&name!=='Название требует проверки')l.bindTooltip(name,{sticky:true,direction:'center',className:'polity-label',opacity:.97});
    l.on('click',()=>g5SelectPolity(p));
-   l.bindPopup('<strong>'+name+'</strong><br><b>Краткая историческая справка</b><br>'+g5HistoricalBrief(p.Name,name,Number(p.Year))+'<br><span class=\'small\'>Дата исторического среза: '+(Number(p.Year)<0?Math.abs(Number(p.Year))+' г. до н. э.':Number(p.Year)+' г. н. э.')+'</span>');
+   const displayName=name==='Название не переведено'?'Политическое образование (название уточняется)':name;l.bindPopup('<strong>'+displayName+'</strong><br><b>Краткая историческая справка</b><br>'+g5HistoricalBrief(p.Name,displayName,Number(p.Year))+'<br><span class=\'small\'>Дата исторического среза: '+(Number(p.Year)<0?Math.abs(Number(p.Year))+' г. до н. э.':Number(p.Year)+' г. н. э.')+'</span>');
   }}).addTo(g5PolityLayer);
   const unique=new Map();courseFeatures.forEach(f=>{const p=f.properties||{};if(p.Name&&!unique.has(p.Name))unique.set(p.Name,p);});
   if(targetYear===-3050&&!unique.has('Egypt'))unique.set('Egypt',{Name:'Egypt',Year:-3050,AreaSqKM:0,Color:'#d9a441'});
@@ -1290,7 +1290,7 @@ async function loadComparisonOverlay(targetIndex){
  try{
   const {snapshot,data}=await g5GetComparisonSnapshot(targetYear);
   if(request!==comparisonRequest||comparisonTargetIndex!==targetIndex)return;
-  const features=data.features.filter(f=>g5IsInGrade5Course(f.properties?.Name)&&g5Translate(String(f.properties?.Name||''))!=='Название не переведено'&&!(targetYear===-3050&&/egypt|egyptian/i.test(String(f.properties?.Name||''))));
+  const features=data.features.filter(f=>g5IsInGrade5Course(f.properties?.Name)&&!(targetYear===-3050&&/egypt|egyptian/i.test(String(f.properties?.Name||''))));
   const group=L.layerGroup();
   L.geoJSON({type:'FeatureCollection',features},{style:f=>({color:'#604a91',weight:2.4,opacity:.95,fillColor:'#8b78b4',fillOpacity:.035,dashArray:'6 5',lineJoin:'round',interactive:false})}).addTo(group);
   if(targetIndex===0){
