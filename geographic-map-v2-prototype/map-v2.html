@@ -426,31 +426,28 @@ const g5CoursePolities = new Set([
 'Egypt','Ancient Egyptian Kingdom','Old Kingdom of Egypt','Middle Kingdom of Egypt','New Kingdom of Egypt','Early Dynastic Egypt','Early Dynastic Period','Early Dynastic Period of Egypt','Early Dynastic Period Of Egypt','The Early Dynastic Period Of Egypt','Archaic Egypt','Upper Egypt','Lower Egypt',
 'Sumer','Sumerian city-states','Sumerian city states','Sumerian City-States','Akkad','Akkadian Kingdom','Akkadian Empire','Akkadian Empire of Sargon',
 'Babylonia','Babylonian Empire','Babylonian Kingdom','Old Babylonian Kingdom','Old Babylonian Empire','Neo-Babylonian Empire','Neo-Babylonian Kingdom',
-'Assyria','Assyrian Empire','Neo-Assyrian Empire','Middle Assyrian Empire','Old Assyrian Empire',
+'Assyria','Assyrian Empire','Assyrian Kingdom','Neo-Assyrian Empire','Neo Assyrian Empire','Neo-Assyrian Kingdom','Middle Assyrian Empire','Old Assyrian Empire',
 'Phoenicia','Phoenician States','Phoenician city-states','Phoenician city states','Kingdom of Tyre','Kingdom of Sidon','Israelite Kingdom','Kingdom of Israel','Israel','Judah Kingdom','Kingdom of Judah','Judah',
 'Achaemenid Empire','Achaemenid Persian Empire','Persian Empire',
 'Indus Valley Civilization','Indus Civilization','Indus Valley Civilisation','Harappan Civilization','Harappan culture','Harappan Culture','Maurya Empire','Mauryan Empire','Gupta Empire',
 'Shang dynasty','Shang Dynasty','Zhou dynasty','Zhou Dynasty','Western Zhou','Eastern Zhou','Qin','Qin state','Qin State','Qin dynasty','Qin Dynasty','Qin Empire','Han dynasty','Han Dynasty','Han Empire','Warring States','Warring States period',
 'Minoan Crete','Minoan civilization','Minoan Civilization','Mycenaean Greece','Mycenaean civilization','Mycenaean Civilization','Macedon','Kingdom of Macedon','Macedonian Kingdom','Macedonian Empire',
-'Athens','Sparta','Corinth','Thebes','Greek city-states','Greek city states','Greek Colonies','Greek colonies of the Black Sea',
+'Athens','Sparta','Corinth','Thebes','Greek city-states','Greek City-States','Greek city states','Greek City States','Greek Colonies','Greek colonies of the Black Sea',
 'Bosporan Kingdom','Kingdom of Bosporus','Bosporan State','Cimmerians','Scythians','Scythian Kingdom','Crimean Scythian Kingdom','Sarmatians',
 'Seleucid Empire','Ptolemaic Kingdom','Ptolemaic Egypt','Antigonid Kingdom',
 'Etruscan city-states','Etruscan city states','Roman Republic','Roman Empire','Western Roman Empire','Eastern Roman Empire','Carthage','Carthaginian Empire','Carthaginian Republic'
 ]);
 function g5IsInGrade5Course(raw){
- const n=String(raw||'').trim().replace(/\s+/g,' ');
- if(g5CoursePolities.has(n))return true;
+ const n=String(raw||'').trim().replace(/[–—−]/g,'-').replace(/\s+/g,' ');
  const lower=n.toLocaleLowerCase('en');
- return [...g5CoursePolities].some(x=>x.toLocaleLowerCase('en')===lower);
+ return [...g5CoursePolities].some(x=>x.toLocaleLowerCase('en').replace(/[–—−]/g,'-').replace(/\s+/g,' ')===lower)
+  || /^(neo-)?assyrian (empire|kingdom)$/.test(lower)
+  || /^(neo-)?babylonian (empire|kingdom)$/.test(lower)
+  || /^(old|middle|new) kingdom of egypt$/.test(lower)
+  || /^(achaemenid|persian) (empire|kingdom)$/.test(lower)
+  || /^(roman republic|roman empire|western roman empire|eastern roman empire)$/.test(lower);
 }
-function g5IsInGrade5Course(raw){
- const n=String(raw||'').trim();
- if(g5CoursePolities.has(n))return true;
- return /^(Old Kingdom|Middle Kingdom|New Kingdom) of Egypt$/i.test(n)
- || /^(Neo-)?(Assyrian|Babylonian) (Empire|Kingdom)$/i.test(n)
- || /^(Achaemenid|Persian) Empire$/i.test(n)
- || /^(Roman Republic|Roman Empire|Western Roman Empire|Eastern Roman Empire)$/i.test(n);
-}
+// Единый фильтр g5IsInGrade5Course объявлен выше; повторное объявление удалено.
 function g5HistoricalBrief(raw,translated,year){
  const n=String(raw||'').toLowerCase();
  if(/egypt/.test(n))return 'Древнеегипетское государство возникло в долине Нила. Разливы реки поддерживали земледелие, а власть фараона объединяла страну. В разные эпохи политические центры и границы Египта менялись.';
