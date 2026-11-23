@@ -540,7 +540,7 @@ async function loadGrade5Cliopatria(targetYear){
   const phoeniciaFeatures=courseFeatures.filter(f=>/phoenicia|phoenician|tyre|sidon|byblos|arwad/i.test(String(f.properties?.Name||'')));
   g5ActiveFeatures=courseFeatures;g5PolityLayer.clearLayers();
   L.geoJSON({type:'FeatureCollection',features:courseFeatures},{style:f=>{
-   const raw=String(f.properties?.Name||''),uncertain=/confederation|khaganate|hunn|xiongnu|steppe|nomad|tribe|influence/i.test(raw),periodOrCulture=/period|civilization|culture|world|region|warring.?states/i.test(raw);
+   const raw=String(f.properties?.Name||''),uncertain=/confederation|khaganate|hunn|xiongnu|steppe|nomad|tribe|influence/i.test(raw),periodOrCulture=/period|civilization|culture|world|region/i.test(raw)||(/warring.?states/i.test(raw)&&!/kingdom|state/i.test(raw));
    return{color:periodOrCulture?'#66757b':'#35444d',weight:periodOrCulture?1.15:(boundaryFocus?1.45:.75),opacity:.98,fillColor:g5Color(f.properties?.Color),fillOpacity:periodOrCulture?.055:(uncertain?(boundaryFocus?.2:.12):(boundaryFocus?.34:.25)),lineJoin:'round',dashArray:periodOrCulture?'3 5':(uncertain?'5 4':null)};
   },onEachFeature:(f,l)=>{
    const p=f.properties||{},name=g5Translate(p.Name||'');
