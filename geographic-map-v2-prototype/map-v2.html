@@ -20,8 +20,8 @@ button{background:#304d61;color:white;border:0;font-weight:650}.curriculum-panel
 
 .practice{background:#f3f6f2;border:1px solid #cbd9ce;border-radius:14px;padding:13px;margin-top:10px}.practice h2{font-size:1.03rem;margin:0 0 6px}.practice-controls{display:flex;flex-wrap:wrap;gap:7px;margin-top:8px}.practice select{width:100%;margin-top:6px}.practice button{padding:8px 10px}.practice .answer{margin-top:9px;padding:9px;background:#fffdf7;border-radius:8px;border:1px dashed #9db5a3}.practice .answer[hidden]{display:none}.practice-status{font-size:.85rem;color:#4b6254;margin-top:6px}
 
-.boundary-mode{display:flex;align-items:flex-start;gap:8px;padding:9px 11px;background:#fff4d9;border:1px solid #d9c49a;border-radius:10px;font-size:.9rem;max-width:100%}.boundary-mode input{margin-top:4px;accent-color:#8b4b2f;transform:scale(1.15)}.boundary-guide{background:#f2f5f7;border-left:4px solid #496b82;padding:10px 12px;border-radius:8px;margin:10px 0}.boundary-guide strong{display:block;margin-bottom:3px}.border-key{display:flex;flex-wrap:wrap;gap:10px;font-size:.82rem;margin-top:8px}.border-key span{display:inline-flex;align-items:center;gap:5px}.border-line{display:inline-block;width:24px;height:0;border-top:3px solid #8b4b2f}.border-dash{display:inline-block;width:24px;height:0;border-top:3px dashed #8b4b2f}#campaignButton[hidden]{display:none}#campaignButton{background:#8b4b2f}
-.campaign-player{flex:1 1 100%;background:#fffaf0;border:1px solid #d9c6a4;border-radius:12px;padding:11px 12px;margin-top:3px}.campaign-player[hidden]{display:none}.campaign-player-head{display:flex;justify-content:space-between;gap:8px;align-items:center;flex-wrap:wrap}.campaign-player-head strong{font-size:.98rem}.campaign-player p{margin:6px 0 9px}.campaign-player-actions{display:flex;gap:7px;flex-wrap:wrap}.campaign-player-actions button{border:0;border-radius:8px;padding:9px 12px;background:#304d61;color:#fff;font:inherit;font-weight:650}.campaign-player-actions button#campaignPlay{background:#8b4b2f}.campaign-player-actions button.secondary{background:#e9e0d0;color:#304052}.campaign-progress{height:7px;background:#e6dccb;border-radius:99px;overflow:hidden;margin-top:10px}.campaign-progress div{height:100%;width:0;background:#8b4b2f;transition:width .35s ease}
+.boundary-mode{display:flex;align-items:flex-start;gap:8px;padding:9px 11px;background:#fff4d9;border:1px solid #d9c49a;border-radius:10px;font-size:.9rem;max-width:100%}.boundary-mode input{margin-top:4px;accent-color:#8b4b2f;transform:scale(1.15)}.boundary-guide{background:#f2f5f7;border-left:4px solid #496b82;padding:10px 12px;border-radius:8px;margin:10px 0}.boundary-guide strong{display:block;margin-bottom:3px}.border-key{display:flex;flex-wrap:wrap;gap:10px;font-size:.82rem;margin-top:8px}.border-key span{display:inline-flex;align-items:center;gap:5px}.border-line{display:inline-block;width:24px;height:0;border-top:3px solid #8b4b2f}.border-dash{display:inline-block;width:24px;height:0;border-top:3px dashed #8b4b2f}#campaignButtons{display:flex;flex-wrap:wrap;gap:7px;flex:1 1 100%;margin-top:2px}#campaignButtons button{background:#8b4b2f;padding:9px 12px}#campaignButtons button:hover{background:#6f3827}
+.campaign-selectors button{font:inherit;font-weight:650;border-radius:9px}.campaign-player{flex:1 1 100%;background:#fffaf0;border:1px solid #d9c6a4;border-radius:12px;padding:11px 12px;margin-top:3px}.campaign-player[hidden]{display:none}.campaign-player-head{display:flex;justify-content:space-between;gap:8px;align-items:center;flex-wrap:wrap}.campaign-player-head strong{font-size:.98rem}.campaign-player p{margin:6px 0 9px}.campaign-player-actions{display:flex;gap:7px;flex-wrap:wrap}.campaign-player-actions button{border:0;border-radius:8px;padding:9px 12px;background:#304d61;color:#fff;font:inherit;font-weight:650}.campaign-player-actions button#campaignPlay{background:#8b4b2f}.campaign-player-actions button.secondary{background:#e9e0d0;color:#304052}.campaign-progress{height:7px;background:#e6dccb;border-radius:99px;overflow:hidden;margin-top:10px}.campaign-progress div{height:100%;width:0;background:#8b4b2f;transition:width .35s ease}
 @media(max-width:650px){.campaign-player-actions button{flex:1 1 calc(50% - 7px)}}
 
 .quick-actions{display:flex;flex-wrap:wrap;gap:7px;padding:9px;margin:10px 0;background:#e9e2d2;border:1px solid #d4c4a5;border-radius:12px}.quick-actions button{padding:9px 12px}.quick-actions .action-primary{background:#8b4b2f}
@@ -54,7 +54,12 @@ button{background:#304d61;color:white;border:0;font-weight:650}.curriculum-panel
 <option value="8">ок. 350 г. н. э. — держава Гуптов и поздняя Римская империя</option>
 <option value="9">476 г. н. э. — падение Западной Римской империи</option>
 </select><span class="period" id="period">Период 1 из 10</span>
-<label class="boundary-mode" for="boundaryFocus"><input id="boundaryFocus" type="checkbox" checked><span><strong>Акцент на границах государств</strong><span class="small">Чёткие контуры и более прозрачная заливка — удобнее сравнивать территории.</span></span></label><button id="campaignButton" type="button" hidden>Показать поход Александра</button>
+<label class="boundary-mode" for="boundaryFocus"><input id="boundaryFocus" type="checkbox" checked><span><strong>Акцент на границах государств</strong><span class="small">Чёткие контуры и более прозрачная заливка — удобнее сравнивать территории.</span></span></label><div id="campaignButtons" class="campaign-selectors" aria-label="Исторические походы и завоевания">
+<button type="button" data-campaign="1">Походы Тутмоса III</button>
+<button type="button" data-campaign="2">Походы Ассирии</button>
+<button type="button" data-campaign="4">Завоевания Ахеменидов</button>
+<button type="button" data-campaign="5">Поход Александра Македонского</button>
+</div>
 <div id="campaignPlayer" class="campaign-player" hidden aria-live="polite">
  <div class="campaign-player-head"><strong id="campaignPlayerTitle">Исторические походы и завоевания</strong><span id="campaignPlayerCount" class="small">Эпизод 1</span></div>
  <p id="campaignPlayerInfo" class="small">Последовательно просматривайте исторические эпизоды и их остановки.</p>
@@ -71,7 +76,7 @@ button{background:#304d61;color:white;border:0;font-weight:650}.curriculum-panel
 
 
 <div class="columns"><section><div class="map-toolbar"><button id="cityLabelsToggle" type="button" aria-pressed="false">Показать названия городов</button><span class="small">Подписи отмеченных городов можно включать и скрывать</span></div><div id="map" role="application" aria-label="Интерактивная географическая карта Древнего мира"></div>
-<div class="g5-legend-tools"><input class="g5-legend-search" id="g5LegendSearch" type="search" placeholder="Найти государство…" aria-label="Найти государство в легенде"><span class="g5-legend-count" id="g5LegendCount">Загрузка исторических образований…</span></div><div class="key" id="key" aria-live="polite"></div><p class="small" style="margin:0 0 12px">Знак ≈ перед названием означает ориентировочную русскую передачу исходного имени; такие подписи требуют дополнительной историко-лингвистической проверки.</p><p class="small" style="margin:5px 0 12px">Цвета помогают различать политические образования. Исторические контуры являются научными реконструкциями; их точность и степень контроля над окрашенной территорией могут различаться.</p></section>
+<div class="g5-legend-tools"><input class="g5-legend-search" id="g5LegendSearch" type="search" placeholder="Найти государство…" aria-label="Найти государство в легенде"><span class="g5-legend-count" id="g5LegendCount">Загрузка исторических образований…</span></div><div class="key" id="key" aria-live="polite"></div><p class="small" style="margin:5px 0 12px">В легенде оставлены только государства и политические образования, относящиеся к темам курса 5-го класса. Контуры древних территорий — научные реконструкции; они не означают одинаково плотного контроля над всей окрашенной областью.</p></section>
 <aside><div class="panel"><h2 id="eraTitle">Египет и Междуречье</h2><p id="eraText">Нажми на цветную область, чтобы открыть справку.</p><p class="small" id="eraDate"></p></div>
 <div class="panel"><h2 id="stateTitle">Выбери государство</h2><p id="stateInfo">Нажми на цветную территорию на карте или на элемент легенды.</p><div id="stateMedia" class="history-media" hidden></div></div>
 
@@ -93,8 +98,8 @@ button{background:#304d61;color:white;border:0;font-weight:650}.curriculum-panel
 .term-group h3{font-size:.98rem;margin:10px 0 6px}
 .term-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}
 .term-item{border:1px solid #e2d8c6;background:#fffaf0;border-radius:8px;padding:8px}
-.term-item dt{font-weight:750}
-.term-item dd{margin:4px 0 0;font-size:.92rem}
+.term-item summary{font-weight:750;cursor:pointer;list-style:none;display:flex;align-items:center;gap:8px}.term-item summary:before{content:'＋';display:inline-grid;place-items:center;width:20px;height:20px;flex:0 0 20px;border-radius:5px;background:#e9e2d2;color:#304d61;font-weight:800}.term-item[open] summary:before{content:'−'}
+.term-item p{font-size:.92rem;line-height:1.45}
 @media(max-width:760px){.photo-gallery{grid-template-columns:repeat(2,minmax(0,1fr))}.photo-card img{height:130px}.term-list{grid-template-columns:1fr}}
 </style>
 <div class="panel" id="photoMuseum">
@@ -398,10 +403,56 @@ function g5Translate(n){const v=String(n||'').trim();if(!v)return 'Назван�
  return '≈ '+g5TransliterateName(v);
 }
 function g5Color(v){let c=String(v??'').trim();if(/^0x[0-9a-f]{6}$/i.test(c))c='#'+c.slice(2);if(/^#[0-9a-f]{6}$/i.test(c))return c;if(/^\d+$/.test(c)){const n=Number(c);if(n>=0&&n<=0xffffff)return '#'+n.toString(16).padStart(6,'0');}return '#82939a';}
+const g5CoursePolities = new Set([
+'Egypt','Ancient Egyptian Kingdom','Old Kingdom of Egypt','Middle Kingdom of Egypt','New Kingdom of Egypt','Early Dynastic Egypt','Archaic Egypt',
+'Sumer','Sumerian city-states','Akkadian Kingdom','Akkadian Empire','Ur III dynasty','Third Dynasty of Ur',
+'Babylonia','Babylonian Empire','Babylonian Kingdom','Kassite Babylonia','Neo-Babylonian Empire','Neo-Babylonian Kingdom',
+'Assyria','Assyrian Empire','Neo-Assyrian Empire','Middle Assyrian Empire','Old Assyrian Empire',
+'Phoenicia','Phoenician States','Phoenician city-states','Kingdom of Tyre','Kingdom of Sidon','Israelite Kingdom','Kingdom of Israel','Judah Kingdom','Kingdom of Judah',
+'Achaemenid Empire','Persian Empire','Median Empire',
+'Maurya Empire','Mauryan Empire','Nanda Empire','Magadha',
+'Shang dynasty','Zhou dynasty','Western Zhou','Eastern Zhou','Qin','Qin state','Qin dynasty','Han dynasty','Han Empire',
+'Macedon','Kingdom of Macedon','Macedonian Kingdom','Macedonian Empire','Minoan Crete','Mycenaean civilization','Mycenaean Greece',
+'Athens','Sparta','Corinth','Thebes','Greek city-states',
+'Seleucid Empire','Ptolemaic Kingdom','Ptolemaic Egypt','Antigonid Kingdom',
+'Roman Republic','Roman Empire','Western Roman Empire','Eastern Roman Empire','Carthage','Carthaginian Empire'
+]);
+function g5IsInGrade5Course(raw){
+ const n=String(raw||'').trim();
+ if(g5CoursePolities.has(n))return true;
+ return /^(Old Kingdom|Middle Kingdom|New Kingdom) of Egypt$/i.test(n)
+ || /^(Neo-)?(Assyrian|Babylonian) (Empire|Kingdom)$/i.test(n)
+ || /^(Achaemenid|Persian) Empire$/i.test(n)
+ || /^(Roman Republic|Roman Empire|Western Roman Empire|Eastern Roman Empire)$/i.test(n);
+}
+function g5HistoricalBrief(raw,translated,year){
+ const n=String(raw||'').toLowerCase();
+ if(/egypt/.test(n))return 'Древнеегипетское государство возникло в долине Нила. Разливы реки поддерживали земледелие, а власть фараона объединяла страну. В разные эпохи политические центры и границы Египта менялись.';
+ if(/sumer|akkad|ur iii|third dynasty of ur/.test(n))return 'В Южном Междуречье между Тигром и Евфратом возникли первые города-государства. Позднее регион объединяли более крупные державы, в том числе Аккад и III династия Ура.';
+ if(/babylon|babylonia|kassite/.test(n))return 'Вавилон был одним из главных центров Междуречья. При царе Хаммурапи в XVIII веке до н. э. Вавилонское царство усилилось; позднее город пережил новые периоды подъёма и завоеваний.';
+ if(/assyria/.test(n))return 'Ассирия возникла в Северном Междуречье. В I тысячелетии до н. э. Новоассирийская держава подчинила обширные территории Передней Азии, опираясь на армию и систему управления.';
+ if(/phoenicia|tyre|sidon/.test(n))return 'Финикийские города Восточного Средиземноморья прославились морской торговлей, ремеслом и основанием поселений за морем. Тир и Сидон были важнейшими центрами финикийского мира.';
+ if(/israel|judah/.test(n))return 'Древнееврейские царства Израиль и Иудея возникли в Палестине. Их история связана с развитием древнееврейской религиозной традиции и событиями, отражёнными в библейских текстах.';
+ if(/achaemenid|persian|median/.test(n))return 'Персидская держава Ахеменидов объединила огромные территории от Малой Азии до Средней Азии и Египта. Ею управляли цари, а территория делилась на сатрапии.';
+ if(/maurya|nanda|magadha/.test(n))return 'В долине Ганга усилилось царство Магадха. При династии Маурьев в IV–III веках до н. э. возникла одна из крупнейших держав Древней Индии; её правителем был Ашока.';
+ if(/shang|zhou/.test(n))return 'В древнем Китае сменяли друг друга династии Шан и Чжоу. В эпоху Чжоу усилились отдельные царства, а позднее борьба между ними завершилась объединением страны.';
+ if(/qin/.test(n))return 'Царство Цинь подчинило соперников и в 221 году до н. э. объединило Китай. Правитель Цинь Шихуанди принял титул первого императора и укрепил единую систему управления.';
+ if(/han/.test(n))return 'Династия Хань правила Китаем после падения Цинь. При Хань укрепилась имперская система управления, развивались земледелие, ремёсла и торговые связи.';
+ if(/macedon|alexander/.test(n))return 'Македонское царство усилилось при Филиппе II. Его сын Александр возглавил поход против державы Ахеменидов и создал державу, охватившую земли от Балкан до Египта и части Центральной Азии.';
+ if(/seleucid/.test(n))return 'Держава Селевкидов возникла после распада державы Александра Македонского. Она охватывала значительную часть Передней Азии и сохраняла эллинистические политические и культурные традиции.';
+ if(/ptolemaic/.test(n))return 'Царство Птолемеев возникло в Египте после распада державы Александра Македонского. Его столицей стала Александрия — крупный политический, торговый и культурный центр.';
+ if(/antigonid/.test(n))return 'Держава Антигонидов была одним из эллинистических государств, возникших после распада державы Александра Македонского; её ядром оставалась Македония.';
+ if(/athens|sparta|corinth|thebes|greek city/.test(n))return 'Греческие полисы были самостоятельными городами-государствами. Афины и Спарта стали наиболее известными примерами разных политических и общественных порядков.';
+ if(/carthage/.test(n))return 'Карфаген был крупным торговым и морским центром Северной Африки. Он соперничал с Римом за господство в Западном Средиземноморье во время Пунических войн.';
+ if(/roman republic/.test(n))return 'Римская республика сложилась после изгнания царей. В ходе завоеваний Рим подчинил Италию, а затем вступил в борьбу за господство в Средиземноморье.';
+ if(/roman empire|western roman|eastern roman/.test(n))return 'Римская империя возникла после длительного кризиса республики. В поздней античности управление империей разделилось между западной и восточной частями; Западная Римская империя прекратила существование в 476 году.';
+ if(/minoan|mycenaean/.test(n))return 'На Крите и в материковой Греции до классической эпохи существовали ранние дворцовые общества и царские центры. Их археологические памятники помогают изучать древнейшую историю греков.';
+ return 'Это политическое образование рассматривается в рамках темы «'+translated+'». Его границы на карте передают научную реконструкцию для выбранного временного среза.';
+}
 function renderG5Legend(){
  const box=document.getElementById('key'),count=document.getElementById('g5LegendCount'),term=(document.getElementById('g5LegendSearch')?.value||'').trim().toLocaleLowerCase('ru');
  box.innerHTML='';
- const translatedEntries=g5LegendEntries.filter(([raw])=>g5Translate(raw)!=='Название требует проверки'),unknownCount=g5LegendEntries.length-translatedEntries.length;const rows=translatedEntries.filter(([raw])=>g5Translate(raw).toLocaleLowerCase('ru').includes(term));
+ const translatedEntries=g5LegendEntries.filter(([raw])=>g5IsInGrade5Course(raw)&&g5Names[raw]),rows=translatedEntries.filter(([raw])=>g5Translate(raw).toLocaleLowerCase('ru').includes(term));
  rows.forEach(([raw,p])=>{
   const b=document.createElement('span'),sw=document.createElement('i');
   b.tabIndex=0;b.setAttribute('role','button');b.setAttribute('aria-label','Показать на карте: '+g5Translate(raw));
@@ -410,14 +461,14 @@ function renderG5Legend(){
   b.addEventListener('click',activate);b.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();activate();}});
   box.appendChild(b);
  });
- count.textContent='Показано '+rows.length+' образований'+(unknownCount?' · '+unknownCount+' названий требуют проверки':'');
+ count.textContent='Показано '+rows.length+' государств и политических образований из курса 5-го класса';
  if(!rows.length)box.textContent='В этом срезе нет образований с таким названием.';
 }
 function g5SelectPolity(p){
  const name=g5Translate(p.Name),year=Number(p.Year),area=Number(p.AreaSqKM),rawName=String(p.Name||''),isPeriod=/period|civilization|culture|world|region/i.test(rawName);
  document.getElementById('stateTitle').textContent=name;
- const parts=[isPeriod?'Это название исторического периода или культурно-географической области, а не обязательно самостоятельного государства. Контур показан пунктиром и бледной заливкой.':'Политическое образование в историческом срезе Cliopatria.'];
- if(g5IsApproximateName(rawName))parts.push('Русская подпись передана ориентировочной транслитерацией исходного названия; её следует уточнить по специализированному историческому источнику.');
+ const parts=[g5HistoricalBrief(rawName,name,year)];
+ 
  if(name==='Название требует проверки')parts.push('Русское название объекта пока не подтверждено. Ошибочная подпись намеренно не показывается.');
  if(Number.isFinite(year))parts.push('Дата среза: '+(year<0?Math.abs(year)+' г. до н. э.':year+' г. н. э.')+'.');
  if(Number.isFinite(area)&&area>0)parts.push('Площадь по базе: '+Math.round(area).toLocaleString('ru-RU')+' км² (приблизительная оценка).');
@@ -445,17 +496,18 @@ async function loadGrade5Cliopatria(targetYear){
    data={type:'FeatureCollection',features:all};g5PolityCache.set(snapshot,data);
   }
   if(request!==g5PolityRequest)return;
-  g5ActiveFeatures=data.features;g5PolityLayer.clearLayers();
-  L.geoJSON(data,{style:f=>{
+  const courseFeatures=data.features.filter(f=>g5IsInGrade5Course(f.properties?.Name)&&g5Names[String(f.properties?.Name||'')]);
+  g5ActiveFeatures=courseFeatures;g5PolityLayer.clearLayers();
+  L.geoJSON({type:'FeatureCollection',features:courseFeatures},{style:f=>{
    const raw=String(f.properties?.Name||''),uncertain=/confederation|khaganate|hunn|xiongnu|steppe|nomad|tribe|influence/i.test(raw),periodOrCulture=/period|civilization|culture|world|region/i.test(raw);
    return{color:periodOrCulture?'#66757b':'#35444d',weight:periodOrCulture?1.15:(boundaryFocus?1.45:.75),opacity:.98,fillColor:g5Color(f.properties?.Color),fillOpacity:periodOrCulture?.055:(uncertain?(boundaryFocus?.2:.12):(boundaryFocus?.34:.25)),lineJoin:'round',dashArray:periodOrCulture?'3 5':(uncertain?'5 4':null)};
   },onEachFeature:(f,l)=>{
    const p=f.properties||{},name=g5Translate(p.Name||'');
    if(name!=='Название требует проверки')l.bindTooltip(name,{sticky:true,direction:'center',className:'polity-label',opacity:.97});
    l.on('click',()=>g5SelectPolity(p));
-   l.bindPopup('<strong>'+(name==='Название требует проверки'?'Политическое образование':name)+'</strong><br>'+(name==='Название требует проверки'?'Русское название этого объекта пока не подтверждено; подпись скрыта, чтобы не показывать ошибочный перевод.':(/period|civilization|culture|world|region/i.test(String(p.Name||''))?'Исторический период или культурно-географическая область — не отдельное государство.':'Политическое образование'))+'<br>Исторический срез: '+(Number(p.Year)<0?Math.abs(Number(p.Year))+' г. до н. э.':Number(p.Year)+' г. н. э.')+'<br>Источник: Cliopatria / UC Merced GIS Center');
+   l.bindPopup('<strong>'+name+'</strong><br><b>Краткая историческая справка</b><br>'+g5HistoricalBrief(p.Name,name,Number(p.Year))+'<br><span class=\'small\'>Дата исторического среза: '+(Number(p.Year)<0?Math.abs(Number(p.Year))+' г. до н. э.':Number(p.Year)+' г. н. э.')+'</span>');
   }}).addTo(g5PolityLayer);
-  const unique=new Map();data.features.forEach(f=>{const p=f.properties||{};if(p.Name&&!unique.has(p.Name))unique.set(p.Name,p);});
+  const unique=new Map();courseFeatures.forEach(f=>{const p=f.properties||{};if(p.Name&&!unique.has(p.Name))unique.set(p.Name,p);});
   g5LegendEntries=[...unique.entries()].sort((a,b)=>g5Translate(a[0]).localeCompare(g5Translate(b[0]),'ru'));renderG5Legend();
   const bounds=g5PolityLayer.getBounds();
   if(!g5HasInitialFit&&bounds.isValid()){map.fitBounds(bounds,{padding:[18,18],maxZoom:4.5});g5HasInitialFit=true;}
@@ -605,22 +657,22 @@ const campaigns={
  {name:'Персеполь',lat:29.93,lon:52.89,date:'330 г. до н. э.',info:'Захват Персеполя стал одним из символических завершений завоевания основной территории державы Ахеменидов.'}
  ]}
 };
-const campaignOrder=[1,2,4,5];
+let campaignActiveOrder=[1];
 let campaignTourIndex=0,campaignStopIndex=0,campaignTourTimer=null,campaignTourPlaying=false,campaignTourLayer=null,campaignTourMarker=null,campaignTourLineLayers=[];
 let campaignSwitchingEra=false;
 function campaignStopTimer(){if(campaignTourTimer){clearTimeout(campaignTourTimer);campaignTourTimer=null;}campaignTourPlaying=false;const p=document.getElementById('campaignPlay');if(p)p.textContent='▶ Воспроизвести';}
 function clearCampaign(){if(!campaignSwitchingEra){campaignStopTimer();const player=document.getElementById('campaignPlayer');if(player)player.hidden=true;}if(campaignTourLayer){map.removeLayer(campaignTourLayer);campaignTourLayer=null;}campaignTourMarker=null;campaignTourLineLayers=[];}
 function campaignUpdatePanel(){
- const campaign=campaigns[campaignOrder[campaignTourIndex]],stop=campaign.stops[campaignStopIndex],total=campaignOrder.reduce((n,k)=>n+campaigns[k].stops.length,0);
- const done=campaignOrder.slice(0,campaignTourIndex).reduce((n,k)=>n+campaigns[k].stops.length,0)+campaignStopIndex+1;
+ const campaign=campaigns[campaignActiveOrder[campaignTourIndex]],stop=campaign.stops[campaignStopIndex],total=campaignActiveOrder.reduce((n,k)=>n+campaigns[k].stops.length,0);
+ const done=campaignActiveOrder.slice(0,campaignTourIndex).reduce((n,k)=>n+campaigns[k].stops.length,0)+campaignStopIndex+1;
  document.getElementById('campaignPlayerTitle').textContent=campaign.title+' · '+campaign.period;
- document.getElementById('campaignPlayerCount').textContent='Остановка '+(campaignStopIndex+1)+' из '+campaign.stops.length+' · общий ход '+done+' из '+total;
+ document.getElementById('campaignPlayerCount').textContent='Остановка '+(campaignStopIndex+1)+' из '+campaign.stops.length;
  document.getElementById('campaignPlayerInfo').textContent=stop.name+' — '+stop.date+'. '+stop.info+' '+campaign.note;
  document.getElementById('campaignProgressBar').style.width=(done/total*100)+'%';
- document.getElementById('campaignButton').textContent='Продолжить просмотр завоеваний';
+ 
 }
 function campaignDrawCurrent(animate=true){
- const eraIndex=campaignOrder[campaignTourIndex],campaign=campaigns[eraIndex],stop=campaign.stops[campaignStopIndex];
+ const eraIndex=campaignActiveOrder[campaignTourIndex],campaign=campaigns[eraIndex],stop=campaign.stops[campaignStopIndex];
  if(idx!==eraIndex){campaignSwitchingEra=true;idx=eraIndex;render();campaignSwitchingEra=false;}
  if(campaignTourLayer){map.removeLayer(campaignTourLayer);campaignTourLayer=null;}
  campaignTourLayer=L.layerGroup().addTo(map);
@@ -636,20 +688,20 @@ function campaignDrawCurrent(animate=true){
 function campaignMove(delta){
  campaignStopTimer();
  let si=campaignStopIndex+delta,ci=campaignTourIndex;
- while(si<0&&ci>0){ci--;si=campaigns[campaignOrder[ci]].stops.length-1;}
- while(ci<campaignOrder.length-1&&si>=campaigns[campaignOrder[ci]].stops.length){si-=campaigns[campaignOrder[ci]].stops.length;ci++;}
- si=Math.max(0,Math.min(campaigns[campaignOrder[ci]].stops.length-1,si));
+ while(si<0&&ci>0){ci--;si=campaigns[campaignActiveOrder[ci]].stops.length-1;}
+ while(ci<campaignActiveOrder.length-1&&si>=campaigns[campaignActiveOrder[ci]].stops.length){si-=campaigns[campaignActiveOrder[ci]].stops.length;ci++;}
+ si=Math.max(0,Math.min(campaigns[campaignActiveOrder[ci]].stops.length-1,si));
  campaignTourIndex=ci;campaignStopIndex=si;campaignDrawCurrent(true);
 }
-function campaignTick(){const c=campaigns[campaignOrder[campaignTourIndex]];if(campaignStopIndex<c.stops.length-1){campaignStopIndex++;campaignDrawCurrent(true);}else if(campaignTourIndex<campaignOrder.length-1){campaignTourIndex++;campaignStopIndex=0;campaignDrawCurrent(true);}else{campaignStopTimer();return;}campaignTourTimer=setTimeout(campaignTick,2800);}
+function campaignTick(){const c=campaigns[campaignActiveOrder[campaignTourIndex]];if(campaignStopIndex<c.stops.length-1){campaignStopIndex++;campaignDrawCurrent(true);}else if(campaignTourIndex<campaignActiveOrder.length-1){campaignTourIndex++;campaignStopIndex=0;campaignDrawCurrent(true);}else{campaignStopTimer();return;}campaignTourTimer=setTimeout(campaignTick,2800);}
 function campaignTogglePlay(){if(campaignTourPlaying){campaignStopTimer();return;}campaignTourPlaying=true;document.getElementById('campaignPlay').textContent='Ⅱ Пауза';campaignTourTimer=setTimeout(campaignTick,600);}
-function campaignStart(){document.getElementById('campaignPlayer').hidden=false;campaignTourIndex=0;campaignStopIndex=0;campaignDrawCurrent(true);campaignTogglePlay();}
-document.getElementById('campaignButton').addEventListener('click',campaignStart);
+function campaignStart(eraKey){campaignStopTimer();campaignActiveOrder=[Number(eraKey)];campaignTourIndex=0;campaignStopIndex=0;document.getElementById('campaignPlayer').hidden=false;campaignDrawCurrent(true);campaignTogglePlay();}
+document.querySelectorAll('[data-campaign]').forEach(button=>button.addEventListener('click',()=>campaignStart(button.dataset.campaign)));
 document.getElementById('campaignPrev').addEventListener('click',()=>campaignMove(-1));
 document.getElementById('campaignNext').addEventListener('click',()=>campaignMove(1));
 document.getElementById('campaignPlay').addEventListener('click',campaignTogglePlay);
 document.getElementById('campaignClose').addEventListener('click',()=>{campaignStopTimer();document.getElementById('campaignPlayer').hidden=true;clearCampaign();});
-function render(){clearCampaign();idx=Math.max(0,Math.min(eraData.length-1,idx));const e=eraData[idx];loadGrade5Cliopatria(g5TargetYears[idx]);document.getElementById('campaignButton').hidden=![1,2,4,5].includes(idx);document.getElementById('campaignButton').textContent='Показать все походы и завоевания';document.getElementById('era').value=idx;document.getElementById('period').textContent='Период '+(idx+1)+' из '+eraData.length;document.getElementById('eraTitle').textContent=e.title;document.getElementById('eraText').textContent=e.text;document.getElementById('eraDate').textContent='Ориентировочная дата: '+e.date;document.getElementById('prev').disabled=idx===0;document.getElementById('next').disabled=idx===eraData.length-1;
+function render(){clearCampaign();idx=Math.max(0,Math.min(eraData.length-1,idx));const e=eraData[idx];loadGrade5Cliopatria(g5TargetYears[idx]);document.getElementById('era').value=idx;document.getElementById('period').textContent='Период '+(idx+1)+' из '+eraData.length;document.getElementById('eraTitle').textContent=e.title;document.getElementById('eraText').textContent=e.text;document.getElementById('eraDate').textContent='Ориентировочная дата: '+e.date;document.getElementById('prev').disabled=idx===0;document.getElementById('next').disabled=idx===eraData.length-1;
 layers.forEach(l=>map.removeLayer(l));layers=[];if(window.nileLayer)map.removeLayer(window.nileLayer);if(window.mesopotamiaRiverLayer)map.removeLayer(window.mesopotamiaRiverLayer);if(window.cityLayer)map.removeLayer(window.cityLayer);if(window.mesoCityLayer)map.removeLayer(window.mesoCityLayer);if(window.worldCityLayer)map.removeLayer(window.worldCityLayer);if(window.practiceMarker){map.removeLayer(window.practiceMarker);window.practiceMarker=null;}if(window.geographyLabelLayer)map.removeLayer(window.geographyLabelLayer);if(window.geoLabelLayer)map.removeLayer(window.geoLabelLayer);if(window.egyptLabels)map.removeLayer(window.egyptLabels);if(window.historyLabelLayer)map.removeLayer(window.historyLabelLayer);const keyEl=document.getElementById('key');keyEl.innerHTML='';
 window.setTimeout(()=>map.invalidateSize({pan:false}),140);
 
@@ -801,6 +853,7 @@ document.getElementById('showAnswer').addEventListener('click',showPracticeAnswe
 document.getElementById('focusTask').addEventListener('click',focusPracticeTask);
 document.getElementById('practiceMode').addEventListener('change',()=>{currentPracticeTask=null;document.getElementById('practiceQuestion').textContent='Нажми «Новое задание», чтобы начать.';document.getElementById('practiceAnswer').hidden=true;document.getElementById('practiceStatus').textContent='Выбран новый тип задания.';});
 
+document.querySelectorAll('.term-item').forEach(item=>{const dt=item.querySelector('dt'),dd=item.querySelector('dd');if(!dt||!dd)return;const details=document.createElement('details');details.className='term-item';const summary=document.createElement('summary');summary.textContent=dt.textContent;const body=document.createElement('p');body.textContent=dd.textContent;body.style.margin='7px 0 0';details.append(summary,body);item.replaceWith(details);});
 document.getElementById('cityLabelsToggle').addEventListener('click',()=>setCityLabelsVisible(!cityLabelsVisible));
 document.getElementById('era').addEventListener('change',e=>{idx=Number(e.target.value);render()});document.getElementById('prev').onclick=()=>{idx--;render()};document.getElementById('next').onclick=()=>{idx++;render()};render();
 
