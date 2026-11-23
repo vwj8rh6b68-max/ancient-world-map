@@ -718,12 +718,17 @@ document.getElementById('campaignClose').addEventListener('click',()=>{campaignS
 function render(){clearCampaign();idx=Math.max(0,Math.min(eraData.length-1,idx));const e=eraData[idx];loadGrade5Cliopatria(g5TargetYears[idx]);document.getElementById('era').value=idx;document.getElementById('period').textContent='Период '+(idx+1)+' из '+eraData.length;document.getElementById('eraTitle').textContent=e.title;document.getElementById('eraText').textContent=e.text;document.getElementById('eraDate').textContent='Ориентировочная дата: '+e.date;document.getElementById('prev').disabled=idx===0;document.getElementById('next').disabled=idx===eraData.length-1;
 layers.forEach(l=>map.removeLayer(l));layers=[];if(window.nileLayer)map.removeLayer(window.nileLayer);if(window.mesopotamiaRiverLayer)map.removeLayer(window.mesopotamiaRiverLayer);if(window.cityLayer)map.removeLayer(window.cityLayer);if(window.mesoCityLayer)map.removeLayer(window.mesoCityLayer);if(window.worldCityLayer)map.removeLayer(window.worldCityLayer);if(window.practiceMarker){map.removeLayer(window.practiceMarker);window.practiceMarker=null;}if(window.geographyLabelLayer)map.removeLayer(window.geographyLabelLayer);if(window.geoLabelLayer)map.removeLayer(window.geoLabelLayer);if(window.egyptLabels)map.removeLayer(window.egyptLabels);if(window.historyLabelLayer)map.removeLayer(window.historyLabelLayer);const keyEl=document.getElementById('key');keyEl.innerHTML='';
 g5HistoricalOutlineLayer.clearLayers();
-const selectedOutlines=territories.filter(t=>t.eras.includes(idx));
+const selectedOutlines=territories.filter(t=>['egypt','persian_egypt','alexander_egypt','akkad'].includes(t.key)&&t.eras.includes(idx));
 selectedOutlines.forEach(t=>{
  const color=t.key==='akkad'?'#a84b32':'#b47b28';
  const options={color,weight:2.4,opacity:.98,fillColor:color,fillOpacity:t.key==='akkad'?.20:.25,lineJoin:'round',dashArray:t.key==='akkad'?'6 4':null};
  const pieces=t.parts||[t.coords];
- pieces.filter(Boolean).forEach(coords=>L.polygon(coords,options).addTo(g5HistoricalOutlineLayer));
+ pieces.filter(Boolean).forEach(coords=>{
+  const polygon=L.polygon(coords,options).addTo(g5HistoricalOutlineLayer);
+  polygon.bindPopup(t.key==='akkad'
+   ?'<strong>Аккадская держава</strong><br>Ориентировочная зона наибольшего расширения при Саргоне и его преемниках (XXIV–XXIII вв. до н. э.). Это учебная реконструкция зоны влияния, а не точная административная граница.'
+   :'<strong>Древний Египет</strong><br>Показаны дельта и долина Нила — историческое ядро государства. Контур схематичен; политические рубежи и южная граница менялись в разные эпохи.');
+ });
 });
 window.setTimeout(()=>map.invalidateSize({pan:false}),140);
 
