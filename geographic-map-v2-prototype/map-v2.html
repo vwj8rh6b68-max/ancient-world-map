@@ -93,7 +93,7 @@ button{background:#304d61;color:white;border:0;font-weight:650}.curriculum-panel
 <p id="practiceStatus" class="practice-status" aria-live="polite">Подсказка: используй масштаб карты и подписи морей, рек и городов.</p>
 </div>
 <div class="columns"><section><div class="map-toolbar"><button id="cityLabelsToggle" type="button" aria-pressed="false">Показать названия городов</button><span class="small">Подписи отмеченных городов можно включать и скрывать</span></div><div id="map" role="application" aria-label="Интерактивная географическая карта Древнего мира"></div>
-<p class="small">Исторические контуры политий: Cliopatria, выверенный выпуск GIS Center, UC Merced Library (2026), на основе базы Cliopatria (Bennett et al., 2025), лицензия CC BY 4.0. Не все древние культуры были едиными государствами: культурные ареалы обозначаются отдельно и условно.</p>
+
 <div class="g5-legend-tools"><input class="g5-legend-search" id="g5LegendSearch" type="search" placeholder="Найти государство…" aria-label="Найти государство в легенде"><span class="g5-legend-count" id="g5LegendCount">Загрузка исторических образований…</span></div><div class="key" id="key" aria-live="polite"></div><p class="small" style="margin:5px 0 12px">В легенде оставлены только государства и политические образования, относящиеся к темам курса 5-го класса. Контуры древних территорий — научные реконструкции; они не означают одинаково плотного контроля над всей окрашенной областью.</p></section>
 <aside><div class="panel"><h2 id="eraTitle">Египет и Междуречье</h2><p id="eraText">Нажми на цветную область, чтобы открыть справку.</p><p class="small" id="eraDate"></p></div>
 <div class="panel"><h2 id="stateTitle">Выбери государство</h2><p id="stateInfo">Нажми на цветную территорию на карте или на элемент легенды.</p><div id="stateMedia" class="history-media" hidden></div></div>
@@ -520,7 +520,7 @@ async function loadGrade5Cliopatria(targetYear){
  g5PolityLayer.clearLayers();g5ActiveFeatures=[];g5LegendEntries=[];keyEl.textContent='Загружаем исторические границы…';document.getElementById('g5LegendCount').textContent='Подключение к исторической базе…';
  periodDate.textContent='Ориентировочная дата: '+(targetYear<0?Math.abs(targetYear)+' г. до н. э.':targetYear+' г. н. э.')+' · загружаются исторические контуры…';
  try{
-  const years=await g5GetYears(),eligible=years.filter(y=>y<=targetYear),snapshot=eligible.length?Math.max(...eligible):Math.min(...years);
+  const years=await g5GetYears(),eligible=years.filter(y=>y<=targetYear),referenceIndiaYears=years.filter(y=>y<=-250),snapshot=targetYear===-200?(referenceIndiaYears.length?Math.max(...referenceIndiaYears):Math.min(...years)):(eligible.length?Math.max(...eligible):Math.min(...years));
   let data=g5PolityCache.get(snapshot);
   if(!data){
    // Сначала запрашиваем полный список OBJECTID, затем получаем геометрию пакетами.
@@ -544,7 +544,13 @@ async function loadGrade5Cliopatria(targetYear){
   // Около 250 г. до н. э. отображаем отдельные царства из Cliopatria, а не общий полигон периода.
   if(targetYear===-250){const chinaStates=courseFeatures.filter(f=>g5IsWarringStatesPolity(f.properties?.Name));if(chinaStates.length)courseFeatures=courseFeatures.filter(f=>!/^(warring states|warring states period|warring states china)$/i.test(String(f.properties?.Name||'').trim()));}
   // После объединения 221 г. до н. э. отдельные царства эпохи Сражающихся царств скрываем.
-  if(targetYear===-200)courseFeatures=courseFeatures.filter(f=>!/warring.?states/i.test(String(f.properties?.Name||''))&&!g5IsWarringStatesPolity(f.properties?.Name));
+  if(targetYear===-200){
+   courseFeatures=courseFeatures.filter(f=>!/warring.?states/i.test(String(f.properties?.Name||''))&&!g5IsWarringStatesPolity(f.properties?.Name));
+   // Для сопоставимости сохраняем геометрию Индии из того же исходного среза, что и на предыдущем этапе.
+   // В Китае отдельные царства убраны; единая раннеханьская территория показана отдельным контуром.
+   courseFeatures=courseFeatures.filter(f=>!/^(han|han dynasty|han empire|western han|western han dynasty|maurya empire)$/i.test(String(f.properties?.Name||'').trim()));
+   courseFeatures.push({type:'Feature',properties:{Name:'Han Empire',Year:snapshot,Color:'#b58b58',Type:'POLITY',SourceNote:'Условный учебный контур ранней империи Хань около 200 г. до н. э. Используется для показа объединённого Китая; не является точной реконструкцией границ.'},geometry:{type:'Polygon',coordinates:[[[103,39],[106,41],[111,42],[116,41],[121,39],[122,35],[119,31],[115,28],[110,27],[106,29],[103,33],[103,39]]] }});
+  }
   if(targetYear===-2300&&!courseFeatures.some(f=>/indus|harapp/i.test(String(f.properties?.Name||''))))courseFeatures.push({type:'Feature',properties:{Name:'Indus Valley Civilization',Year:snapshot,Color:'#b58b58',Type:'CULTURAL_REGION',SourceNote:'Условный контур культурного ареала; он не обозначает границу единого государства.'},geometry:{type:'Polygon',coordinates:[[[67,35],[69,33],[71,31],[73,30],[76,29],[78,27],[77,24],[75,22],[72,22],[69,24],[67,27],[66,30],[67,35]]]}});
   if(targetYear===-250){const chinaCount=courseFeatures.filter(f=>g5IsWarringStatesPolity(f.properties?.Name)).length;const sourceDate=snapshot<0?Math.abs(snapshot)+' г. до н. э.':snapshot+' г. н. э.';periodDate.textContent='Ориентировочная дата: около 250 г. до н. э. · срез Cliopatria: '+sourceDate+' · отдельных китайских царств в данных: '+chinaCount+'.';}
   else{const sourceDate=snapshot<0?Math.abs(snapshot)+' г. до н. э.':snapshot+' г. н. э.';periodDate.textContent='Ориентировочная дата: '+(targetYear<0?Math.abs(targetYear)+' г. до н. э.':targetYear+' г. н. э.')+' · срез Cliopatria: '+sourceDate+'.';}
