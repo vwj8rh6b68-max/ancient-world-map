@@ -94,7 +94,8 @@ button{background:#304d61;color:white;border:0;font-weight:650}.curriculum-panel
 <div id="practiceAnswer" class="answer" hidden></div>
 <p id="practiceStatus" class="practice-status" aria-live="polite">Подсказка: используй масштаб карты и подписи морей, рек и городов.</p>
 </div>
-<div class="columns"><section><div class="map-toolbar"><button id="cityLabelsToggle" type="button" aria-pressed="true">Скрыть названия городов</button><button id="eventsToggle" type="button" aria-pressed="false">Показать события</button><button id="tradeRoutesToggle" type="button" aria-pressed="false">Показать торговые пути</button><span class="small">Дополнительные слои меняются вместе с эпохой; маршруты показаны схематично.</span></div><div id="map" role="application" aria-label="Интерактивная географическая карта Древнего мира"></div>
+<div class="columns"><section><div class="map-toolbar"><button id="cityLabelsToggle" type="button" aria-pressed="true">Скрыть названия городов</button><button id="eventsToggle" type="button" aria-pressed="false">Показать события</button><button id="tradeRoutesToggle" type="button" aria-pressed="false">Показать торговые пути</button><button id="compareToggle" type="button" aria-expanded="false">Сравнить эпохи</button><span class="small">Дополнительные слои меняются вместе с эпохой; маршруты показаны схематично.</span></div>
+<div id="comparePanel" class="panel" hidden><h2>Сравнение двух эпох</h2><p class="small">Основная эпоха отображается обычными контурами, выбранная для сравнения — пунктиром. Это помогает увидеть, как менялись территории.</p><div class="student-fields"><label>Основная эпоха<select id="compareFrom"></select></label><label>Эпоха для сравнения<select id="compareTo"></select></label></div><div class="practice-controls"><button type="button" id="compareApply">Показать сравнение</button><button type="button" id="compareClear" class="secondary-action">Скрыть сравнение</button></div><p id="compareStatus" class="practice-status" aria-live="polite">Выбери две разные эпохи.</p></div><div id="map" role="application" aria-label="Интерактивная географическая карта Древнего мира"></div>
 <div class="g5-legend-tools"><input class="g5-legend-search" id="g5LegendSearch" type="search" placeholder="Найти государство…" aria-label="Найти государство в легенде"><span class="g5-legend-count" id="g5LegendCount">Загрузка исторических образований…</span></div><div class="key" id="key" aria-live="polite"></div><p class="small" style="margin:5px 0 12px">В легенде оставлены только государства и политические образования, относящиеся к темам курса 5-го класса. Контуры древних территорий — научные реконструкции; они не означают одинаково плотного контроля над всей окрашенной областью.</p></section>
 <aside><div class="panel"><h2 id="eraTitle">Египет и Междуречье</h2><p id="eraText">Нажми на цветную область, чтобы открыть справку.</p><p class="small" id="eraDate"></p></div>
 <div class="panel"><h2 id="stateTitle">Выбери государство</h2><p id="stateInfo">Нажми на цветную территорию на карте или на элемент легенды.</p><div id="stateMedia" class="history-media" hidden></div></div>
@@ -380,7 +381,7 @@ L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Physical
 const G5_CLI_URL='https://services2.arcgis.com/wx8u046p68e0iGuj/arcgis/rest/services/Aligned_Cliopatria_v1.1_WGS84/FeatureServer/0/query';
 const g5PolityLayer=L.featureGroup().addTo(map),g5PolityCache=new Map();
 let g5PolityRequest=0,g5AvailableYears=null,g5ActiveFeatures=[],g5LegendEntries=[],g5HasInitialFit=false;
-let cityLabelsVisible=true,eventsVisible=false,tradeRoutesVisible=false;
+let cityLabelsVisible=true,eventsVisible=false,tradeRoutesVisible=false,comparisonTargetIndex=null,comparisonRequest=0;
 function setCityLabelsVisible(visible){cityLabelsVisible=!!visible;['cityLayer','mesoCityLayer','worldCityLayer'].forEach(key=>{const group=window[key];if(!group)return;group.eachLayer(marker=>{if(cityLabelsVisible)marker.openTooltip();else marker.closeTooltip();});});const button=document.getElementById('cityLabelsToggle');if(button){button.setAttribute('aria-pressed',String(cityLabelsVisible));button.textContent=cityLabelsVisible?'Скрыть названия городов':'Показать названия городов';}}
 const g5TargetYears=[-3050,-2300,-1750,-1500,-700,-600,-500,-330,-250,-220,100,350,476];
 const g5Names={
@@ -843,6 +844,44 @@ const historicalTradeRoutes=[
  {eras:[6],name:'Царская дорога Ахеменидов',coords:[[38.49,28.04],[38.0,36.0],[36.36,43.15],[32.54,44.42],[32.19,48.25]],note:'Схематическое направление между Сардами и Сузами; реальные дороги имели ответвления и менялись со временем.'},
  {eras:[10],name:'Великий шёлковый путь',coords:[[34.27,108.94],[40.14,94.66],[39.47,75.99],[36.7,67.1],[36.2,36.16]],note:'Один из условных сухопутных коридоров между Китаем, Центральной Азией и Средиземноморьем. Исторически это была разветвлённая сеть путей.'}
 ];
+async function g5GetComparisonSnapshot(targetYear){
+ const years=await g5GetYears(),snapshot=years.reduce((best,y)=>Math.abs(y-targetYear)<Math.abs(best-targetYear)?y:best,years[0]);
+ let data=g5PolityCache.get(snapshot);
+ if(!data){
+  const spatial={xmin:-25,ymin:-12,xmax:150,ymax:78,spatialReference:{wkid:4326}};
+  const idParams=new URLSearchParams({where:"Year = "+snapshot+" AND Type = 'POLITY'",returnIdsOnly:'true',returnGeometry:'false',geometry:JSON.stringify(spatial),geometryType:'esriGeometryEnvelope',inSR:'4326',spatialRel:'esriSpatialRelIntersects',f:'json'});
+  const idResponse=await fetch(G5_CLI_URL+'?'+idParams.toString());if(!idResponse.ok)throw new Error('HTTP '+idResponse.status);
+  const idResult=await idResponse.json();if(idResult.error||!Array.isArray(idResult.objectIds))throw new Error(idResult.error?.message||'Не получен список объектов для сравнения');
+  const all=[];
+  for(let start=0;start<idResult.objectIds.length;start+=500){
+   const params=new URLSearchParams({objectIds:idResult.objectIds.slice(start,start+500).join(','),outFields:'OBJECTID,Year,AreaSqKM,Name,Color,Type,Wikipedia',returnGeometry:'true',outSR:'4326',f:'geojson'});
+   const response=await fetch(G5_CLI_URL+'?'+params.toString());if(!response.ok)throw new Error('HTTP '+response.status);
+   const page=await response.json();if(page.error||!Array.isArray(page.features))throw new Error(page.error?.message||'Не получены геометрии для сравнения');
+   all.push(...page.features);
+  }
+  data={type:'FeatureCollection',features:all};g5PolityCache.set(snapshot,data);
+ }
+ return {snapshot,data};
+}
+async function loadComparisonOverlay(targetIndex){
+ const request=++comparisonRequest,status=document.getElementById('compareStatus'),targetYear=g5TargetYears[targetIndex];
+ if(status)status.textContent='Загружаем второй исторический срез…';
+ try{
+  const {snapshot,data}=await g5GetComparisonSnapshot(targetYear);
+  if(request!==comparisonRequest||comparisonTargetIndex!==targetIndex)return;
+  const features=data.features.filter(f=>g5IsInGrade5Course(f.properties?.Name)&&g5Translate(String(f.properties?.Name||''))!=='Название не установлено'&&!(targetYear===-3050&&/egypt|egyptian/i.test(String(f.properties?.Name||''))));
+  const group=L.layerGroup();
+  L.geoJSON({type:'FeatureCollection',features},{style:f=>({color:'#604a91',weight:2.4,opacity:.95,fillColor:'#8b78b4',fillOpacity:.035,dashArray:'6 5',lineJoin:'round'}),onEachFeature:(f,l)=>{const name=g5Translate(f.properties?.Name||'');l.bindTooltip('Сравнение: '+name,{sticky:true,className:'polity-label'});l.bindPopup('<strong>Сравнение: '+name+'</strong><br>Срез базы: '+(Number(f.properties?.Year)<0?Math.abs(Number(f.properties?.Year))+' г. до н. э.':Number(f.properties?.Year)+' г. н. э.'));}}).addTo(group);
+  if(targetIndex===0){
+   L.polygon([[31.55,29.70],[31.65,31.15],[31.45,32.35],[30.95,32.55],[30.35,32.55],[29.85,32.15],[29.7,31.75],[28.5,32.05],[27.0,32.35],[25.5,32.65],[24.0,32.9],[24.0,32.55],[25.5,32.35],[27.0,32.05],[28.5,31.75],[29.7,31.0],[30.05,30.8],[30.55,30.3],[31.55,29.70]],{color:'#604a91',weight:2.4,opacity:.98,fillColor:'#8b78b4',fillOpacity:.04,dashArray:'6 5'}).bindTooltip('Сравнение: объединённый Египет около 3100 г. до н. э.').addTo(group);
+  }
+  group.addTo(map);window.comparisonLayer=group;
+  if(status)status.textContent='Основная эпоха: '+eraData[idx].date+'. Пунктиром показана эпоха сравнения: '+eraData[targetIndex].date+'. Срез базы: '+(snapshot<0?Math.abs(snapshot)+' г. до н. э.':snapshot+' г. н. э.')+'.';
+ }catch(e){
+  if(request!==comparisonRequest)return;
+  if(status)status.textContent='Не удалось загрузить эпоху для сравнения: '+e.message;
+ }
+}
 function drawHistoricalEvents(){
  const button=document.getElementById('eventsToggle');
  if(button){button.setAttribute('aria-pressed',String(eventsVisible));button.textContent=eventsVisible?'Скрыть события':'Показать события';}
@@ -867,7 +906,7 @@ function drawTradeRoutes(){
   return line;
  })).addTo(map);
 }
-function render(){clearCampaign();if(window.historicalEventLayer){map.removeLayer(window.historicalEventLayer);window.historicalEventLayer=null;}if(window.tradeRouteLayer){map.removeLayer(window.tradeRouteLayer);window.tradeRouteLayer=null;}idx=Math.max(0,Math.min(eraData.length-1,idx));const e=eraData[idx];loadGrade5Cliopatria(g5TargetYears[idx]);document.getElementById('era').value=idx;document.getElementById('period').textContent='Период '+(idx+1)+' из '+eraData.length;document.getElementById('eraTitle').textContent=e.title;document.getElementById('eraText').textContent=e.text;document.getElementById('eraDate').textContent='Ориентировочная дата: '+e.date;document.getElementById('prev').disabled=idx===0;document.getElementById('next').disabled=idx===eraData.length-1;
+function render(){clearCampaign();if(window.historicalEventLayer){map.removeLayer(window.historicalEventLayer);window.historicalEventLayer=null;}if(window.tradeRouteLayer){map.removeLayer(window.tradeRouteLayer);window.tradeRouteLayer=null;}if(window.comparisonLayer){map.removeLayer(window.comparisonLayer);window.comparisonLayer=null;}comparisonRequest++;idx=Math.max(0,Math.min(eraData.length-1,idx));const e=eraData[idx];loadGrade5Cliopatria(g5TargetYears[idx]);document.getElementById('era').value=idx;document.getElementById('period').textContent='Период '+(idx+1)+' из '+eraData.length;document.getElementById('eraTitle').textContent=e.title;document.getElementById('eraText').textContent=e.text;document.getElementById('eraDate').textContent='Ориентировочная дата: '+e.date;document.getElementById('prev').disabled=idx===0;document.getElementById('next').disabled=idx===eraData.length-1;
 layers.forEach(l=>map.removeLayer(l));layers=[];if(window.nileLayer)map.removeLayer(window.nileLayer);if(window.egyptGeographyLayer)map.removeLayer(window.egyptGeographyLayer);if(window.earlyEgyptStateLayer)map.removeLayer(window.earlyEgyptStateLayer);if(window.assyriaEgyptLayer)map.removeLayer(window.assyriaEgyptLayer);if(window.mesopotamiaRiverLayer)map.removeLayer(window.mesopotamiaRiverLayer);if(window.cityLayer)map.removeLayer(window.cityLayer);if(window.mesoCityLayer)map.removeLayer(window.mesoCityLayer);if(window.worldCityLayer)map.removeLayer(window.worldCityLayer);if(window.practiceMarker){map.removeLayer(window.practiceMarker);window.practiceMarker=null;}if(window.geographyLabelLayer)map.removeLayer(window.geographyLabelLayer);if(window.geoLabelLayer)map.removeLayer(window.geoLabelLayer);if(window.egyptLabels)map.removeLayer(window.egyptLabels);if(window.historyLabelLayer)map.removeLayer(window.historyLabelLayer);const keyEl=document.getElementById('key');keyEl.innerHTML='';
 window.setTimeout(()=>map.invalidateSize({pan:false}),140);
 
@@ -982,7 +1021,7 @@ const pantikapaionCity=worldCityByName('Пантикапей');if(pantikapaionCi
 const phanagoriaCity=worldCityByName('Фанагория');if(phanagoriaCity)phanagoriaCity[4]=[6,7,8,9,10,11,12];
 const chersonesusCity=worldCityByName('Херсонес');if(chersonesusCity)chersonesusCity[4]=[7,8,9,10,11,12];
 worldCities.push(['Сяньян',34.33,108.70,'Столица царства Цинь и затем первой объединённой империи Цинь. В 221 г. до н. э. Ин Чжэн объединил Китай и принял титул Цинь Шихуанди.',[9],{9:'столица империи Цинь'}]);
-window.worldCityLayer=L.layerGroup(worldCities.filter(c=>c[4].includes(idx)).map(([name,lat,lon,info,eras,roles])=>{const role=roles?.[idx],capital=!!role,marker=L.circleMarker([lat,lon],{radius:capital?7:4.5,color:'#fff',weight:capital?2.2:1.5,fillColor:capital?'#d39a27':'#4a5d8a',fillOpacity:1});marker.bindPopup('<strong>'+name+'</strong><br><b>'+(role?role[0].toUpperCase()+role.slice(1):'Город / исторический центр; не столица в данном срезе')+'</b><br>'+info);marker.bindTooltip((capital?'★ ':'')+name,{permanent:false,direction:'top',offset:[0,-5],className:'city-tooltip'});return marker;})).addTo(map);document.getElementById('cityLegendNote')?.remove();const cityNote=document.createElement('p');cityNote.id='cityLegendNote';cityNote.className='city-legend-note';cityNote.textContent='Золотая точка со звездой — столица, царская резиденция или главный политический центр именно выбранной эпохи; синие и тёмно-красные точки — другие города. Статус города менялся со временем.';document.getElementById('eraText').after(cityNote);setCityLabelsVisible(cityLabelsVisible);drawHistoricalEvents();drawTradeRoutes();
+window.worldCityLayer=L.layerGroup(worldCities.filter(c=>c[4].includes(idx)).map(([name,lat,lon,info,eras,roles])=>{const role=roles?.[idx],capital=!!role,marker=L.circleMarker([lat,lon],{radius:capital?7:4.5,color:'#fff',weight:capital?2.2:1.5,fillColor:capital?'#d39a27':'#4a5d8a',fillOpacity:1});marker.bindPopup('<strong>'+name+'</strong><br><b>'+(role?role[0].toUpperCase()+role.slice(1):'Город / исторический центр; не столица в данном срезе')+'</b><br>'+info);marker.bindTooltip((capital?'★ ':'')+name,{permanent:false,direction:'top',offset:[0,-5],className:'city-tooltip'});return marker;})).addTo(map);document.getElementById('cityLegendNote')?.remove();const cityNote=document.createElement('p');cityNote.id='cityLegendNote';cityNote.className='city-legend-note';cityNote.textContent='Золотая точка со звездой — столица, царская резиденция или главный политический центр именно выбранной эпохи; синие и тёмно-красные точки — другие города. Статус города менялся со временем.';document.getElementById('eraText').after(cityNote);setCityLabelsVisible(cityLabelsVisible);drawHistoricalEvents();drawTradeRoutes();if(comparisonTargetIndex!==null){const from=document.getElementById('compareFrom');if(from)from.value=String(idx);loadComparisonOverlay(comparisonTargetIndex);}
 const geoLabels=[['Синай',29.8,34.1],['Ливийская пустыня',26.8,27.8]];
 window.geoLabelLayer=L.layerGroup(geoLabels.map(([name,lat,lon])=>L.marker([lat,lon],{interactive:false,icon:L.divIcon({className:'geo-label',html:'<span style="color:#426c7b;font-style:italic;font-size:12px;white-space:nowrap;text-shadow:0 1px #fff">'+name+'</span>',iconSize:[130,18],iconAnchor:[65,9]})}))).addTo(map);
 document.getElementById('stateTitle').textContent='Выбери государство';document.getElementById('stateInfo').textContent='Нажми на цветную территорию или название в легенде.';document.getElementById('stateMedia').hidden=true;document.getElementById('stateMedia').innerHTML='';
@@ -1081,8 +1120,12 @@ document.getElementById('practiceMode').addEventListener('change',()=>{currentPr
 
 document.querySelectorAll('.term-item').forEach(item=>{const dt=item.querySelector('dt'),dd=item.querySelector('dd');if(!dt||!dd)return;const details=document.createElement('details');details.className='term-item';const summary=document.createElement('summary');summary.textContent=dt.textContent;const body=document.createElement('p');body.textContent=dd.textContent;body.style.margin='7px 0 0';details.append(summary,body);item.replaceWith(details);});
 document.getElementById('cityLabelsToggle').addEventListener('click',()=>setCityLabelsVisible(!cityLabelsVisible));
+const compareOptions=eraData.map((e,i)=>'<option value="'+i+'">'+e.date+' — '+e.title+'</option>').join('');document.getElementById('compareFrom').innerHTML=compareOptions;document.getElementById('compareTo').innerHTML=compareOptions;document.getElementById('compareFrom').value='4';document.getElementById('compareTo').value='5';
 document.getElementById('eventsToggle').addEventListener('click',()=>{eventsVisible=!eventsVisible;render();});
 document.getElementById('tradeRoutesToggle').addEventListener('click',()=>{tradeRoutesVisible=!tradeRoutesVisible;render();});
+document.getElementById('compareToggle').addEventListener('click',()=>{const panel=document.getElementById('comparePanel'),button=document.getElementById('compareToggle');panel.hidden=!panel.hidden;button.setAttribute('aria-expanded',String(!panel.hidden));if(!panel.hidden)panel.scrollIntoView({behavior:'smooth',block:'nearest'});});
+document.getElementById('compareApply').addEventListener('click',()=>{const from=Number(document.getElementById('compareFrom').value),to=Number(document.getElementById('compareTo').value);if(from===to){document.getElementById('compareStatus').textContent='Выбери разные эпохи для сравнения.';return;}idx=from;comparisonTargetIndex=to;render();});
+document.getElementById('compareClear').addEventListener('click',()=>{comparisonTargetIndex=null;comparisonRequest++;if(window.comparisonLayer){map.removeLayer(window.comparisonLayer);window.comparisonLayer=null;}document.getElementById('compareStatus').textContent='Сравнение скрыто.';});
 document.getElementById('era').addEventListener('change',e=>{idx=Number(e.target.value);render()});document.getElementById('prev').onclick=()=>{idx--;render()};document.getElementById('next').onclick=()=>{idx++;render()};render();
 
 const quizBank=[
