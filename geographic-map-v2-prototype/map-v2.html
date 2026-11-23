@@ -382,7 +382,7 @@ const g5PolityLayer=L.featureGroup().addTo(map),g5PolityCache=new Map();
 let g5PolityRequest=0,g5AvailableYears=null,g5ActiveFeatures=[],g5LegendEntries=[],g5HasInitialFit=false;
 let cityLabelsVisible=false;
 function setCityLabelsVisible(visible){cityLabelsVisible=!!visible;['cityLayer','mesoCityLayer','worldCityLayer'].forEach(key=>{const group=window[key];if(!group)return;group.eachLayer(marker=>{if(cityLabelsVisible)marker.openTooltip();else marker.closeTooltip();});});const button=document.getElementById('cityLabelsToggle');if(button){button.setAttribute('aria-pressed',String(cityLabelsVisible));button.textContent=cityLabelsVisible?'Скрыть названия городов':'Показать названия городов';}}
-const g5TargetYears=[-3050,-2300,-1500,-700,-600,-500,-330,-250,100,350,476];
+const g5TargetYears=[-3050,-2300,-1500,-700,-500,-330,-250,100,350,476];
 const g5Names={
 'Egyptian Old Kingdom':'Древнее царство Египта','Egyptian Middle Kingdom':'Среднее царство Египта','Egyptian New Kingdom':'Новое царство Египта','Kingdom of Egypt':'Египетское царство','Egyptian Kingdom':'Египетское царство','Egyptian Empire':'Египетская держава','Ptolemaic Egypt':'Египет Птолемеев','Roman Egypt':'Римский Египет','Achaemenid Egypt':'Египет в составе державы Ахеменидов','Early Dynastic Period Of Egypt':'Раннединастический период Египта','The Early Dynastic Period Of Egypt':'Раннединастический период Египта','Early Dynastic Period of Egypt':'Раннединастический период Египта','Early Dynastic Period':'Раннединастический период','Archaic Egypt':'Раннединастический Египет','Predynastic Egypt':'Додинастический Египет','Old Kingdom of Egypt':'Древнее царство Египта','Middle Kingdom of Egypt':'Среднее царство Египта','New Kingdom of Egypt':'Новое царство Египта','First Intermediate Period':'Первый переходный период Египта','Second Intermediate Period':'Второй переходный период Египта','Third Intermediate Period':'Третий переходный период Египта','Late Period of Egypt':'Поздний период Египта','Ancient Egyptian Kingdom':'Древнеегипетское царство','Upper Egypt':'Верхний Египет','Lower Egypt':'Нижний Египет','Egypt':'Египет','Early Dynastic Egypt':'Раннединастический Египет','Old Kingdom':'Древнее царство Египта','Middle Kingdom':'Среднее царство Египта','New Kingdom':'Новое царство Египта',
 'Sumer':'Шумер','Sumerian city-states':'Шумерские города-государства','Uruk':'Урук','Ur':'Ур','Lagash':'Лагаш','Akkad':'Аккад','Akkadian Empire':'Аккадская держава','Assyria':'Ассирия','Assyrian Empire':'Ассирийская держава','Assyrian Kingdom':'Ассирийское царство','Neo-Assyrian Empire':'Новоассирийская держава','Neo Assyrian Empire':'Новоассирийская держава','Neo-Assyrian Kingdom':'Новоассирийское царство','Middle Assyrian Empire':'Среднеассирийская держава','Old Assyrian Empire':'Древнеассирийское царство','Babylonia':'Вавилония','Babylon':'Вавилон','Kassite Babylonia':'Вавилония касситов','Assyria':'Ассирия','Neo-Assyrian Empire':'Новоассирийская держава','Hittite Empire':'Хеттская держава','Hittites':'Хетты','Mitanni':'Митанни','Elam':'Элам','Phoenicia':'Финикия','Phoenician Kingdoms':'Финикийские царства','Phoenician Polities':'Финикийские города-государства','Phoenician city-states':'Финикийские города','Kingdom of Israel':'Израильское царство','Kingdom of Judah':'Иудейское царство',
@@ -534,9 +534,12 @@ async function loadGrade5Cliopatria(targetYear){
    data={type:'FeatureCollection',features:all};g5PolityCache.set(snapshot,data);
   }
   if(request!==g5PolityRequest)return;
-  const courseFeatures=data.features.filter(f=>g5IsInGrade5Course(f.properties?.Name));
+  const matchedCourseFeatures=data.features.filter(f=>g5IsInGrade5Course(f.properties?.Name));
+  const phoeniciaFeatures=matchedCourseFeatures.filter(f=>/phoenicia|phoenician|tyre|sidon|byblos|arwad/i.test(String(f.properties?.Name||'')));
+  // Финикийские города показываем отдельными точками: обобщённые полигоны внешней базы
+  // не передают их реальное положение на узком восточном побережье Средиземного моря.
+  const courseFeatures=matchedCourseFeatures.filter(f=>!/phoenicia|phoenician|tyre|sidon|byblos|arwad/i.test(String(f.properties?.Name||'')));
   const egyptFeatures=courseFeatures.filter(f=>/egypt|egyptian/i.test(String(f.properties?.Name||'')));
-  const phoeniciaFeatures=courseFeatures.filter(f=>/phoenicia|phoenician|tyre|sidon|byblos|arwad/i.test(String(f.properties?.Name||'')));
   g5ActiveFeatures=courseFeatures;g5PolityLayer.clearLayers();
   L.geoJSON({type:'FeatureCollection',features:courseFeatures},{style:f=>{
    const raw=String(f.properties?.Name||''),uncertain=/confederation|khaganate|hunn|xiongnu|steppe|nomad|tribe|influence/i.test(raw),periodOrCulture=/period|civilization|culture|world|region/i.test(raw);
@@ -619,7 +622,7 @@ const territories=[
 {key:'assyria_peak',eras:[2],coords:[[38.0,34.0],[38.5,42.0],[37.5,46.0],[34.5,48.5],[31.0,47.0],[29.5,42.0],[30.5,37.0],[33.0,33.0],[36.0,32.0],[38.0,34.0]]},
 {key:'judah',eras:[3],coords:[[33.0,34.5],[33.0,35.8],[32.0,35.8],[31.0,35.2],[31.0,34.5],[32.0,34.4],[33.0,34.5]]},
 {key:'hittites',eras:[1],coords:[[36.0,32.0],[36.3,34.3],[38.4,36.2],[40.4,35.4],[40.7,33.0],[39.4,31.5],[37.7,31.0],[36.0,32.0]]},
-{key:'phoenicia',eras:[1,2,3,4,5],coords:[[33.0,35.1],[33.2,35.6],[34.0,35.8],[34.9,35.7],[35.5,35.5],[35.3,35.1],[34.4,35.0],[33.0,35.1]]},
+// Финикия представлена точками городов, а не условным территориальным полигоном.
 {key:'persia',eras:[4],coords:[[40.5,26.0],[41.0,29.0],[40.0,32.0],[38.5,35.0],[37.0,37.0],[36.0,40.0],[37.0,44.0],[39.5,47.0],[42.0,51.0],[43.0,56.0],[42.0,61.0],[40.0,66.0],[37.0,70.0],[33.0,72.0],[28.0,68.0],[24.5,62.0],[24.5,56.0],[26.0,51.0],[29.0,47.0],[30.5,43.5],[31.5,39.0],[32.5,35.0],[35.0,30.0],[38.0,27.0],[40.5,26.0]]},
 {key:'alexander',eras:[5],coords:[[40.5,20.5],[42.0,25.0],[40.0,29.0],[38.0,33.0],[36.5,36.5],[35.5,40.0],[35.5,44.0],[37.0,47.5],[38.5,51.0],[38.5,55.0],[36.5,58.5],[33.0,60.5],[29.0,59.0],[26.0,55.5],[25.0,51.0],[27.0,47.0],[29.0,43.5],[30.0,39.5],[31.0,35.5],[33.0,31.0],[37.0,26.0],[40.5,20.5]]},
 {key:'greek',eras:[1,2,3,4,5,6,7],coords:[[35.0,19.0],[36.0,22.0],[39.0,24.0],[41.0,26.0],[40.0,22.0],[38.0,19.0],[35.0,19.0]]},
@@ -872,7 +875,7 @@ const worldCities=[
  ['Сузы',32.19,48.25,'Древний город Элама, при Ахеменидах — важный административный и царский центр; двор перемещался между несколькими резиденциями.',[4,5],{4:'один из главных административных и царских центров Ахеменидов'}],
  ['Экбатаны',34.80,48.52,'Древний город Мидии, использовавшийся Ахеменидами как сезонная летняя царская резиденция.',[4,5],{4:'сезонная летняя царская резиденция Ахеменидов'}]
 ];
-shiftEraIndices(worldCities);insertEraIndex(worldCities,4);
+// Индексы worldCities уже соответствуют десяти этапам eraData; повторно сдвигать их нельзя.
 // Финикийские города: точки показывают реальные городские центры, а не условные границы всей Финикии.
 worldCities.push(
  ['Арвад',34.856,35.858,'Островной порт и финикийский город на северном побережье Леванта. Его политическая самостоятельность зависела от соотношения сил крупных держав.',[2,3,4,5,6,7]],
