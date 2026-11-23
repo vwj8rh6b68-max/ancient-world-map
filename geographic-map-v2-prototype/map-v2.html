@@ -424,8 +424,8 @@ function g5Translate(n){const v=String(n||'').trim();if(!v)return 'Назван�
 function g5Color(v){let c=String(v??'').trim();if(/^0x[0-9a-f]{6}$/i.test(c))c='#'+c.slice(2);if(/^#[0-9a-f]{6}$/i.test(c))return c;if(/^\d+$/.test(c)){const n=Number(c);if(n>=0&&n<=0xffffff)return '#'+n.toString(16).padStart(6,'0');}return '#82939a';}
 const g5CoursePolities = new Set([
 'Egypt','Ancient Egyptian Kingdom','Old Kingdom of Egypt','Middle Kingdom of Egypt','New Kingdom of Egypt','Early Dynastic Egypt','Early Dynastic Period','Early Dynastic Period of Egypt','Early Dynastic Period Of Egypt','The Early Dynastic Period Of Egypt','Archaic Egypt','Upper Egypt','Lower Egypt',
-'Sumer','Sumerian city-states','Sumerian city states','Sumerian City-States','Akkad','Akkadian Kingdom','Akkadian Empire','Akkadian Empire of Sargon','Ur III dynasty','Third Dynasty of Ur',
-'Babylonia','Babylonian Empire','Babylonian Kingdom','Old Babylonian Kingdom','Old Babylonian Empire','Kassite Babylonia','Neo-Babylonian Empire','Neo-Babylonian Kingdom',
+'Sumer','Sumerian city-states','Sumerian city states','Sumerian City-States','Akkad','Akkadian Kingdom','Akkadian Empire','Akkadian Empire of Sargon',
+'Babylonia','Babylonian Empire','Babylonian Kingdom','Old Babylonian Kingdom','Old Babylonian Empire','Neo-Babylonian Empire','Neo-Babylonian Kingdom',
 'Assyria','Assyrian Empire','Neo-Assyrian Empire','Middle Assyrian Empire','Old Assyrian Empire',
 'Phoenicia','Phoenician States','Phoenician city-states','Phoenician city states','Kingdom of Tyre','Kingdom of Sidon','Israelite Kingdom','Kingdom of Israel','Israel','Judah Kingdom','Kingdom of Judah','Judah',
 'Achaemenid Empire','Achaemenid Persian Empire','Persian Empire',
@@ -435,7 +435,7 @@ const g5CoursePolities = new Set([
 'Athens','Sparta','Corinth','Thebes','Greek city-states','Greek city states','Greek Colonies','Greek colonies of the Black Sea',
 'Bosporan Kingdom','Kingdom of Bosporus','Bosporan State','Cimmerians','Scythians','Scythian Kingdom','Crimean Scythian Kingdom','Sarmatians',
 'Seleucid Empire','Ptolemaic Kingdom','Ptolemaic Egypt','Antigonid Kingdom',
-'Etruscan city-states','Etruscan city states','Etruscans','Roman Republic','Roman Empire','Western Roman Empire','Eastern Roman Empire','Carthage','Carthaginian Empire','Carthaginian Republic'
+'Etruscan city-states','Etruscan city states','Roman Republic','Roman Empire','Western Roman Empire','Eastern Roman Empire','Carthage','Carthaginian Empire','Carthaginian Republic'
 ]);
 function g5IsInGrade5Course(raw){
  const n=String(raw||'').trim().replace(/\s+/g,' ');
