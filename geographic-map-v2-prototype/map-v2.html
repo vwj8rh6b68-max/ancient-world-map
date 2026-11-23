@@ -514,12 +514,18 @@ async function loadGrade5Cliopatria(targetYear){
   const years=await g5GetYears(),snapshot=years.reduce((best,y)=>Math.abs(y-targetYear)<Math.abs(best-targetYear)?y:best,years[0]);
   let data=g5PolityCache.get(snapshot);
   if(!data){
-   const all=[];let offset=0,more=true;
-   while(more&&offset<16000){
-    const params=new URLSearchParams({where:"Year = "+snapshot+" AND Type = 'POLITY'",outFields:'OBJECTID,Year,AreaSqKM,Name,Color,Type,Wikipedia',returnGeometry:'true',outSR:'4326',geometry:JSON.stringify({xmin:-25,ymin:-12,xmax:150,ymax:78,spatialReference:{wkid:4326}}),geometryType:'esriGeometryEnvelope',inSR:'4326',spatialRel:'esriSpatialRelIntersects',resultRecordCount:'2000',resultOffset:String(offset),orderByFields:'AreaSqKM DESC',returnExceededLimitFeatures:'true',f:'geojson'});
+   // Сначала запрашиваем полный список OBJECTID, затем получаем геометрию пакетами.
+   // Это надёжнее offset-пагинации: она могла незаметно обрезать небольшие полисы и отдельные регионы.
+   const spatial={xmin:-25,ymin:-12,xmax:150,ymax:78,spatialReference:{wkid:4326}};
+   const idParams=new URLSearchParams({where:"Year = "+snapshot+" AND Type = 'POLITY'",returnIdsOnly:'true',returnGeometry:'false',geometry:JSON.stringify(spatial),geometryType:'esriGeometryEnvelope',inSR:'4326',spatialRel:'esriSpatialRelIntersects',f:'json'});
+   const idResponse=await fetch(G5_CLI_URL+'?'+idParams.toString());if(!idResponse.ok)throw new Error('HTTP '+idResponse.status);
+   const idResult=await idResponse.json();if(idResult.error||!Array.isArray(idResult.objectIds))throw new Error(idResult.error?.message||'Не получен полный список исторических объектов');
+   const ids=idResult.objectIds,all=[];
+   for(let start=0;start<ids.length;start+=500){
+    const params=new URLSearchParams({objectIds:ids.slice(start,start+500).join(','),outFields:'OBJECTID,Year,AreaSqKM,Name,Color,Type,Wikipedia',returnGeometry:'true',outSR:'4326',f:'geojson'});
     const response=await fetch(G5_CLI_URL+'?'+params.toString());if(!response.ok)throw new Error('HTTP '+response.status);
-    const page=await response.json();if(page.error||!Array.isArray(page.features))throw new Error(page.error?.message||'Не получены исторические контуры');
-    all.push(...page.features);offset+=page.features.length;more=page.exceededTransferLimit===true&&page.features.length>0;
+    const page=await response.json();if(page.error||!Array.isArray(page.features))throw new Error(page.error?.message||'Не получены геометрии исторических объектов');
+    all.push(...page.features);
    }
    data={type:'FeatureCollection',features:all};g5PolityCache.set(snapshot,data);
   }
