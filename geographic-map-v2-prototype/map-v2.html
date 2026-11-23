@@ -516,6 +516,7 @@ function g5ContextLine(raw,periodIndex){
  if(/han/.test(n)&&periodIndex===10)return 'Исторические ориентиры: династия Хань; в эпоху Восточной Хань столицей был Лоян, Чанъань оставался важным бывшим центром.';
  if(/gupta/.test(n)&&periodIndex===11)return 'Исторические ориентиры: Самудрагупта правил в IV в. н. э.; одним из важных центров был Паталипутра.';
  if(/roman empire/.test(n)&&periodIndex===10)return 'Исторические ориентиры: император Траян правил с 98 по 117 г. н. э.; Рим был центром империи.';
+ if(/roman empire/.test(n)&&periodIndex===11)return 'Исторические ориентиры: при Констанции II Римская империя оставалась единой; после смерти Феодосия I в 395 г. управление перешло к двум его сыновьям.';
  if(/roman|west_rome|eastern roman/.test(n)&&periodIndex===12)return 'Исторические ориентиры: в 476 г. был смещён Ромул Августул; Восточная Римская империя продолжила существовать.';
  return '';
 }
@@ -1015,7 +1016,7 @@ const romeCity=worldCityByName('Рим');if(romeCity){romeCity[5]=romeCity[5]||{
 const pPataliputra=worldCityByName('Паталипутра');if(pPataliputra){pPataliputra[5]=pPataliputra[5]||{};pPataliputra[5][9]='столица державы Маурьев';}
 const alexandriaCity=worldCityByName('Александрия');if(alexandriaCity){alexandriaCity[5]=alexandriaCity[5]||{};alexandriaCity[5][9]='столица Египта Птолемеев';}
 const antiochCity=worldCityByName('Антиохия');if(antiochCity){antiochCity[5]=antiochCity[5]||{};antiochCity[5][9]='столица державы Селевкидов';}
-const constantinopleCity=worldCityByName('Константинополь');if(constantinopleCity){constantinopleCity[3]='Основан как Константинополь в 330 г. н. э. и стал одной из важнейших императорских резиденций. После разделения управления в 395 г. был столицей восточной части Римской империи, продолжившей существовать после 476 г.';constantinopleCity[5]={11:'одна из важнейших императорских резиденций единой Римской империи',12:'столица Восточной Римской империи'};}
+const constantinopleCity=worldCityByName('Константинополь');if(constantinopleCity){constantinopleCity[3]='Основан как Константинополь в 330 г. н. э. и стал одной из важнейших императорских резиденций. После разделения управления в 395 г. был столицей восточной части Римской империи, продолжившей существовать после 476 г.';constantinopleCity[5]={11:'императорская столица единой Римской империи',12:'столица Восточной Римской империи'};}
 const olbiaCity=worldCityByName('Ольвия');if(olbiaCity)olbiaCity[4]=[5,6,7,8,9,10,11,12];
 const pantikapaionCity=worldCityByName('Пантикапей');if(pantikapaionCity)pantikapaionCity[4]=[5,6,7,8,9,10,11,12];
 const phanagoriaCity=worldCityByName('Фанагория');if(phanagoriaCity)phanagoriaCity[4]=[6,7,8,9,10,11,12];
