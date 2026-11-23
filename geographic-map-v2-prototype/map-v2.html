@@ -94,7 +94,7 @@ button{background:#304d61;color:white;border:0;font-weight:650}.curriculum-panel
 <div id="practiceAnswer" class="answer" hidden></div>
 <p id="practiceStatus" class="practice-status" aria-live="polite">Подсказка: используй масштаб карты и подписи морей, рек и городов.</p>
 </div>
-<div class="columns"><section><div class="map-toolbar"><button id="cityLabelsToggle" type="button" aria-pressed="true">Скрыть названия городов</button><span class="small">Подписи отмеченных городов можно включать и скрывать</span></div><div id="map" role="application" aria-label="Интерактивная географическая карта Древнего мира"></div>
+<div class="columns"><section><div class="map-toolbar"><button id="cityLabelsToggle" type="button" aria-pressed="true">Скрыть названия городов</button><button id="eventsToggle" type="button" aria-pressed="false">Показать события</button><button id="tradeRoutesToggle" type="button" aria-pressed="false">Показать торговые пути</button><span class="small">Дополнительные слои меняются вместе с эпохой; маршруты показаны схематично.</span></div><div id="map" role="application" aria-label="Интерактивная географическая карта Древнего мира"></div>
 <div class="g5-legend-tools"><input class="g5-legend-search" id="g5LegendSearch" type="search" placeholder="Найти государство…" aria-label="Найти государство в легенде"><span class="g5-legend-count" id="g5LegendCount">Загрузка исторических образований…</span></div><div class="key" id="key" aria-live="polite"></div><p class="small" style="margin:5px 0 12px">В легенде оставлены только государства и политические образования, относящиеся к темам курса 5-го класса. Контуры древних территорий — научные реконструкции; они не означают одинаково плотного контроля над всей окрашенной областью.</p></section>
 <aside><div class="panel"><h2 id="eraTitle">Египет и Междуречье</h2><p id="eraText">Нажми на цветную область, чтобы открыть справку.</p><p class="small" id="eraDate"></p></div>
 <div class="panel"><h2 id="stateTitle">Выбери государство</h2><p id="stateInfo">Нажми на цветную территорию на карте или на элемент легенды.</p><div id="stateMedia" class="history-media" hidden></div></div>
@@ -380,7 +380,7 @@ L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Physical
 const G5_CLI_URL='https://services2.arcgis.com/wx8u046p68e0iGuj/arcgis/rest/services/Aligned_Cliopatria_v1.1_WGS84/FeatureServer/0/query';
 const g5PolityLayer=L.featureGroup().addTo(map),g5PolityCache=new Map();
 let g5PolityRequest=0,g5AvailableYears=null,g5ActiveFeatures=[],g5LegendEntries=[],g5HasInitialFit=false;
-let cityLabelsVisible=true;
+let cityLabelsVisible=true,eventsVisible=false,tradeRoutesVisible=false;
 function setCityLabelsVisible(visible){cityLabelsVisible=!!visible;['cityLayer','mesoCityLayer','worldCityLayer'].forEach(key=>{const group=window[key];if(!group)return;group.eachLayer(marker=>{if(cityLabelsVisible)marker.openTooltip();else marker.closeTooltip();});});const button=document.getElementById('cityLabelsToggle');if(button){button.setAttribute('aria-pressed',String(cityLabelsVisible));button.textContent=cityLabelsVisible?'Скрыть названия городов':'Показать названия городов';}}
 const g5TargetYears=[-3050,-2300,-1750,-1500,-700,-600,-500,-330,-250,-220,100,350,476];
 const g5Names={
@@ -798,7 +798,52 @@ document.getElementById('campaignPrev').addEventListener('click',()=>campaignMov
 document.getElementById('campaignNext').addEventListener('click',()=>campaignMove(1));
 document.getElementById('campaignPlay').addEventListener('click',campaignTogglePlay);
 document.getElementById('campaignClose').addEventListener('click',()=>{campaignStopTimer();document.getElementById('campaignPlayer').hidden=true;clearCampaign();});
-function render(){clearCampaign();idx=Math.max(0,Math.min(eraData.length-1,idx));const e=eraData[idx];loadGrade5Cliopatria(g5TargetYears[idx]);document.getElementById('era').value=idx;document.getElementById('period').textContent='Период '+(idx+1)+' из '+eraData.length;document.getElementById('eraTitle').textContent=e.title;document.getElementById('eraText').textContent=e.text;document.getElementById('eraDate').textContent='Ориентировочная дата: '+e.date;document.getElementById('prev').disabled=idx===0;document.getElementById('next').disabled=idx===eraData.length-1;
+const historicalEvents=[
+ {era:0,name:'Объединение Верхнего и Нижнего Египта',date:'около 3100 г. до н. э.',lat:29.85,lon:31.25,info:'Традиционно объединение Египта связывают с правителем Нармером. Точная последовательность событий и отождествление Нармера с Менесом остаются предметом дискуссии.'},
+ {era:1,name:'Возвышение Аккадской державы',date:'XXIV–XXIII вв. до н. э.',lat:33.1,lon:44.4,info:'При Саргоне Аккадском под одной властью оказалась значительная часть Южного и Центрального Междуречья. Местоположение столицы Аккада точно не установлено; маркер показывает приблизительный район.'},
+ {era:2,name:'Правление Хаммурапи',date:'около 1792–1750 гг. до н. э. (средняя хронология)',lat:32.542,lon:44.421,info:'Вавилонское царство подчинило значительную часть Междуречья. С именем Хаммурапи связана известная сборка законов, высеченная на стеле.'},
+ {era:3,name:'Битва при Мегиддо',date:'около 1457 г. до н. э.',lat:32.585,lon:35.183,info:'Победа Тутмоса III над коалицией правителей Ханаана укрепила египетское влияние в Южной Сирии и Палестине.'},
+ {era:4,name:'Поход Асархаддона в Египет',date:'671 г. до н. э.',lat:29.85,lon:31.25,info:'Ассирийцы захватили Мемфис и подчинили Нижний Египет. Это не означало прочного присоединения всей долины Нила.'},
+ {era:5,name:'Падение Ниневии',date:'612 г. до н. э.',lat:36.36,lon:43.15,info:'Ниневия была взята войсками противников Ассирии. Падение столицы стало решающим этапом гибели Новоассирийской державы.'},
+ {era:6,name:'Кир II овладел Вавилоном',date:'539 г. до н. э.',lat:32.542,lon:44.421,info:'Вавилон вошёл в состав державы Ахеменидов. Позднее, в 525 г. до н. э., Камбис II завоевал Египет.'},
+ {era:7,name:'Завоевания Александра Македонского',date:'332–330 гг. до н. э.',lat:36.36,lon:43.25,info:'После победы при Гавгамелах и взятия ключевых центров Персидская держава Ахеменидов прекратила существование.'},
+ {era:8,name:'Правление Ашоки',date:'III в. до н. э.',lat:25.61,lon:85.14,info:'При Ашоке держава Маурьев достигла наибольшего могущества. Царь поддерживал распространение буддизма и оставил надписи на каменных столбах и скалах.'},
+ {era:9,name:'Объединение Китая при Цинь',date:'221 г. до н. э.',lat:34.33,lon:108.70,info:'Царство Цинь победило соперников. Ин Чжэн принял титул Цинь Шихуанди — Первого императора Цинь.'},
+ {era:10,name:'Торговые связи между Востоком и Западом',date:'I–II вв. н. э.',lat:39.47,lon:75.99,info:'По сухопутным и морским маршрутам перемещались товары, люди и идеи. Позднее эти связи стали известны как Великий шёлковый путь; это была сеть путей, а не одна дорога.'},
+ {era:11,name:'Основание Константинополя',date:'330 г. н. э.',lat:41.01,lon:28.97,info:'Император Константин сделал город новой императорской резиденцией. В 350 г. Римская империя ещё оставалась единой.'},
+ {era:12,name:'Падение Западной Римской империи',date:'476 г. н. э.',lat:44.418,lon:12.203,info:'В Равенне был смещён последний западный император Ромул Августул. Восточная Римская империя продолжила существовать.'}
+];
+const historicalTradeRoutes=[
+ {eras:[1],name:'Торговые связи Индской цивилизации',coords:[[27.32,68.14],[26.4,69.3],[24.8,70.4],[22.52,72.25]],note:'Схема внутренних и прибрежных связей городов долины Инда; точный маршрут не установлен.'},
+ {eras:[4,5],name:'Финикийские морские связи',coords:[[33.27,35.20],[34.67,33.04],[35.2,24.9],[36.85,10.32]],note:'Условная линия между восточным побережьем Средиземного моря, Кипром, Критом и Карфагеном. Финикийская торговля представляла собой сеть морских маршрутов.'},
+ {eras:[6],name:'Царская дорога Ахеменидов',coords:[[38.49,28.04],[38.0,36.0],[36.36,43.15],[32.54,44.42],[32.19,48.25]],note:'Схематическое направление между Сардами и Сузами; реальные дороги имели ответвления и менялись со временем.'},
+ {eras:[10],name:'Великий шёлковый путь',coords:[[34.27,108.94],[40.14,94.66],[39.47,75.99],[36.7,67.1],[36.2,36.16]],note:'Один из условных сухопутных коридоров между Китаем, Центральной Азией и Средиземноморьем. Исторически это была разветвлённая сеть путей.'}
+];
+function drawHistoricalEvents(){
+ const button=document.getElementById('eventsToggle');
+ if(button){button.setAttribute('aria-pressed',String(eventsVisible));button.textContent=eventsVisible?'Скрыть события':'Показать события';}
+ if(!eventsVisible)return;
+ const rows=historicalEvents.filter(e=>e.era===idx);
+ window.historicalEventLayer=L.layerGroup(rows.map(e=>{
+  const marker=L.circleMarker([e.lat,e.lon],{radius:8,color:'#fff',weight:2,fillColor:'#b34d35',fillOpacity:.98});
+  marker.bindTooltip(e.name,{direction:'top',offset:[0,-7],className:'city-tooltip'});
+  marker.bindPopup('<strong>'+e.name+'</strong><br><b>'+e.date+'</b><br>'+e.info);
+  return marker;
+ })).addTo(map);
+}
+function drawTradeRoutes(){
+ const button=document.getElementById('tradeRoutesToggle');
+ if(button){button.setAttribute('aria-pressed',String(tradeRoutesVisible));button.textContent=tradeRoutesVisible?'Скрыть торговые пути':'Показать торговые пути';}
+ if(!tradeRoutesVisible)return;
+ const rows=historicalTradeRoutes.filter(r=>r.eras.includes(idx));
+ window.tradeRouteLayer=L.layerGroup(rows.map(r=>{
+  const line=L.polyline(r.coords,{color:'#247d91',weight:3.5,opacity:.92,dashArray:'7 7',lineCap:'round'});
+  line.bindTooltip(r.name,{sticky:true,className:'polity-label'});
+  line.bindPopup('<strong>'+r.name+'</strong><br>'+r.note);
+  return line;
+ })).addTo(map);
+}
+function render(){clearCampaign();if(window.historicalEventLayer){map.removeLayer(window.historicalEventLayer);window.historicalEventLayer=null;}if(window.tradeRouteLayer){map.removeLayer(window.tradeRouteLayer);window.tradeRouteLayer=null;}idx=Math.max(0,Math.min(eraData.length-1,idx));const e=eraData[idx];loadGrade5Cliopatria(g5TargetYears[idx]);document.getElementById('era').value=idx;document.getElementById('period').textContent='Период '+(idx+1)+' из '+eraData.length;document.getElementById('eraTitle').textContent=e.title;document.getElementById('eraText').textContent=e.text;document.getElementById('eraDate').textContent='Ориентировочная дата: '+e.date;document.getElementById('prev').disabled=idx===0;document.getElementById('next').disabled=idx===eraData.length-1;
 layers.forEach(l=>map.removeLayer(l));layers=[];if(window.nileLayer)map.removeLayer(window.nileLayer);if(window.egyptGeographyLayer)map.removeLayer(window.egyptGeographyLayer);if(window.earlyEgyptStateLayer)map.removeLayer(window.earlyEgyptStateLayer);if(window.assyriaEgyptLayer)map.removeLayer(window.assyriaEgyptLayer);if(window.mesopotamiaRiverLayer)map.removeLayer(window.mesopotamiaRiverLayer);if(window.cityLayer)map.removeLayer(window.cityLayer);if(window.mesoCityLayer)map.removeLayer(window.mesoCityLayer);if(window.worldCityLayer)map.removeLayer(window.worldCityLayer);if(window.practiceMarker){map.removeLayer(window.practiceMarker);window.practiceMarker=null;}if(window.geographyLabelLayer)map.removeLayer(window.geographyLabelLayer);if(window.geoLabelLayer)map.removeLayer(window.geoLabelLayer);if(window.egyptLabels)map.removeLayer(window.egyptLabels);if(window.historyLabelLayer)map.removeLayer(window.historyLabelLayer);const keyEl=document.getElementById('key');keyEl.innerHTML='';
 window.setTimeout(()=>map.invalidateSize({pan:false}),140);
 
@@ -913,7 +958,7 @@ const pantikapaionCity=worldCityByName('Пантикапей');if(pantikapaionCi
 const phanagoriaCity=worldCityByName('Фанагория');if(phanagoriaCity)phanagoriaCity[4]=[6,7,8,9,10,11,12];
 const chersonesusCity=worldCityByName('Херсонес');if(chersonesusCity)chersonesusCity[4]=[7,8,9,10,11,12];
 worldCities.push(['Сяньян',34.33,108.70,'Столица царства Цинь и затем первой объединённой империи Цинь. В 221 г. до н. э. Ин Чжэн объединил Китай и принял титул Цинь Шихуанди.',[9],{9:'столица империи Цинь'}]);
-window.worldCityLayer=L.layerGroup(worldCities.filter(c=>c[4].includes(idx)).map(([name,lat,lon,info,eras,roles])=>{const role=roles?.[idx],capital=!!role,marker=L.circleMarker([lat,lon],{radius:capital?7:4.5,color:'#fff',weight:capital?2.2:1.5,fillColor:capital?'#d39a27':'#4a5d8a',fillOpacity:1});marker.bindPopup('<strong>'+name+'</strong><br><b>'+(role?role[0].toUpperCase()+role.slice(1):'Город / исторический центр; не столица в данном срезе')+'</b><br>'+info);marker.bindTooltip((capital?'★ ':'')+name,{permanent:false,direction:'top',offset:[0,-5],className:'city-tooltip'});return marker;})).addTo(map);document.getElementById('cityLegendNote')?.remove();const cityNote=document.createElement('p');cityNote.id='cityLegendNote';cityNote.className='city-legend-note';cityNote.textContent='Золотая точка со звездой — столица, царская резиденция или главный политический центр именно выбранной эпохи; синие и тёмно-красные точки — другие города. Статус города менялся со временем.';document.getElementById('eraText').after(cityNote);setCityLabelsVisible(cityLabelsVisible);
+window.worldCityLayer=L.layerGroup(worldCities.filter(c=>c[4].includes(idx)).map(([name,lat,lon,info,eras,roles])=>{const role=roles?.[idx],capital=!!role,marker=L.circleMarker([lat,lon],{radius:capital?7:4.5,color:'#fff',weight:capital?2.2:1.5,fillColor:capital?'#d39a27':'#4a5d8a',fillOpacity:1});marker.bindPopup('<strong>'+name+'</strong><br><b>'+(role?role[0].toUpperCase()+role.slice(1):'Город / исторический центр; не столица в данном срезе')+'</b><br>'+info);marker.bindTooltip((capital?'★ ':'')+name,{permanent:false,direction:'top',offset:[0,-5],className:'city-tooltip'});return marker;})).addTo(map);document.getElementById('cityLegendNote')?.remove();const cityNote=document.createElement('p');cityNote.id='cityLegendNote';cityNote.className='city-legend-note';cityNote.textContent='Золотая точка со звездой — столица, царская резиденция или главный политический центр именно выбранной эпохи; синие и тёмно-красные точки — другие города. Статус города менялся со временем.';document.getElementById('eraText').after(cityNote);setCityLabelsVisible(cityLabelsVisible);drawHistoricalEvents();drawTradeRoutes();
 const geoLabels=[['Синай',29.8,34.1],['Ливийская пустыня',26.8,27.8]];
 window.geoLabelLayer=L.layerGroup(geoLabels.map(([name,lat,lon])=>L.marker([lat,lon],{interactive:false,icon:L.divIcon({className:'geo-label',html:'<span style="color:#426c7b;font-style:italic;font-size:12px;white-space:nowrap;text-shadow:0 1px #fff">'+name+'</span>',iconSize:[130,18],iconAnchor:[65,9]})}))).addTo(map);
 document.getElementById('stateTitle').textContent='Выбери государство';document.getElementById('stateInfo').textContent='Нажми на цветную территорию или название в легенде.';document.getElementById('stateMedia').hidden=true;document.getElementById('stateMedia').innerHTML='';
@@ -1010,6 +1055,8 @@ document.getElementById('practiceMode').addEventListener('change',()=>{currentPr
 
 document.querySelectorAll('.term-item').forEach(item=>{const dt=item.querySelector('dt'),dd=item.querySelector('dd');if(!dt||!dd)return;const details=document.createElement('details');details.className='term-item';const summary=document.createElement('summary');summary.textContent=dt.textContent;const body=document.createElement('p');body.textContent=dd.textContent;body.style.margin='7px 0 0';details.append(summary,body);item.replaceWith(details);});
 document.getElementById('cityLabelsToggle').addEventListener('click',()=>setCityLabelsVisible(!cityLabelsVisible));
+document.getElementById('eventsToggle').addEventListener('click',()=>{eventsVisible=!eventsVisible;render();});
+document.getElementById('tradeRoutesToggle').addEventListener('click',()=>{tradeRoutesVisible=!tradeRoutesVisible;render();});
 document.getElementById('era').addEventListener('change',e=>{idx=Number(e.target.value);render()});document.getElementById('prev').onclick=()=>{idx--;render()};document.getElementById('next').onclick=()=>{idx++;render()};render();
 
 const quizBank=[
