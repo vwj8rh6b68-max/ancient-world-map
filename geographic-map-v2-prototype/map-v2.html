@@ -489,7 +489,7 @@ function renderG5Legend(){
   const b=document.createElement('span'),sw=document.createElement('i');
   b.tabIndex=0;b.setAttribute('role','button');b.setAttribute('aria-label','Показать на карте: '+g5Translate(raw));
   sw.className='swatch';sw.style.background=g5Color(p.Color);b.append(sw,document.createTextNode(g5Translate(raw)));
-  const activate=()=>{const feature=g5ActiveFeatures.find(f=>f.properties?.Name===raw);if(!feature)return;const bounds=L.geoJSON(feature).getBounds();if(bounds.isValid())map.fitBounds(bounds.pad(.2),{maxZoom:6});g5SelectPolity(p);};
+  const activate=()=>{if(p._fallbackKey){const shape=territories.find(t=>t.key===p._fallbackKey);if(shape?.coords){const bounds=L.latLngBounds(shape.coords);if(bounds.isValid())map.fitBounds(bounds.pad(.2),{maxZoom:6});selectPolity(p._fallbackKey);}return;}const feature=g5ActiveFeatures.find(f=>f.properties?.Name===raw);if(!feature)return;const bounds=L.geoJSON(feature).getBounds();if(bounds.isValid())map.fitBounds(bounds.pad(.2),{maxZoom:6});g5SelectPolity(p);};
   b.addEventListener('click',activate);b.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();activate();}});
   box.appendChild(b);
  });
@@ -550,8 +550,27 @@ async function loadGrade5Cliopatria(targetYear){
    l.on('click',()=>g5SelectPolity(p));
    const displayName=name==='Название не установлено'?'Политическое образование (название уточняется)':name;l.bindPopup('<strong>'+displayName+'</strong><br><b>Краткая историческая справка</b><br>'+g5HistoricalBrief(p.Name,displayName,Number(p.Year))+'<br><span class=\'small\'>Дата исторического среза: '+(Number(p.Year)<0?Math.abs(Number(p.Year))+' г. до н. э.':Number(p.Year)+' г. н. э.')+'</span>');
   }}).addTo(g5PolityLayer);
+  // Резервные учебные контуры Индии: внешняя база не содержит все нужные эпохи.
+  // Если в срезе нет соответствующей державы, используем заранее подготовленную
+  // схематическую реконструкцию и явно подписываем её как приблизительную.
+  const indiaFallbackEntries=[];
+  const indiaFallbackSpecs=[
+   {key:'maurya',raw:'Maurya Empire',test:/maurya/i},
+   {key:'kushan',raw:'Kushan Empire',test:/kushan/i},
+   {key:'gupta',raw:'Gupta Empire',test:/gupta/i}
+  ];
+  indiaFallbackSpecs.forEach(spec=>{
+   const shape=territories.find(t=>t.key===spec.key);
+   if(!shape?.coords||!shape.eras.includes(idx)||courseFeatures.some(f=>spec.test.test(String(f.properties?.Name||''))))return;
+   const desc=descriptions[spec.key],color=palette[spec.key]||'#648c79';
+   const polygon=L.polygon(shape.coords,{color:'#355d50',weight:1.8,opacity:.95,fillColor:color,fillOpacity:boundaryFocus?.32:.22,dashArray:'6 4'}).addTo(g5PolityLayer);
+   polygon.bindTooltip(desc.name+' · схематический контур',{sticky:true,direction:'center',className:'polity-label'});
+   polygon.bindPopup('<strong>'+desc.name+'</strong><br>'+desc.info+'<br><span class="small">Схематический учебный контур; не точная государственная граница.</span>');
+   polygon.on('click',()=>selectPolity(spec.key));
+   indiaFallbackEntries.push([spec.raw,{Name:spec.raw,Color:color,_fallbackKey:spec.key}]);
+  });
   const unique=new Map();courseFeatures.forEach(f=>{const p=f.properties||{};if(p.Name&&!unique.has(p.Name))unique.set(p.Name,p);});
-  g5LegendEntries=[...unique.entries()].sort((a,b)=>g5Translate(a[0]).localeCompare(g5Translate(b[0]),'ru'));renderG5Legend();
+  g5LegendEntries=[...unique.entries(),...indiaFallbackEntries].sort((a,b)=>g5Translate(a[0]).localeCompare(g5Translate(b[0]),'ru'));renderG5Legend();
   const bounds=g5PolityLayer.getBounds();
   if(!g5HasInitialFit&&bounds.isValid()){map.fitBounds(bounds,{padding:[18,18],maxZoom:4.5});g5HasInitialFit=true;}
   periodDate.textContent='Ориентировочная дата: '+(targetYear<0?Math.abs(targetYear)+' г. до н. э.':targetYear+' г. н. э.')+' · срез базы: '+(snapshot<0?Math.abs(snapshot)+' г. до н. э.':snapshot+' г. н. э.')+' · '+unique.size+' политических образований';
