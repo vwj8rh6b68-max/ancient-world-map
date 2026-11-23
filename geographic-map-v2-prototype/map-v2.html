@@ -524,7 +524,7 @@ async function loadGrade5Cliopatria(targetYear){
    data={type:'FeatureCollection',features:all};g5PolityCache.set(snapshot,data);
   }
   if(request!==g5PolityRequest)return;
-  const courseFeatures=data.features.filter(f=>g5IsInGrade5Course(f.properties?.Name)&&g5Names[String(f.properties?.Name||'')]);
+  const courseFeatures=data.features.filter(f=>g5IsInGrade5Course(f.properties?.Name)&&g5Translate(String(f.properties?.Name||''))!=='Название не установлено');
   g5ActiveFeatures=courseFeatures;g5PolityLayer.clearLayers();
   L.geoJSON({type:'FeatureCollection',features:courseFeatures},{style:f=>{
    const raw=String(f.properties?.Name||''),uncertain=/confederation|khaganate|hunn|xiongnu|steppe|nomad|tribe|influence/i.test(raw),periodOrCulture=/period|civilization|culture|world|region/i.test(raw);
@@ -541,6 +541,7 @@ async function loadGrade5Cliopatria(targetYear){
   if(!g5HasInitialFit&&bounds.isValid()){map.fitBounds(bounds,{padding:[18,18],maxZoom:4.5});g5HasInitialFit=true;}
   periodDate.textContent='Ориентировочная дата: '+(targetYear<0?Math.abs(targetYear)+' г. до н. э.':targetYear+' г. н. э.')+' · срез базы: '+(snapshot<0?Math.abs(snapshot)+' г. до н. э.':snapshot+' г. н. э.')+' · '+unique.size+' политических образований';
   if(!data.features.length)periodDate.textContent+=' · для этого среза контуры не найдены';
+  else if(!courseFeatures.length)periodDate.textContent+=' · данные источника получены, но в этом срезе не найдено название из списка тем 5-го класса';
  }catch(e){
   if(request!==g5PolityRequest)return;console.warn(e);
   periodDate.textContent+=' · исторические контуры не загрузились: '+e.message;
