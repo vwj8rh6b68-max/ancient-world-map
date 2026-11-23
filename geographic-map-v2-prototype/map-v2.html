@@ -44,20 +44,19 @@ button{background:#304d61;color:white;border:0;font-weight:650}.curriculum-panel
 <div class="controls" id="controls">
 <button id="prev" type="button">← Назад</button><button id="next" type="button">Вперёд →</button>
 <label for="era">Исторический период:</label><select id="era">
-<option value="0">ок. 3100–3000 гг. до н. э. — объединение Египта и первые города Междуречья</option>
-<option value="1">ок. 2300 г. до н. э. — Аккадская держава и Индская цивилизация</option>
-<option value="2">ок. 1750 г. до н. э. — Вавилон при Хаммурапи</option>
-<option value="3">ок. 1500 г. до н. э. — Египет Нового царства</option>
-<option value="4">IX–VII вв. до н. э. — расширение Ассирийской державы</option>
+<option value="0">ок. 3000 г. до н. э. — ранний Египет и города Междуречья</option>
+<option value="1">ок. 2300 г. до н. э. — Аккадская держава</option>
+<option value="2">ок. 1500 г. до н. э. — Египет Нового царства</option>
+<option value="3">ок. 700 г. до н. э. — расцвет Новоассирийской державы</option>
+
 <option value="5">ок. 600 г. до н. э. — Вавилон и самостоятельный Египет</option>
 <option value="6">ок. 500 г. до н. э. — Персидская держава</option>
 <option value="7">ок. 330 г. до н. э. — завоевания Александра</option>
 <option value="8">ок. 250 г. до н. э. — держава Маурьев, царства Китая и Римская республика</option>
-<option value="9">ок. 220 г. до н. э. — империя Цинь и объединённый Китай</option>
-<option value="10">ок. 100 г. н. э. — Римская империя, Ханьский Китай и кушаны</option>
-<option value="11">ок. 350 г. н. э. — держава Гуптов и поздняя Римская империя</option>
-<option value="12">476 г. н. э. — падение Западной Римской империи</option>
-</select><span class="period" id="period">Период 1 из 13</span>
+<option value="9">ок. 100 г. н. э. — Римская империя, Ханьский Китай и кушаны</option>
+<option value="10">ок. 350 г. н. э. — держава Гуптов и поздняя Римская империя</option>
+<option value="11">476 г. н. э. — падение Западной Римской империи</option>
+</select><span class="period" id="period">Период 1 из 10</span>
 <label class="boundary-mode" for="boundaryFocus"><input id="boundaryFocus" type="checkbox" checked><span><strong>Акцент на границах государств</strong><span class="small">Чёткие контуры и более прозрачная заливка — удобнее сравнивать территории.</span></span></label><div id="campaignButtons" class="campaign-selectors" aria-label="Исторические походы и завоевания">
 <button type="button" data-campaign="1">Походы Тутмоса III</button>
 <button type="button" data-campaign="2">Расширение Ассирийской державы</button>
@@ -94,8 +93,7 @@ button{background:#304d61;color:white;border:0;font-weight:650}.curriculum-panel
 <div id="practiceAnswer" class="answer" hidden></div>
 <p id="practiceStatus" class="practice-status" aria-live="polite">Подсказка: используй масштаб карты и подписи морей, рек и городов.</p>
 </div>
-<div class="columns"><section><div class="map-toolbar"><button id="cityLabelsToggle" type="button" aria-pressed="true">Скрыть названия городов</button><button id="eventsToggle" type="button" aria-pressed="false">Показать события</button><button id="tradeRoutesToggle" type="button" aria-pressed="false">Показать торговые пути</button><button id="compareToggle" type="button" aria-expanded="false">Сравнить эпохи</button><span class="small">Дополнительные слои меняются вместе с эпохой; маршруты показаны схематично.</span></div>
-<div id="comparePanel" class="panel" hidden><h2>Сравнение двух эпох</h2><p class="small">Основная эпоха отображается обычными контурами, выбранная для сравнения — пунктиром. Это помогает увидеть, как менялись территории.</p><div class="student-fields"><label>Основная эпоха<select id="compareFrom"></select></label><label>Эпоха для сравнения<select id="compareTo"></select></label></div><div class="practice-controls"><button type="button" id="compareApply">Показать сравнение</button><button type="button" id="compareClear" class="secondary-action">Скрыть сравнение</button></div><p id="compareStatus" class="practice-status" aria-live="polite">Выбери две разные эпохи.</p></div><div id="map" role="application" aria-label="Интерактивная географическая карта Древнего мира"></div>
+<div class="columns"><section><div class="map-toolbar"><button id="cityLabelsToggle" type="button" aria-pressed="false">Показать названия городов</button><span class="small">Подписи отмеченных городов можно включать и скрывать</span></div><div id="map" role="application" aria-label="Интерактивная географическая карта Древнего мира"></div>
 <div class="g5-legend-tools"><input class="g5-legend-search" id="g5LegendSearch" type="search" placeholder="Найти государство…" aria-label="Найти государство в легенде"><span class="g5-legend-count" id="g5LegendCount">Загрузка исторических образований…</span></div><div class="key" id="key" aria-live="polite"></div><p class="small" style="margin:5px 0 12px">В легенде оставлены только государства и политические образования, относящиеся к темам курса 5-го класса. Контуры древних территорий — научные реконструкции; они не означают одинаково плотного контроля над всей окрашенной областью.</p></section>
 <aside><div class="panel"><h2 id="eraTitle">Египет и Междуречье</h2><p id="eraText">Нажми на цветную область, чтобы открыть справку.</p><p class="small" id="eraDate"></p></div>
 <div class="panel"><h2 id="stateTitle">Выбери государство</h2><p id="stateInfo">Нажми на цветную территорию на карте или на элемент легенды.</p><div id="stateMedia" class="history-media" hidden></div></div>
@@ -361,7 +359,7 @@ button{background:#304d61;color:white;border:0;font-weight:650}.curriculum-panel
 <div class="small"><b>Правило работы с источником:</b> выясни, кто создал свидетельство, когда и зачем; что оно прямо сообщает; чью точку зрения передаёт; чем его можно проверить. Не следует придумывать цитаты из древних документов или выдавать пересказ за дословный перевод.</div>
 </div>
 <div class="boundary-guide"><strong>Как изучать границы</strong><span>Выбери эпоху и сравни очертания цветных территорий. Нажми на область, чтобы узнать, какому государству она принадлежала. Переключение эпох помогает увидеть изменения владений.</span><div class="border-key"><span><i class="border-line"></i> контур территории</span><span><i class="border-dash"></i> зона влияния или условный рубеж</span></div><p class="small">Важно: границы древних государств часто менялись и известны приблизительно. Сплошной контур на этой учебной карте тоже может быть реконструкцией, а не точно установленной линией.</p></div>
-<div class="panel"><h2>Как читать границы</h2><p class="note">Это географический прототип. Исторические полигоны — учебные реконструкции, а не точные административные границы. Для древних эпох рубежи часто спорны или известны приблизительно; особенно условны контуры Персидской державы и державы Александра.</p><h3 style="font-size:.92rem;margin:10px 0 4px">Федеральные требования и учебные источники</h3><ul><li><a href="https://publication.pravo.gov.ru/document/0001202107050027" target="_blank" rel="noopener">ФГОС основного общего образования: приказ Минпросвещения России от 31.05.2021 № 287, редакция с изменениями по состоянию на 2025 год.</a></li><li><a href="https://publication.pravo.gov.ru/document/0001202307140040" target="_blank" rel="noopener">Федеральная образовательная программа основного общего образования: приказ Минпросвещения России от 18.05.2023 № 370.</a></li><li><a href="https://www.consultant.ru/document/cons_doc_LAW_526439/" target="_blank" rel="noopener">Изменения к федеральным образовательным программам: приказ Минпросвещения России от 10.11.2025 № 808, зарегистрирован в Минюсте 11.02.2026; учитывать положения, вступившие в силу в 2026 году.</a></li><li><a href="https://edsoo.ru/wp-content/uploads/2025/07/istoriya_5-9_ooo_2025.pdf" target="_blank" rel="noopener">Федеральная рабочая программа «История» для 5–9 классов, редакция 2025 года (официальный ресурс «Единое содержание общего образования»).</a></li><li><a href="https://edu.gov.ru/press/9421/vneseny-izmeneniya-v-federalnye-programmy-nachalnogo-osnovnogo-i-srednego-obrazovaniya/" target="_blank" rel="noopener">Минпросвещения России: изменения федеральных программ, вступающие в силу с 1 сентября 2025 года.</a></li><li><a href="https://historyrussia.org/istoriko-kulturnyj-standart" target="_blank" rel="noopener">Историко-культурный стандарт Российского исторического общества — дополнительный тематический ориентир, не замена действующей федеральной рабочей программе.</a></li><li><a href="https://prosv.ru/product/istoriya-vseobschaya-istoriya-istoriya-drevnego-mira-5-klass191588401/" target="_blank" rel="noopener">Учебник «История Древнего мира. 5 класс» В. Р. Мединского и А. О. Чубарьяна, издание 2026 года, УМК госучебника.</a></li></ul><p class="small">Карта помогает отрабатывать предусмотренные программой умения: читать историческую карту и легенду, находить объекты, сравнивать эпохи, связывать природные условия и занятия людей. Она не заменяет учебник, атлас, работу с источниками и школьную программу. Сверка выполнена по ФГОС ООО (приказ № 287 от 31.05.2021 с изменениями, действующими с 01.09.2025), ФОП ООО (приказ № 370 от 18.05.2023 с изменениями, включая приказ № 808 от 10.11.2025) и федеральной рабочей программе «История» для 5–9 классов в редакции 2025 года. Это тематическая проверка назначения карты, а не государственная экспертиза или подтверждение полного соответствия каждого исторического контура.</p><h3 style="font-size:.92rem;margin:10px 0 4px">Российские атласы для сверки</h3><ul><li><a href="https://www.roslit.ru/catalog/atlasy_konturnye_karty/65740231/" target="_blank" rel="noopener">Б. С. Ляпустин. «История Древнего мира. Атлас» к госучебнику Мединского и Чубарьяна, «Просвещение», 2026, ISBN 978-5-09-128388-4.</a></li><li><a href="https://prosv.ru/product/istoriya-drevnego-mira-atlas-5-klass-istoriko-kul-turnii-standart01/" target="_blank" rel="noopener">«История Древнего мира. Атлас. 5 класс», «Просвещение», 2026, ISBN 978-5-09-129294-7.</a></li><li><a href="https://www.roslit.ru/catalog/atlasy_konturnye_karty/65740446/" target="_blank" rel="noopener">И. Л. Друбачевская, И. Е. Уколова. «История Древнего мира. 5 класс. Контурные карты» к госучебнику, «Просвещение», 2026, ISBN 978-5-09-128389-1 — дополнительная опора для учебных заданий.</a></li><li><a href="https://www.roslit.ru/catalog/906/55623618/" target="_blank" rel="noopener">Б. С. Ляпустин. «Атлас. История Древнего мира. 5 класс» (ФП2022), «Просвещение», 2025, ISBN 978-5-09-120471-1 — дополнительный российский атлас для сопоставления.</a></li></ul><p class="small">Библиографические данные этих российских изданий 2025–2026 годов подтверждены. Страницы с самими картами и контурными заданиями в открытом доступе сейчас не удалось прочитать, поэтому постраничная сверка границ не завершена. Крупные территории империй теперь показаны более лёгкой заливкой и пунктирным контуром как обобщённые зоны контроля; это не проверенные копии атласов. Для окончательной постраничной сверки нужны читаемые страницы соответствующих атласов. Новые обзорные слои Индии, Китая и Рима добавлены для охвата основных тем федеральной программы, но также требуют сверки с картами соответствующих эпох.</p><p class="small">Физическая подложка: Esri; источник данных подложки — US National Park Service. Исторические контуры загружаются из базы <a href="https://services2.arcgis.com/wx8u046p68e0iGuj/arcgis/rest/services/Aligned_Cliopatria_v1.1_WGS84/FeatureServer/0" target="_blank" rel="noopener">Cliopatria v1.1</a>. Цветные области — схематические исторические реконструкции, а не точные административные границы.</p></div></aside></div>
+<div class="panel"><h2>Как читать границы</h2><p class="note">Это географический прототип. Исторические полигоны — учебные реконструкции, а не точные административные границы. Для древних эпох рубежи часто спорны или известны приблизительно; особенно условны контуры Персидской державы и державы Александра.</p><h3 style="font-size:.92rem;margin:10px 0 4px">Федеральные требования и учебные источники</h3><ul><li><a href="https://publication.pravo.gov.ru/document/0001202107050027" target="_blank" rel="noopener">ФГОС основного общего образования: приказ Минпросвещения России от 31.05.2021 № 287, редакция с изменениями по состоянию на 2025 год.</a></li><li><a href="https://publication.pravo.gov.ru/document/0001202307140040" target="_blank" rel="noopener">Федеральная образовательная программа основного общего образования: приказ Минпросвещения России от 18.05.2023 № 370.</a></li><li><a href="https://www.consultant.ru/document/cons_doc_LAW_526439/" target="_blank" rel="noopener">Изменения к федеральным образовательным программам: приказ Минпросвещения России от 10.11.2025 № 808, зарегистрирован в Минюсте 11.02.2026; учитывать положения, вступившие в силу в 2026 году.</a></li><li><a href="https://edsoo.ru/wp-content/uploads/2025/07/istoriya_5-9_ooo_2025.pdf" target="_blank" rel="noopener">Федеральная рабочая программа «История» для 5–9 классов, редакция 2025 года (официальный ресурс «Единое содержание общего образования»).</a></li><li><a href="https://edu.gov.ru/press/9421/vneseny-izmeneniya-v-federalnye-programmy-nachalnogo-osnovnogo-i-srednego-obrazovaniya/" target="_blank" rel="noopener">Минпросвещения России: изменения федеральных программ, вступающие в силу с 1 сентября 2025 года.</a></li><li><a href="https://historyrussia.org/istoriko-kulturnyj-standart" target="_blank" rel="noopener">Историко-культурный стандарт Российского исторического общества — дополнительный тематический ориентир, не замена действующей федеральной рабочей программе.</a></li><li><a href="https://prosv.ru/product/istoriya-vseobschaya-istoriya-istoriya-drevnego-mira-5-klass191588401/" target="_blank" rel="noopener">Учебник «История Древнего мира. 5 класс» В. Р. Мединского и А. О. Чубарьяна, издание 2026 года, УМК госучебника.</a></li></ul><p class="small">Карта помогает отрабатывать предусмотренные программой умения: читать историческую карту и легенду, находить объекты, сравнивать эпохи, связывать природные условия и занятия людей. Она не заменяет учебник, атлас, работу с источниками и школьную программу. Сверка выполнена по ФГОС ООО (приказ № 287 от 31.05.2021 с изменениями, действующими с 01.09.2025), ФОП ООО (приказ № 370 от 18.05.2023 с изменениями, включая приказ № 808 от 10.11.2025) и федеральной рабочей программе «История» для 5–9 классов в редакции 2025 года. Это тематическая проверка назначения карты, а не государственная экспертиза или подтверждение полного соответствия каждого исторического контура.</p><h3 style="font-size:.92rem;margin:10px 0 4px">Российские атласы для сверки</h3><ul><li><a href="https://www.roslit.ru/catalog/atlasy_konturnye_karty/65740231/" target="_blank" rel="noopener">Б. С. Ляпустин. «История Древнего мира. Атлас» к госучебнику Мединского и Чубарьяна, «Просвещение», 2026, ISBN 978-5-09-128388-4.</a></li><li><a href="https://prosv.ru/product/istoriya-drevnego-mira-atlas-5-klass-istoriko-kul-turnii-standart01/" target="_blank" rel="noopener">«История Древнего мира. Атлас. 5 класс», «Просвещение», 2026, ISBN 978-5-09-129294-7.</a></li><li><a href="https://www.roslit.ru/catalog/atlasy_konturnye_karty/65740446/" target="_blank" rel="noopener">И. Л. Друбачевская, И. Е. Уколова. «История Древнего мира. 5 класс. Контурные карты» к госучебнику, «Просвещение», 2026, ISBN 978-5-09-128389-1 — дополнительная опора для учебных заданий.</a></li><li><a href="https://www.roslit.ru/catalog/906/55623618/" target="_blank" rel="noopener">Б. С. Ляпустин. «Атлас. История Древнего мира. 5 класс» (ФП2022), «Просвещение», 2025, ISBN 978-5-09-120471-1 — дополнительный российский атлас для сопоставления.</a></li></ul><p class="small">Библиографические данные этих российских изданий 2025–2026 годов подтверждены. Страницы с самими картами и контурными заданиями в открытом доступе сейчас не удалось прочитать, поэтому постраничная сверка границ не завершена. Крупные территории империй теперь показаны более лёгкой заливкой и пунктирным контуром как обобщённые зоны контроля; это не проверенные копии атласов. Для окончательной постраничной сверки нужны читаемые страницы соответствующих атласов. Новые обзорные слои Индии, Китая и Рима добавлены для охвата основных тем федеральной программы, но также требуют сверки с картами соответствующих эпох.</p><p class="small">Физическая подложка: Esri и поставщики географических данных. Цветные области — схематические исторические реконструкции.</p></div></aside></div>
 
 <section id="quizPanel" class="panel workflow-panel" hidden aria-labelledby="quizTitle">
 <h2 id="quizTitle">Тест по истории Древнего мира</h2><p class="small">Выбери ответы на вопросы. После проверки результат сохранится в журнале этого браузера. Для передачи учителю выгрузи журнал кнопкой «Скачать CSV».</p>
@@ -376,480 +374,63 @@ button{background:#304d61;color:white;border:0;font-weight:650}.curriculum-panel
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script>
 const map=L.map('map',{zoomControl:true,preferCanvas:true,zoomSnap:0.25,zoomDelta:0.5,wheelPxPerZoomLevel:160,zoomAnimation:true,fadeAnimation:true,markerZoomAnimation:true}).setView([29.0,35.0],4);
-L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Physical_Map/MapServer/tile/{z}/{y}/{x}',{maxZoom:8,attribution:'Tiles © Esri — Source: US National Park Service'}).addTo(map);
+map.attributionControl.remove();
+L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Physical_Map/MapServer/tile/{z}/{y}/{x}',{maxZoom:8,attribution:''}).addTo(map);
 
 const G5_CLI_URL='https://services2.arcgis.com/wx8u046p68e0iGuj/arcgis/rest/services/Aligned_Cliopatria_v1.1_WGS84/FeatureServer/0/query';
 const g5PolityLayer=L.featureGroup().addTo(map),g5PolityCache=new Map();
 let g5PolityRequest=0,g5AvailableYears=null,g5ActiveFeatures=[],g5LegendEntries=[],g5HasInitialFit=false;
-let cityLabelsVisible=true,eventsVisible=false,tradeRoutesVisible=false,comparisonTargetIndex=null,comparisonRequest=0;
+let cityLabelsVisible=false;
 function setCityLabelsVisible(visible){cityLabelsVisible=!!visible;['cityLayer','mesoCityLayer','worldCityLayer'].forEach(key=>{const group=window[key];if(!group)return;group.eachLayer(marker=>{if(cityLabelsVisible)marker.openTooltip();else marker.closeTooltip();});});const button=document.getElementById('cityLabelsToggle');if(button){button.setAttribute('aria-pressed',String(cityLabelsVisible));button.textContent=cityLabelsVisible?'Скрыть названия городов':'Показать названия городов';}}
-const g5TargetYears=[-3050,-2300,-1750,-1500,-700,-600,-500,-330,-250,-220,100,350,476];
+const g5TargetYears=[-3050,-2300,-1500,-700,-600,-500,-330,-250,100,350,476];
 const g5Names={
- 'Twenty-sixth Dynasty of Egypt':'XXVI (Саисская) династия Египта',
- 'Twenty Sixth Dynasty of Egypt':'XXVI (Саисская) династия Египта',
- 'Twenty-Sixth Dynasty of Egypt':'XXVI (Саисская) династия Египта',
- '26th Dynasty of Egypt':'XXVI (Саисская) династия Египта',
- '26th Dynasty':'XXVI (Саисская) династия Египта',
- 'XXVI Dynasty of Egypt':'XXVI (Саисская) династия Египта',
- 'Twenty-sixth Egyptian Dynasty':'XXVI (Саисская) династия Египта',
- 'Saite Dynasty':'Саисская династия',
- 'Saite dynasty':'Саисская династия',
- 'Dynasty XXVI':'XXVI (Саисская) династия Египта',
- 'XXVI Dynasty':'XXVI (Саисская) династия Египта',
- 'Twenty-sixth Dynasty':'XXVI (Саисская) династия Египта',
- 'Twenty Sixth Dynasty':'XXVI (Саисская) династия Египта',
- 'Twenty-sixth Egyptian Dynasty of Egypt':'XXVI (Саисская) династия Египта',
- 'Egyptian Twenty-sixth Dynasty':'XXVI (Саисская) династия Египта',
- 'Twenty-fifth Dynasty of Egypt':'XXV (Кушитская) династия Египта',
- '25th Dynasty of Egypt':'XXV (Кушитская) династия Египта',
- 'Twenty-fourth Dynasty of Egypt':'XXIV династия Египта',
- '24th Dynasty of Egypt':'XXIV династия Египта',
- 'Twenty-third Dynasty of Egypt':'XXIII династия Египта',
- '23rd Dynasty of Egypt':'XXIII династия Египта',
- 'Twenty-second Dynasty of Egypt':'XXII династия Египта',
- '22nd Dynasty of Egypt':'XXII династия Египта',
- 'Twenty-first Dynasty of Egypt':'XXI династия Египта',
- '21st Dynasty of Egypt':'XXI династия Египта',
- 'Twentieth Dynasty of Egypt':'XX династия Египта',
- '20th Dynasty of Egypt':'XX династия Египта',
- 'Nineteenth Dynasty of Egypt':'XIX династия Египта',
- '19th Dynasty of Egypt':'XIX династия Египта',
- 'Eighteenth Dynasty of Egypt':'XVIII династия Египта',
- '18th Dynasty of Egypt':'XVIII династия Египта',
- 'Seventeenth Dynasty of Egypt':'XVII династия Египта',
- '17th Dynasty of Egypt':'XVII династия Египта',
- 'Sixteenth Dynasty of Egypt':'XVI династия Египта',
- '16th Dynasty of Egypt':'XVI династия Египта',
- 'Fifteenth Dynasty of Egypt':'XV династия Египта',
- '15th Dynasty of Egypt':'XV династия Египта',
- 'Fourteenth Dynasty of Egypt':'XIV династия Египта',
- '14th Dynasty of Egypt':'XIV династия Египта',
- 'Thirteenth Dynasty of Egypt':'XIII династия Египта',
- '13th Dynasty of Egypt':'XIII династия Египта',
- 'Twelfth Dynasty of Egypt':'XII династия Египта',
- '12th Dynasty of Egypt':'XII династия Египта',
- 'Eleventh Dynasty of Egypt':'XI династия Египта',
- '11th Dynasty of Egypt':'XI династия Египта',
- 'Tenth Dynasty of Egypt':'X династия Египта',
- '10th Dynasty of Egypt':'X династия Египта',
- 'Ninth Dynasty of Egypt':'IX династия Египта',
- '9th Dynasty of Egypt':'IX династия Египта',
- 'Eighth Dynasty of Egypt':'VIII династия Египта',
- '8th Dynasty of Egypt':'VIII династия Египта',
- 'Seventh Dynasty of Egypt':'VII династия Египта',
- '7th Dynasty of Egypt':'VII династия Египта',
- 'Sixth Dynasty of Egypt':'VI династия Египта',
- '6th Dynasty of Egypt':'VI династия Египта',
- 'Fifth Dynasty of Egypt':'V династия Египта',
- '5th Dynasty of Egypt':'V династия Египта',
- 'Fourth Dynasty of Egypt':'IV династия Египта',
- '4th Dynasty of Egypt':'IV династия Египта',
- 'Third Dynasty of Egypt':'III династия Египта',
- '3rd Dynasty of Egypt':'III династия Египта',
- 'Second Dynasty of Egypt':'II династия Египта',
- '2nd Dynasty of Egypt':'II династия Египта',
- 'First Dynasty of Egypt':'I династия Египта',
- '1st Dynasty of Egypt':'I династия Египта',
- 'Egyptian Old Kingdom':'Древнее царство Египта',
- 'Egyptian Middle Kingdom':'Среднее царство Египта',
- 'Egyptian New Kingdom':'Новое царство Египта',
- 'Kingdom of Egypt':'Египетское царство',
- 'Egyptian Kingdom':'Египетское царство',
- 'Egyptian Empire':'Египетская держава',
- 'Ptolemaic Egypt':'Египет Птолемеев',
- 'Roman Egypt':'Римский Египет',
- 'Achaemenid Egypt':'Египет в составе державы Ахеменидов',
- 'Early Dynastic Period Of Egypt':'Раннединастический период Египта',
- 'The Early Dynastic Period Of Egypt':'Раннединастический период Египта',
- 'Early Dynastic Period of Egypt':'Раннединастический период Египта',
- 'Early Dynastic Period':'Раннединастический период',
- 'Archaic Egypt':'Раннединастический Египет',
- 'Predynastic Egypt':'Додинастический Египет',
- 'Old Kingdom of Egypt':'Древнее царство Египта',
- 'Middle Kingdom of Egypt':'Среднее царство Египта',
- 'New Kingdom of Egypt':'Новое царство Египта',
- 'First Intermediate Period':'Первый переходный период Египта',
- 'Second Intermediate Period':'Второй переходный период Египта',
- 'Third Intermediate Period':'Третий переходный период Египта',
- 'Late Period of Egypt':'Поздний период Египта',
- 'Ancient Egyptian Kingdom':'Древнеегипетское царство',
- 'Upper Egypt':'Верхний Египет',
- 'Lower Egypt':'Нижний Египет',
- 'Egypt':'Египет',
- 'Early Dynastic Egypt':'Раннединастический Египет',
- 'Old Kingdom':'Древнее царство Египта',
- 'Middle Kingdom':'Среднее царство Египта',
- 'New Kingdom':'Новое царство Египта',
- 'Sumer':'Шумер',
- 'Sumerian city-states':'Шумерские города-государства',
- 'Sumerian city states':'Шумерские города-государства',
- 'Uruk':'Урук',
- 'Ur':'Ур',
- 'Lagash':'Лагаш',
- 'Akkad':'Аккад',
- 'Akkadian Empire':'Аккадская держава',
- 'Akkadian Empire of Sargon':'Аккадская держава при Саргоне',
- 'Assyria':'Ассирия',
- 'Assyrian Empire':'Ассирийская держава',
- 'Assyrian Kingdom':'Ассирийское царство',
- 'Neo-Assyrian Empire':'Новоассирийская держава',
- 'Neo Assyrian Empire':'Новоассирийская держава',
- 'Neo-Assyrian Kingdom':'Новоассирийское царство',
- 'Middle Assyrian Empire':'Среднеассирийская держава',
- 'Old Assyrian Empire':'Староассирийское царство',
- 'Babylonia':'Вавилония',
- 'Babylon':'Вавилон',
- 'Babylonian Kingdom':'Вавилонское царство',
- 'Old Babylonian Kingdom':'Старовавилонское царство',
- 'Old Babylonian Empire':'Старовавилонская держава',
- 'Kassite Babylonia':'Вавилония касситов',
- 'Hittite Empire':'Хеттская держава',
- 'Hittites':'Хетты',
- 'Mitanni':'Митанни',
- 'Elam':'Элам',
- 'Phoenicia':'Финикия',
- 'Phoenician Kingdoms':'Финикийские царства',
- 'Phoenician Polities':'Финикийские города-государства',
- 'Phoenician city-states':'Финикийские города-государства',
- 'Phoenician city states':'Финикийские города-государства',
- 'Kingdom of Israel':'Израильское царство',
- 'Kingdom of Judah':'Иудейское царство',
- 'Achaemenid Empire':'Держава Ахеменидов',
- 'Achaemenid Persian Empire':'Держава Ахеменидов',
- 'Persian Empire':'Персидская держава',
- 'Macedonian Empire':'Держава Александра Македонского',
- 'Alexander the Great':'Держава Александра Македонского',
- 'Seleucid Empire':'Держава Селевкидов',
- 'Ptolemaic Kingdom':'Царство Птолемеев',
- 'Parthian Empire':'Парфянская держава',
- 'Parthia':'Парфия',
- 'Indus Valley Civilization':'Индская цивилизация',
- 'Harappan Civilization':'Хараппская цивилизация',
- 'Harappa':'Хараппа',
- 'Mohenjo-daro':'Мохенджо-Даро',
- 'Vedic India':'Ведийская Индия',
- 'Magadha':'Магадха',
- 'Nanda Empire':'Держава Нандов',
- 'Maurya Empire':'Держава Маурьев',
- 'Mauryan Empire':'Держава Маурьев',
- 'Kushan Empire':'Кушанская держава',
- 'Kushans':'Кушаны',
- 'Gupta Empire':'Держава Гуптов',
- 'Shang dynasty':'Династия Шан',
- 'Zhou dynasty':'Династия Чжоу',
- 'Qin dynasty':'Династия Цинь',
- 'Qin Empire':'Империя Цинь',
- 'Han dynasty':'Династия Хань',
- 'Han Empire':'Империя Хань',
- 'Warring States':'Период Сражающихся царств',
- 'Chu':'Чу',
- 'Qi':'Ци',
- 'Yan':'Янь',
- 'Zhao':'Чжао',
- 'Wei':'Вэй',
- 'Xiongnu':'Сюнну',
- 'Yuezhi':'Юэчжи',
- 'Greek Colonies':'Греческие колонии',
- 'Greek colonies of the Black Sea':'Греческие колонии Причерноморья',
- 'Greek city-states':'Греческие полисы',
- 'Greek City-States':'Греческие полисы',
- 'Greek city states':'Греческие полисы',
- 'Greek City States':'Греческие полисы',
- 'Minoan civilization':'Минойская цивилизация',
- 'Mycenaean Greece':'Микенская Греция',
- 'Greece':'Греция',
- 'Roman Republic':'Римская республика',
- 'Roman Empire':'Римская империя',
- 'Hunnic Empire':'Гуннская держава',
- 'Scythians':'Скифы',
- 'Sarmatians':'Сарматы',
- 'Bactria':'Бактрия',
- 'Sogdiana':'Согдиана',
- 'Central Asia':'Центральная Азия',
- 'Armenia':'Армения',
- 'Carthage':'Карфаген',
- 'Bosporan Kingdom':'Боспорское царство',
- 'Kingdom of Bosporus':'Боспорское царство',
- 'Bosporan State':'Боспорское царство',
- 'Crimean Scythian Kingdom':'Крымская Скифия',
- 'Nubia':'Нубия',
- 'Kush':'Куш',
- 'Thebes':'Фивы',
- 'Memphis':'Мемфис',
- 'Nineveh':'Ниневия',
- 'Niniveh':'Ниневия',
- 'Assur':'Ашшур',
- 'Ashur':'Ашшур',
- 'Susa':'Сузы',
- 'Persepolis':'Персеполь',
- 'Pasargadae':'Пасаргады',
- 'Sardis':'Сарды',
- 'Tyre':'Тир',
- 'Jerusalem':'Иерусалим',
- 'Damascus':'Дамаск',
- 'Antioch':'Антиохия',
- 'Ctesiphon':'Ктесифон',
- 'Pataliputra':'Паталипутра',
- 'Chang\'an':'Чанъань',
- 'Luoyang':'Лоян',
- 'Anyang':'Аньян',
- 'Taxila':'Таксила',
- 'Gaza':'Газа',
- 'Megiddo':'Мегиддо',
- 'Avaris':'Аварис',
- 'Giza':'Гиза',
- 'Urartu':'Урарту',
- 'Lydia':'Лидия',
- 'Media':'Мидия',
- 'Phrygia':'Фригия',
- 'Cimmerians':'Киммерийцы',
- 'Scythian Kingdom':'Скифское царство',
- 'Neo-Babylonian Empire':'Нововавилонская держава',
- 'Neo-Babylonian Kingdom':'Нововавилонское царство',
- 'Israel':'Израильское царство',
- 'Judah':'Иудейское царство',
- 'Canaan':'Ханаан',
- 'Saba':'Саба',
- 'Sheba':'Саба',
- 'Himyarite Kingdom':'Химьярское царство',
- 'Nabataea':'Набатея',
- 'Nabataeans':'Набатеи',
- 'Etruscans':'Этруски',
- 'Carthaginian Empire':'Карфагенская держава',
- 'Carthaginian Republic':'Карфагенская республика',
- 'Indus Civilization':'Индская цивилизация',
- 'Indus Valley Civilisation':'Индская цивилизация',
- 'Harappan culture':'Хараппская культура',
- 'Harappan':'Хараппская цивилизация',
- 'Vedic period':'Ведийский период',
- 'Mahajanapadas':'Махаджанапады',
- 'Magadha Kingdom':'Магадхское царство',
- 'Nanda dynasty':'Династия Нандов',
- 'Shunga Empire':'Держава Шунгов',
- 'Indo-Greek Kingdom':'Индо-греческое царство',
- 'Indo-Scythian Kingdom':'Индо-скифское царство',
- 'Indo-Parthian Kingdom':'Индо-парфянское царство',
- 'Greco-Bactrian Kingdom':'Греко-Бактрийское царство',
- 'Satavahana':'Сатаваханы',
- 'Satavahana Empire':'Держава Сатаваханов',
- 'Kalinga':'Калинга',
- 'Gandhara':'Гандхара',
- 'Kosala':'Кошала',
- 'Avanti':'Аванти',
- 'Vatsa':'Ватса',
- 'Vajji':'Вадджи',
- 'Malla':'Малла',
- 'Anga':'Анга',
- 'Panchala':'Панчала',
- 'Kuru':'Куру',
- 'Matsya':'Матсья',
- 'Assaka':'Ассака',
- 'Surasena':'Шурасена',
- 'Shishunaga dynasty':'Династия Шишунага',
- 'Pradyota dynasty':'Династия Прадьёта',
- 'Xia dynasty':'Династия Ся',
- 'Western Zhou':'Западное Чжоу',
- 'Eastern Zhou':'Восточное Чжоу',
- 'Qin':'Цинь',
- 'Qin state':'Царство Цинь',
- 'Han (state)':'Царство Хань',
- 'Zhongshan':'Чжуншань',
- 'Song':'Сун',
- 'Lu':'Лу',
- 'Wu':'У',
- 'Yue':'Юэ',
- 'Baiyue':'Байюэ',
- 'Dian':'Дянь',
- 'Nanyue':'Наньюэ',
- 'Minyue':'Миньюэ',
- 'Gojoseon':'Кочосон',
- 'Xiongnu Empire':'Держава сюнну',
- 'Xiongnu Confederation':'Союз сюнну',
- 'Mycenaean civilization':'Микенская цивилизация',
- 'Minoan Crete':'Минойский Крит',
- 'Achaean League':'Ахейский союз',
- 'Aetolian League':'Этолийский союз',
- 'Macedon':'Македония',
- 'Kingdom of Macedon':'Македонское царство',
- 'Antigonid Kingdom':'Держава Антигонидов',
- 'Pergamon':'Пергамское царство',
- 'Bactrian Kingdom':'Бактрийское царство',
- 'Babylonian Empire':'Вавилонская держава',
- 'Ur III dynasty':'Держава III династии Ура',
- 'Third Dynasty of Ur':'III династия Ура',
- 'Akkadian Kingdom':'Аккадское царство',
- 'Gutian dynasty':'Гутии',
- 'Larsa':'Ларса',
- 'Isin':'Исин',
- 'Eshnunna':'Эшнунна',
- 'Mari':'Мари',
- 'Ebla':'Эбла',
- 'Yamhad':'Ямхад',
- 'Qatna':'Катна',
- 'Ugarit':'Угарит',
- 'Arzawa':'Арцава',
- 'Kizzuwatna':'Киццуватна',
- 'Kassites':'Касситы',
- 'Chaldea':'Халдея',
- 'Chaldean dynasty':'Халдейская династия',
- 'Urartu Kingdom':'Царство Урарту',
- 'Kingdom of Urartu':'Царство Урарту',
- 'Phrygian Kingdom':'Фригийское царство',
- 'Lydian Kingdom':'Лидийское царство',
- 'Kingdom of Lydia':'Лидийское царство',
- 'Median Empire':'Мидийская держава',
- 'Medes':'Мидяне',
- 'Cimmerian Kingdom':'Киммерийское царство',
- 'Kingdom of Kush':'Царство Куш',
- 'Kerma culture':'Керма',
- 'Kingdom of Meroe':'Мероитское царство',
- 'Meroe':'Мероэ',
- 'Nubian Kingdom':'Нубийское царство',
- 'Hyksos':'Гиксосы',
- 'Kingdom of Mitanni':'Царство Митанни',
- 'Mitanni Empire':'Держава Митанни',
- 'Hittite Kingdom':'Хеттское царство',
- 'New Hittite Kingdoms':'Позднехеттские царства',
- 'Israelite Kingdom':'Израильское царство',
- 'Judah Kingdom':'Иудейское царство',
- 'Philistia':'Филистия',
- 'Ammon':'Аммон',
- 'Moab':'Моав',
- 'Edom':'Эдом',
- 'Aramean states':'Арамейские царства',
- 'Phoenician States':'Финикийские города-государства',
- 'Kingdom of Tyre':'Тирское царство',
- 'Kingdom of Sidon':'Сидонское царство',
- 'Cilicia':'Киликия',
- 'Caria':'Кария',
- 'Ionia':'Иония',
- 'Dorian Greece':'Дорийская Греция',
- 'Achaean Greece':'Ахейская Греция',
- 'Athens':'Афины',
- 'Sparta':'Спарта',
- 'Corinth':'Коринф',
- 'Macedonian Kingdom':'Македонское царство',
- 'Thrace':'Фракия',
- 'Epirus':'Эпир',
- 'Aetolia':'Этолия',
- 'Achaea':'Ахайя',
- 'Bithynia':'Вифиния',
- 'Pontus':'Понт',
- 'Cappadocia':'Каппадокия',
- 'Galatia':'Галатия',
- 'Armenian Kingdom':'Армянское царство',
- 'Kingdom of Armenia':'Армянское царство',
- 'Commagene':'Коммагена',
- 'Nabatean Kingdom':'Набатейское царство',
- 'Sabaean Kingdom':'Сабейское царство',
- 'Himyar':'Химьяр',
- 'Gandhara Kingdom':'Гандхарское царство',
- 'Kuru Kingdom':'Царство Куру',
- 'Panchala Kingdom':'Царство Панчала',
- 'Kosala Kingdom':'Царство Кошала',
- 'Avanti Kingdom':'Царство Аванти',
- 'Vatsa Kingdom':'Царство Ватса',
- 'Anga Kingdom':'Царство Анга',
- 'Kalinga Kingdom':'Царство Калинга',
- 'Shishunaga Empire':'Держава Шишунагов',
- 'Kanva dynasty':'Династия Канва',
- 'Satavahana dynasty':'Династия Сатаваханов',
- 'Yavana Kingdom':'Яванское царство',
- 'Spring and Autumn period':'Период Вёсен и Осеней',
- 'Warring States period':'Период Сражающихся царств',
- 'Han state':'Царство Хань',
- 'Wei state':'Царство Вэй',
- 'Zhao state':'Царство Чжао',
- 'Qi state':'Царство Ци',
- 'Chu state':'Царство Чу',
- 'Yan state':'Царство Янь',
- 'Lu state':'Царство Лу',
- 'Wu state':'Царство У',
- 'Yue state':'Царство Юэ',
- 'Shu':'Шу',
- 'Ba':'Ба',
- 'Dian Kingdom':'Царство Дянь',
- 'Tocharians':'Тохары',
- 'Saka':'Саки',
- 'Saka Kingdom':'Сакское царство',
- 'Sogdian city-states':'Согдийские города-государства',
- 'Western Satraps':'Западные сатрапы',
- 'Western Kshatrapas':'Западные кшатрапы',
- 'Shatavahana':'Сатаваханы',
- 'Etruscan city-states':'Этрусские города-государства',
- 'Etruscan city states':'Этрусские города-государства',
- 'Samnites':'Самниты',
- 'Latins':'Латины',
- 'Arsacid Empire':'Парфянская держава Аршакидов',
- 'Sassanid Empire':'Держава Сасанидов',
- 'Sasanian Empire':'Держава Сасанидов',
- 'Visigothic Kingdom':'Вестготское королевство',
- 'Ostrogothic Kingdom':'Остготское королевство',
- 'Vandal Kingdom':'Королевство вандалов',
- 'Western Roman Empire':'Западная Римская империя',
- 'Eastern Roman Empire':'Восточная Римская империя',
- 'Byzantine Empire':'Византийская империя',
- 'Sarmatian Kingdom':'Сарматское царство',
- 'Alans':'Аланы',
- 'Goths':'Готы',
- 'Vandals':'Вандалы',
- 'Franks':'Франки',
- 'Saxons':'Саксы',
- 'Lombards':'Лангобарды',
- 'Burgundians':'Бургунды',
- 'Avars':'Авары',
- 'Slavs':'Славяне',
- 'Cappadocian Kingdom':'Каппадокийское царство',
- 'Commagene Kingdom':'Царство Коммагена',
- 'Osroene':'Осроена',
- 'Adiabene':'Адиабена',
- 'Characene':'Харакена',
- 'Elymais':'Элимаида',
- 'Media Atropatene':'Атропатена',
- 'Syria':'Сирия',
- 'Levant':'Левант',
- 'Jin dynasty':'Династия Цзинь',
- 'Western Jin':'Западная Цзинь',
- 'Eastern Jin':'Восточная Цзинь',
- 'Northern Wei':'Северная Вэй',
- 'Sixteen Kingdoms':'Шестнадцать царств',
+'Egyptian Old Kingdom':'Древнее царство Египта','Egyptian Middle Kingdom':'Среднее царство Египта','Egyptian New Kingdom':'Новое царство Египта','Kingdom of Egypt':'Египетское царство','Egyptian Kingdom':'Египетское царство','Egyptian Empire':'Египетская держава','Ptolemaic Egypt':'Египет Птолемеев','Roman Egypt':'Римский Египет','Achaemenid Egypt':'Египет в составе державы Ахеменидов','Early Dynastic Period Of Egypt':'Раннединастический период Египта','The Early Dynastic Period Of Egypt':'Раннединастический период Египта','Early Dynastic Period of Egypt':'Раннединастический период Египта','Early Dynastic Period':'Раннединастический период','Archaic Egypt':'Раннединастический Египет','Predynastic Egypt':'Додинастический Египет','Old Kingdom of Egypt':'Древнее царство Египта','Middle Kingdom of Egypt':'Среднее царство Египта','New Kingdom of Egypt':'Новое царство Египта','First Intermediate Period':'Первый переходный период Египта','Second Intermediate Period':'Второй переходный период Египта','Third Intermediate Period':'Третий переходный период Египта','Late Period of Egypt':'Поздний период Египта','Ancient Egyptian Kingdom':'Древнеегипетское царство','Upper Egypt':'Верхний Египет','Lower Egypt':'Нижний Египет','Egypt':'Египет','Early Dynastic Egypt':'Раннединастический Египет','Old Kingdom':'Древнее царство Египта','Middle Kingdom':'Среднее царство Египта','New Kingdom':'Новое царство Египта',
+'Sumer':'Шумер','Sumerian city-states':'Шумерские города-государства','Uruk':'Урук','Ur':'Ур','Lagash':'Лагаш','Akkad':'Аккад','Akkadian Empire':'Аккадская держава','Assyria':'Ассирия','Assyrian Empire':'Ассирийская держава','Assyrian Kingdom':'Ассирийское царство','Neo-Assyrian Empire':'Новоассирийская держава','Neo Assyrian Empire':'Новоассирийская держава','Neo-Assyrian Kingdom':'Новоассирийское царство','Middle Assyrian Empire':'Среднеассирийская держава','Old Assyrian Empire':'Древнеассирийское царство','Babylonia':'Вавилония','Babylon':'Вавилон','Kassite Babylonia':'Вавилония касситов','Assyria':'Ассирия','Neo-Assyrian Empire':'Новоассирийская держава','Hittite Empire':'Хеттская держава','Hittites':'Хетты','Mitanni':'Митанни','Elam':'Элам','Phoenicia':'Финикия','Phoenician Kingdoms':'Финикийские царства','Phoenician Polities':'Финикийские города-государства','Phoenician city-states':'Финикийские города','Kingdom of Israel':'Израильское царство','Kingdom of Judah':'Иудейское царство',
+'Achaemenid Empire':'Держава Ахеменидов','Persian Empire':'Персидская держава','Macedonian Empire':'Держава Александра Македонского','Alexander the Great':'Держава Александра Македонского','Seleucid Empire':'Держава Селевкидов','Ptolemaic Kingdom':'Царство Птолемеев','Parthian Empire':'Парфянская держава','Parthia':'Парфия',
+'Indus Valley Civilization':'Индская цивилизация','Indus Civilization':'Индская цивилизация','Indus Valley Civilisation':'Индская цивилизация','Indus Valley Culture':'Индская цивилизация','Indus Civilisation':'Индская цивилизация','Harappan Civilization':'Хараппская цивилизация','Harappan Civilisation':'Хараппская цивилизация','Harappan culture':'Хараппская культура','Harappan Culture':'Хараппская культура','Harappan period':'Хараппский период','Harappan':'Хараппская цивилизация','Early Harappan':'Ранний хараппский период','Mature Harappan':'Зрелый хараппский период','Late Harappan':'Поздний хараппский период','Indus Valley':'Долина Инда','Indus':'Индская цивилизация','Harappa':'Хараппа','Mohenjo-daro':'Мохенджо-Даро','Mohenjo Daro':'Мохенджо-Даро','Mohenjodaro':'Мохенджо-Даро','Dholavira':'Дхолавира','Lothal':'Лотхал','Kalibangan':'Калибанган','Rakhigarhi':'Ракхигархи','Vedic India':'Ведийская Индия','Vedic period':'Ведийский период','Mahajanapadas':'Махаджанапады','Magadha':'Магадха','Magadha Kingdom':'Магадхское царство','Nanda Empire':'Держава Нандов','Nanda dynasty':'Династия Нандов','Maurya Empire':'Держава Маурьев','Mauryan Empire':'Держава Маурьев','Maurya':'Держава Маурьев','Mauryan':'Держава Маурьев','Shunga Empire':'Держава Шунгов','Shunga dynasty':'Династия Шунгов','Kushan Empire':'Кушанская держава','Kushans':'Кушаны','Kushan':'Кушанская держава','Indo-Greek Kingdom':'Индо-греческое царство','Indo-Greek Kingdoms':'Индо-греческие царства','Indo-Scythian Kingdom':'Индо-скифское царство','Indo-Parthian Kingdom':'Индо-парфянское царство','Greco-Bactrian Kingdom':'Греко-Бактрийское царство','Satavahana':'Сатаваханы','Satavahana Empire':'Держава Сатаваханов','Gupta Empire':'Держава Гуптов','Gupta dynasty':'Династия Гуптов','Gupta':'Держава Гуптов',
+'Shang dynasty':'Династия Шан','Zhou dynasty':'Династия Чжоу','Qin dynasty':'Династия Цинь','Qin Empire':'Империя Цинь','Han dynasty':'Династия Хань','Han Empire':'Империя Хань','Warring States':'Период Сражающихся царств','Chu':'Чу','Qi':'Ци','Yan':'Янь','Zhao':'Чжао','Wei':'Вэй','Xiongnu':'Сюнну','Yuezhi':'Юэчжи',
+'Greek city-states':'Греческие полисы','Greek City-States':'Греческие полисы','Greek city states':'Греческие полисы','Greek City States':'Греческие полисы','Minoan civilization':'Минойская цивилизация','Mycenaean Greece':'Микенская Греция','Greece':'Греция','Roman Republic':'Римская республика','Roman Empire':'Римская империя','Hunnic Empire':'Гуннская держава','Scythians':'Скифы','Sarmatians':'Сарматы',
+'Bactria':'Бактрия','Sogdiana':'Согдиана','Central Asia':'Центральная Азия','Armenia':'Армения','Carthage':'Карфаген','Nubia':'Нубия','Kush':'Куш','Thebes':'Фивы','Memphis':'Мемфис','Nineveh':'Ниневия','Niniveh':'Ниневия','Assur':'Ашшур','Ashur':'Ашшур','Susa':'Сузы','Persepolis':'Персеполь','Pasargadae':'Пасаргады','Sardis':'Сарды','Tyre':'Тир','Jerusalem':'Иерусалим','Damascus':'Дамаск','Antioch':'Антиохия','Ctesiphon':'Ктесифон','Pataliputra':'Паталипутра','Chang\'an':'Чанъань','Luoyang':'Лоян','Anyang':'Аньян','Taxila':'Таксила','Gaza':'Газа','Megiddo':'Мегиддо','Avaris':'Аварис','Giza':'Гиза','Ur':'Ур','Uruk':'Урук','Lagash':'Лагаш',
+'Urartu':'Урарту','Lydia':'Лидия','Media':'Мидия','Phrygia':'Фригия','Cimmerians':'Киммерийцы','Scythian Kingdom':'Скифское царство','Neo-Babylonian Empire':'Нововавилонская держава','Neo-Babylonian Kingdom':'Нововавилонское царство','Neo-Assyrian Empire':'Новоассирийская держава','Israel':'Израильское царство','Judah':'Иудейское царство','Canaan':'Ханаан','Saba':'Саба','Sheba':'Саба','Himyarite Kingdom':'Химьярское царство','Nabataea':'Набатея','Nabataeans':'Набатеи','Etruscans':'Этруски','Carthaginian Empire':'Карфагенская держава','Carthaginian Republic':'Карфагенская республика',
+'Indus Civilization':'Индская цивилизация','Indus Valley Civilisation':'Индская цивилизация','Harappan culture':'Хараппская культура','Harappan':'Хараппская цивилизация','Vedic period':'Ведийский период','Mahajanapadas':'Махаджанапады','Magadha Kingdom':'Магадхское царство','Nanda dynasty':'Династия Нандов','Mauryan Empire':'Держава Маурьев','Shunga Empire':'Держава Шунгов','Indo-Greek Kingdom':'Индо-греческое царство','Indo-Scythian Kingdom':'Индо-скифское царство','Indo-Parthian Kingdom':'Индо-парфянское царство','Greco-Bactrian Kingdom':'Греко-Бактрийское царство','Satavahana':'Сатаваханы','Satavahana Empire':'Держава Сатаваханов','Kalinga':'Калинга','Gandhara':'Гандхара','Kosala':'Кошала','Avanti':'Аванти','Vatsa':'Ватса','Vajji':'Вадджи','Malla':'Малла','Anga':'Анга','Panchala':'Панчала','Kuru':'Куру','Matsya':'Матсья','Assaka':'Ассака','Surasena':'Шурасена','Shishunaga dynasty':'Династия Шишунага','Pradyota dynasty':'Династия Прадьёта',
+'Xia dynasty':'Династия Ся','Shang dynasty':'Династия Шан','Western Zhou':'Западная Чжоу','Eastern Zhou':'Восточная Чжоу','Qin':'Цинь','Qin state':'Царство Цинь','Han (state)':'Царство Хань','Zhao':'Чжао','Wei':'Вэй','Qi':'Ци','Yan':'Янь','Chu':'Чу','Zhongshan':'Чжуншань','Song':'Сун','Lu':'Лу','Wu':'У','Yue':'Юэ','Baiyue':'Байюэ','Dian':'Дянь','Nanyue':'Наньюэ','Minyue':'Миньюэ','Gojoseon':'Кочосон','Yuezhi':'Юэчжи','Xiongnu Empire':'Держава сюнну','Xiongnu Confederation':'Союз сюнну',
+'Mycenaean civilization':'Микенская цивилизация','Minoan Crete':'Минойский Крит','Achaean League':'Ахейский союз','Aetolian League':'Этолийский союз','Macedon':'Македония','Kingdom of Macedon':'Македонское царство','Ptolemaic Egypt':'Египет Птолемеев','Seleucid Empire':'Держава Селевкидов','Antigonid Kingdom':'Держава Антигонидов','Pergamon':'Пергамское царство','Bactrian Kingdom':'Бактрийское царство'
+,'Neo-Babylonian Empire':'Нововавилонская держава','Neo-Babylonian Kingdom':'Нововавилонское царство','Babylonian Empire':'Вавилонская держава','Old Assyrian Empire':'Староассирийское царство','Middle Assyrian Empire':'Среднеассирийское царство','Assyrian Empire':'Ассирийская держава','Ur III dynasty':'Держава III династии Ура','Third Dynasty of Ur':'III династия Ура','Akkadian Kingdom':'Аккадское царство','Gutian dynasty':'Гутии','Larsa':'Ларса','Isin':'Исин','Eshnunna':'Эшнунна','Mari':'Мари','Ebla':'Эбла','Yamhad':'Ямхад','Qatna':'Катна','Ugarit':'Угарит','Arzawa':'Арцава','Kizzuwatna':'Киццуватна','Kassites':'Касситы','Chaldea':'Халдея','Chaldean dynasty':'Халдейская династия','Urartu Kingdom':'Царство Урарту','Kingdom of Urartu':'Царство Урарту','Phrygian Kingdom':'Фригийское царство','Lydian Kingdom':'Лидийское царство','Kingdom of Lydia':'Лидийское царство','Median Empire':'Мидийская держава','Medes':'Мидяне','Cimmerian Kingdom':'Киммерийское царство','Kingdom of Kush':'Царство Куш','Kerma culture':'Керма','Kingdom of Meroe':'Мероитское царство','Meroe':'Мероэ','Nubian Kingdom':'Нубийское царство','Hyksos':'Гиксосы','Kingdom of Mitanni':'Царство Митанни','Mitanni Empire':'Держава Митанни','Hittite Kingdom':'Хеттское царство','New Hittite Kingdoms':'Позднехеттские царства','Israelite Kingdom':'Израильское царство','Judah Kingdom':'Иудейское царство','Philistia':'Филистия','Ammon':'Аммон','Moab':'Моав','Edom':'Эдом','Aramean states':'Арамейские царства','Phoenician States':'Финикийские города-государства','Kingdom of Tyre':'Тирское царство','Kingdom of Sidon':'Сидонское царство','Cilicia':'Киликия','Caria':'Кария','Ionia':'Иония','Dorian Greece':'Дорийская Греция','Achaean Greece':'Ахейская Греция','Athens':'Афины','Sparta':'Спарта','Corinth':'Коринф','Thebes':'Фивы','Macedon':'Македония','Macedonian Kingdom':'Македонское царство','Thrace':'Фракия','Epirus':'Эпир','Aetolia':'Этолия','Achaea':'Ахайя','Pergamon':'Пергамское царство','Bithynia':'Вифиния','Pontus':'Понт','Cappadocia':'Каппадокия','Galatia':'Галатия','Armenian Kingdom':'Армянское царство','Kingdom of Armenia':'Армянское царство','Commagene':'Коммагена','Nabatean Kingdom':'Набатейское царство','Sabaean Kingdom':'Сабейское царство','Himyar':'Химьяр','Gandhara Kingdom':'Гандхарское царство','Kuru Kingdom':'Царство Куру','Panchala Kingdom':'Царство Панчала','Kosala Kingdom':'Царство Кошала','Avanti Kingdom':'Царство Аванти','Vatsa Kingdom':'Царство Ватса','Anga Kingdom':'Царство Анга','Kalinga Kingdom':'Царство Калинга','Shishunaga Empire':'Держава Шишунагов','Nanda Empire':'Держава Нандов','Shunga Empire':'Держава Шунгов','Kanva dynasty':'Династия Канва','Satavahana dynasty':'Династия Сатаваханов','Indo-Greek Kingdom':'Индо-греческое царство','Greco-Bactrian Kingdom':'Греко-Бактрийское царство','Yavana Kingdom':'Яванское царство','Western Zhou':'Западная Чжоу','Eastern Zhou':'Восточная Чжоу','Spring and Autumn period':'Период Вёсен и Осеней','Warring States period':'Период Сражающихся царств','Qin state':'Царство Цинь','Han state':'Царство Хань','Wei state':'Царство Вэй','Zhao state':'Царство Чжао','Qi state':'Царство Ци','Chu state':'Царство Чу','Yan state':'Царство Янь','Lu state':'Царство Лу','Wu state':'Царство У','Yue state':'Царство Юэ','Shu':'Шу','Ba':'Ба','Zhongshan':'Чжуншань','Nanyue':'Наньюэ','Minyue':'Миньюэ','Dian Kingdom':'Царство Дянь','Gojoseon':'Кочосон','Xiongnu Confederation':'Союз сюнну','Xiongnu Empire':'Держава сюнну','Yuezhi':'Юэчжи','Tocharians':'Тохары','Saka':'Саки','Saka Kingdom':'Сакское царство','Scythian Kingdom':'Скифское царство','Sogdian city-states':'Согдийские города-государства','Bactrian Kingdom':'Бактрийское царство','Greco-Bactrian Kingdom':'Греко-Бактрийское царство','Indo-Parthian Kingdom':'Индо-парфянское царство','Indo-Scythian Kingdom':'Индо-скифское царство','Western Satraps':'Западные сатрапы','Kushan Empire':'Кушанская держава','Gupta Empire':'Держава Гуптов','Western Kshatrapas':'Западные кшатрапы','Shatavahana':'Сатаваханы','Roman Republic':'Римская республика','Roman Empire':'Римская империя','Carthaginian Empire':'Карфагенская держава','Carthage':'Карфаген','Etruscan city-states':'Этрусские города-государства','Samnites':'Самниты','Latins':'Латины','Macedonian Empire':'Держава Александра Македонского','Seleucid Empire':'Держава Селевкидов','Antigonid Kingdom':'Держава Антигонидов','Ptolemaic Kingdom':'Царство Птолемеев','Ptolemaic Egypt':'Египет Птолемеев','Parthian Empire':'Парфянская держава','Arsacid Empire':'Парфянская держава Аршакидов','Sassanid Empire':'Держава Сасанидов','Sasanian Empire':'Держава Сасанидов','Hunnic Empire':'Гуннская держава','Visigothic Kingdom':'Вестготское королевство','Ostrogothic Kingdom':'Остготское королевство','Vandal Kingdom':'Королевство вандалов','Western Roman Empire':'Западная Римская империя','Eastern Roman Empire':'Восточная Римская империя','Byzantine Empire':'Византийская империя','Sarmatian Kingdom':'Сарматское царство','Alans':'Аланы','Goths':'Готы','Vandals':'Вандалы','Franks':'Франки','Saxons':'Саксы','Lombards':'Лангобарды','Burgundians':'Бургунды','Avars':'Авары','Slavs':'Славяне','Kingdom of Armenia':'Армянское царство','Cappadocian Kingdom':'Каппадокийское царство','Commagene Kingdom':'Царство Коммагена','Osroene':'Осроена','Adiabene':'Адиабена','Characene':'Харакена','Elymais':'Элимаида','Media Atropatene':'Атропатена','Parthia':'Парфия','Syria':'Сирия','Levant':'Левант','Nubia':'Нубия','Kush':'Куш','Achaemenid Empire':'Держава Ахеменидов','Persian Empire':'Персидская держава','Macedonian Kingdom':'Македонское царство','Minoan civilization':'Минойская цивилизация','Mycenaean Greece':'Микенская Греция','Harappan Civilization':'Хараппская цивилизация','Indus Valley Civilization':'Индская цивилизация','Maurya Empire':'Держава Маурьев','Mauryan Empire':'Держава Маурьев','Han dynasty':'Династия Хань','Qin dynasty':'Династия Цинь','Shang dynasty':'Династия Шан','Zhou dynasty':'Династия Чжоу','Jin dynasty':'Династия Цзинь','Western Jin':'Западная Цзинь','Eastern Jin':'Восточная Цзинь','Northern Wei':'Северная Вэй','Sixteen Kingdoms':'Шестнадцать царств'
+
 };
-function g5NormalizeName(value){
- return String(value||'').normalize('NFKC').trim().replace(/^[≈~≃≅]\s*/,'').replace(/[–—−]/g,'-').replace(/[_]+/g,' ').replace(/\s+/g,' ').toLocaleLowerCase('en');
+function g5TransliterateName(v){
+ const words={'A':'А','B':'Б','C':'К','D':'Д','E':'Э','F':'Ф','G':'Г','H':'Х','I':'И','J':'Дж','K':'К','L':'Л','M':'М','N':'Н','O':'О','P':'П','Q':'К','R':'Р','S':'С','T':'Т','U':'У','V':'В','W':'В','X':'Кс','Y':'Й','Z':'З'};
+ return String(v).replace(/sch/gi,'ш').replace(/sh/gi,'ш').replace(/ch/gi,'ч').replace(/zh/gi,'ж').replace(/kh/gi,'х').replace(/th/gi,'т').replace(/ph/gi,'ф').replace(/ck/gi,'к').replace(/qu/gi,'кв').replace(/c(?=[eiy])/gi,'с').replace(/c/gi,'к').replace(/j/gi,'дж').replace(/w/gi,'в').replace(/x/gi,'кс').replace(/[A-Za-z]/g,c=>{const r=words[c.toUpperCase()]||c;return c===c.toLowerCase()?r.toLowerCase():r;}).replace(/\s+/g,' ').trim();
 }
-function g5Translate(n){
- const v=String(n||'').trim();
- if(!v)return 'Название не установлено';
- const normalized=g5NormalizeName(v);
- const exact=Object.keys(g5Names).find(k=>g5NormalizeName(k)===normalized);
- if(exact)return g5Names[exact];
- const patterns=[
-  [/^Kingdom of (.+)$/i,'Царство'],
-  [/^(.+) Kingdom$/i,'Царство'],
-  [/^(.+) Empire$/i,'Держава'],
-  [/^(.+) Dynasty$/i,'Династия'],
-  [/^(.+) dynasty$/i,'Династия'],
-  [/^(.+) city-states$/i,'города-государства'],
-  [/^(.+) Civilization$/i,'цивилизация'],
-  [/^(.+) civilization$/i,'цивилизация']
- ];
- for(const [re,label] of patterns){
-  const m=normalized.match(re);
-  if(!m)continue;
-  const baseKey=Object.keys(g5Names).find(k=>g5NormalizeName(k)===m[1].trim());
-  if(baseKey)return label+' '+g5Names[baseKey];
- }
- return 'Название не переведено';
+function g5IsApproximateName(n){const v=String(n||'').trim();return !Object.keys(g5Names).some(k=>k.toLocaleLowerCase('en')===v.toLocaleLowerCase('en'));}
+Object.assign(g5Names,{
+ 'Sumerian city states':'Шумерские города-государства','Sumerian City-States':'Шумерские города-государства',
+ 'Akkad':'Аккад','Akkadian Kingdom':'Аккадское царство','Akkadian Empire of Sargon':'Держава Аккада',
+ 'Old Babylonian Kingdom':'Древневавилонское царство','Old Babylonian Empire':'Древневавилонское царство',
+ 'Achaemenid Persian Empire':'Держава Ахеменидов',
+ 'Indus Civilization':'Индская цивилизация','Indus Valley Civilisation':'Индская цивилизация','Harappan culture':'Хараппская культура','Harappan Culture':'Хараппская культура',
+ 'Minoan Crete':'Минойская цивилизация Крита','Minoan civilization':'Минойская цивилизация','Minoan Civilization':'Минойская цивилизация',
+ 'Mycenaean civilization':'Микенская цивилизация','Mycenaean Civilization':'Микенская цивилизация',
+ 'Greek city states':'Греческие полисы','Greek Colonies':'Греческие колонии','Greek colonies of the Black Sea':'Греческие колонии Северного Причерноморья',
+ 'Bosporan Kingdom':'Боспорское царство','Kingdom of Bosporus':'Боспорское царство','Bosporan State':'Боспорское государство',
+ 'Cimmerians':'Киммерийцы','Crimean Scythian Kingdom':'Скифское царство в Крыму','Warring States period':'Период Сражающихся царств',
+ 'Etruscan city states':'Этрусские города-государства','Etruscans':'Этруски','Carthaginian Republic':'Карфагенская республика',
+ 'Upper Egypt':'Верхний Египет','Lower Egypt':'Нижний Египет'
+});
+function g5Translate(n){const v=String(n||'').trim();if(!v)return 'Название не установлено';if(g5Names[v])return g5Names[v];const key=Object.keys(g5Names).find(k=>k.toLocaleLowerCase('en')===v.toLocaleLowerCase('en'));if(key)return g5Names[key];
+ const patterns=[[/^Kingdom of (.+)$/i,(_,x)=>'≈ Царство '+g5TransliterateName(x)],[/^(.+) Kingdom$/i,(_,x)=>'Царство '+g5TransliterateName(x)],[/^(.+) Empire$/i,(_,x)=>'≈ Держава '+g5TransliterateName(x)],[/^(.+) Dynasty$/i,(_,x)=>'≈ Династия '+g5TransliterateName(x)],[/^(.+) dynasty$/i,(_,x)=>'Династия '+g5TransliterateName(x)],[/^(.+) city-states$/i,(_,x)=>'≈ города-государства '+g5TransliterateName(x)],[/^(.+) Civilization$/i,(_,x)=>'≈ цивилизация '+g5TransliterateName(x)],[/^(.+) civilization$/i,(_,x)=>'Цивилизация '+g5TransliterateName(x)]];
+ for(const [re,fn] of patterns){const m=v.match(re);if(m)return fn(...m);}
+ return '≈ '+g5TransliterateName(v);
 }
 function g5Color(v){let c=String(v??'').trim();if(/^0x[0-9a-f]{6}$/i.test(c))c='#'+c.slice(2);if(/^#[0-9a-f]{6}$/i.test(c))return c;if(/^\d+$/.test(c)){const n=Number(c);if(n>=0&&n<=0xffffff)return '#'+n.toString(16).padStart(6,'0');}return '#82939a';}
 const g5CoursePolities = new Set([
 'Egypt','Ancient Egyptian Kingdom','Old Kingdom of Egypt','Middle Kingdom of Egypt','New Kingdom of Egypt','Early Dynastic Egypt','Early Dynastic Period','Early Dynastic Period of Egypt','Early Dynastic Period Of Egypt','The Early Dynastic Period Of Egypt','Archaic Egypt','Upper Egypt','Lower Egypt',
 'Sumer','Sumerian city-states','Sumerian city states','Sumerian City-States','Akkad','Akkadian Kingdom','Akkadian Empire','Akkadian Empire of Sargon',
 'Babylonia','Babylonian Empire','Babylonian Kingdom','Old Babylonian Kingdom','Old Babylonian Empire','Neo-Babylonian Empire','Neo-Babylonian Kingdom',
-'Assyria','Assyrian Empire','Assyrian Kingdom','Mitanni','Kingdom of Mitanni','Mitanni Empire','Kassite Babylonia','Neo-Assyrian Empire','Neo Assyrian Empire','Neo-Assyrian Kingdom','Middle Assyrian Empire','Old Assyrian Empire',
+'Assyria','Assyrian Empire','Assyrian Kingdom','Neo-Assyrian Empire','Neo Assyrian Empire','Neo-Assyrian Kingdom','Middle Assyrian Empire','Old Assyrian Empire',
 'Phoenicia','Phoenician States','Phoenician city-states','Phoenician city states','Kingdom of Tyre','Kingdom of Sidon','Israelite Kingdom','Kingdom of Israel','Israel','Judah Kingdom','Kingdom of Judah','Judah',
 'Achaemenid Empire','Achaemenid Persian Empire','Persian Empire',
-'Indus Valley Civilization','Indus Civilization','Indus Valley Civilisation','Harappan Civilization','Harappan culture','Harappan Culture','Maurya Empire','Mauryan Empire','Gupta Empire',
+'Indus Valley Civilization','Indus Civilization','Indus Valley Civilisation','Indus Valley Civilisation','Indus Valley Culture','Indus Civilisation','Indus Civilization','Harappan Civilization','Harappan Civilisation','Harappan culture','Harappan Culture','Harappan period','Harappan','Early Harappan','Mature Harappan','Late Harappan','Indus Valley','Indus','Harappa','Mohenjo-daro','Mohenjo Daro','Mohenjodaro','Dholavira','Lothal','Kalibangan','Rakhigarhi','Vedic India','Vedic period','Mahajanapadas','Magadha','Magadha Kingdom','Nanda Empire','Nanda dynasty','Maurya Empire','Mauryan Empire','Maurya','Mauryan','Shunga Empire','Shunga dynasty','Kushan Empire','Kushans','Kushan','Indo-Greek Kingdom','Indo-Greek Kingdoms','Indo-Scythian Kingdom','Indo-Parthian Kingdom','Greco-Bactrian Kingdom','Satavahana','Satavahana Empire','Gupta Empire','Gupta dynasty','Gupta',
 'Shang dynasty','Shang Dynasty','Zhou dynasty','Zhou Dynasty','Western Zhou','Eastern Zhou','Qin','Qin state','Qin State','Qin dynasty','Qin Dynasty','Qin Empire','Han dynasty','Han Dynasty','Han Empire','Warring States','Warring States period',
 'Minoan Crete','Minoan civilization','Minoan Civilization','Mycenaean Greece','Mycenaean civilization','Mycenaean Civilization','Macedon','Kingdom of Macedon','Macedonian Kingdom','Macedonian Empire',
 'Athens','Sparta','Corinth','Thebes','Greek city-states','Greek City-States','Greek city states','Greek City States','Greek Colonies','Greek colonies of the Black Sea',
@@ -867,20 +448,22 @@ function g5IsInGrade5Course(raw){
   || /^(achaemenid|persian) (empire|kingdom)$/.test(lower)
   || /^(roman republic|roman empire|western roman empire|eastern roman empire)$/.test(lower)
   || /egypt|egyptian/.test(lower)
+  // Индская цивилизация и государства Древней Индии: допускаем варианты написания
+  // названий в Cliopatria, иначе территории исчезают из-за несовпадения словаря.
+  || /indus|harapp|maurya|magadha|mahajanapada|nanda|shunga|gupta|kushan|satavahana|indo[- ](greek|scythian|parthian)|vedic india|vedic period|greco-bactrian/.test(lower)
   || /^(phoenicia|phoenician (states|kingdoms|polities|city-states|city states))$/.test(lower)
   || /^(kingdom of (tyre|sidon|byblos|arwad)|tyrian kingdom|sidonian kingdom)$/.test(lower);
 }
 // Единый фильтр g5IsInGrade5Course объявлен выше; повторное объявление удалено.
 function g5HistoricalBrief(raw,translated,year){
  const n=String(raw||'').toLowerCase();
- if(/egypt/.test(n)){if(idx===5)return 'После падения Ассирии Египет восстановил самостоятельность. При XXVI династии важным центром стал Саис.';if(idx===6)return 'В 525 г. до н. э. Египет был завоёван персами и вошёл в державу Ахеменидов.';return 'Древнеегипетское государство возникло в долине Нила. Разливы реки поддерживали земледелие, а власть фараона объединяла страну. В разные эпохи политические центры и границы Египта менялись.';}
+ if(/egypt/.test(n)){if(idx===4)return 'После падения Ассирии Египет восстановил самостоятельность. При XXVI династии важным центром стал Саис.';if(idx===5)return 'В 525 г. до н. э. Египет был завоёван персами и вошёл в державу Ахеменидов.';return 'Древнеегипетское государство возникло в долине Нила. Разливы реки поддерживали земледелие, а власть фараона объединяла страну. В разные эпохи политические центры и границы Египта менялись.';}
  if(/sumer|akkad|ur iii|third dynasty of ur/.test(n))return 'В Южном Междуречье между Тигром и Евфратом возникли первые города-государства. Позднее регион объединяли более крупные державы, в том числе Аккад и III династия Ура.';
- if(/babylon|babylonia|kassite/.test(n)){if(idx===2)return 'Около 1750 г. до н. э. Вавилон был столицей царства Хаммурапи, подчинившего значительную часть Междуречья. Законы царя известны по каменной стеле.';return 'Вавилон был одним из главных центров Междуречья. При царе Хаммурапи в XVIII веке до н. э. Вавилонское царство усилилось; позднее город пережил новые периоды подъёма и завоеваний.';}
- if(/assyria/.test(n)){if(idx===4)return 'В IX–VII веках до н. э. Ассирия подчинила большую часть Передней Азии; при Асархаддоне в 671 г. до н. э. был временно захвачен Мемфис и подчинён Нижний Египет.';return 'Ассирия возникла в Северном Междуречье. В I тысячелетии до н. э. Новоассирийская держава подчинила обширные территории Передней Азии, опираясь на армию и систему управления.';}
+ if(/babylon|babylonia|kassite/.test(n))return 'Вавилон был одним из главных центров Междуречья. При царе Хаммурапи в XVIII веке до н. э. Вавилонское царство усилилось; позднее город пережил новые периоды подъёма и завоеваний.';
+ if(/assyria/.test(n)){if(idx===3)return 'В IX–VII веках до н. э. Ассирия подчинила большую часть Передней Азии; при Асархаддоне в 671 г. до н. э. был временно захвачен Мемфис и подчинён Нижний Египет.';return 'Ассирия возникла в Северном Междуречье. В I тысячелетии до н. э. Новоассирийская держава подчинила обширные территории Передней Азии, опираясь на армию и систему управления.';}
  if(/phoenicia|tyre|sidon/.test(n))return 'Финикийские города Восточного Средиземноморья прославились морской торговлей, ремеслом и основанием поселений за морем. Тир и Сидон были важнейшими центрами финикийского мира.';
  if(/israel|judah/.test(n))return 'Древнееврейские царства Израиль и Иудея возникли в Палестине. Их история связана с развитием древнееврейской религиозной традиции и событиями, отражёнными в библейских текстах.';
  if(/achaemenid|persian|median/.test(n))return 'Персидская держава Ахеменидов объединила огромные территории от Малой Азии до Средней Азии и Египта. Ею управляли цари, а территория делилась на сатрапии.';
- if(/indus|harappan|harappa|mohenjo/.test(n))return 'В III тысячелетии до н. э. в долине Инда развивалась Индская (Хараппская) цивилизация с крупными городами и развитым ремеслом. Это ранняя городская цивилизация Южной Азии, а не единое государство Индия.';
  if(/maurya|nanda|magadha/.test(n))return 'В долине Ганга усилилось царство Магадха. При династии Маурьев в IV–III веках до н. э. возникла одна из крупнейших держав Древней Индии; её правителем был Ашока.';
  if(/shang|zhou/.test(n))return 'В древнем Китае сменяли друг друга династии Шан и Чжоу. В эпоху Чжоу усилились отдельные царства, а позднее борьба между ними завершилась объединением страны.';
  if(/qin/.test(n))return 'Царство Цинь подчинило соперников и в 221 году до н. э. объединило Китай. Правитель Цинь Шихуанди принял титул первого императора и укрепил единую систему управления.';
@@ -901,66 +484,29 @@ function g5HistoricalBrief(raw,translated,year){
 function renderG5Legend(){
  const box=document.getElementById('key'),count=document.getElementById('g5LegendCount'),term=(document.getElementById('g5LegendSearch')?.value||'').trim().toLocaleLowerCase('ru');
  box.innerHTML='';
- const translatedEntries=g5LegendEntries.filter(([raw])=>g5IsInGrade5Course(raw)&&g5Translate(raw)!=='Название не переведено'),rows=translatedEntries.filter(([raw])=>g5Translate(raw).toLocaleLowerCase('ru').includes(term));
+ const translatedEntries=g5LegendEntries.filter(([raw])=>g5IsInGrade5Course(raw)&&g5Translate(raw)!=='Название не установлено'),rows=translatedEntries.filter(([raw])=>g5Translate(raw).toLocaleLowerCase('ru').includes(term));
  rows.forEach(([raw,p])=>{
   const b=document.createElement('span'),sw=document.createElement('i');
   b.tabIndex=0;b.setAttribute('role','button');b.setAttribute('aria-label','Показать на карте: '+g5Translate(raw));
   sw.className='swatch';sw.style.background=g5Color(p.Color);b.append(sw,document.createTextNode(g5Translate(raw)));
-  const activate=()=>{const feature=g5ActiveFeatures.find(f=>f.properties?.Name===raw);if(!feature&&raw==='Egypt'&&idx===0&&window.earlyEgyptStateLayer){const bounds=window.earlyEgyptStateLayer.getBounds();if(bounds.isValid())map.fitBounds(bounds.pad(.2),{maxZoom:6});g5SelectPolity({Name:'Egypt',Year:-3050,AreaSqKM:0});return;}if(!feature)return;const bounds=L.geoJSON(feature).getBounds();if(bounds.isValid())map.fitBounds(bounds.pad(.2),{maxZoom:6});g5SelectPolity(p);};
+  const activate=()=>{const feature=g5ActiveFeatures.find(f=>f.properties?.Name===raw);if(!feature)return;const bounds=L.geoJSON(feature).getBounds();if(bounds.isValid())map.fitBounds(bounds.pad(.2),{maxZoom:6});g5SelectPolity(p);};
   b.addEventListener('click',activate);b.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();activate();}});
   box.appendChild(b);
  });
  count.textContent='Показано '+rows.length+' государств и политических образований из курса 5-го класса';
  if(!rows.length)box.textContent='В этом срезе нет образований с таким названием.';
 }
-function g5ContextLine(raw,periodIndex){
- const n=String(raw||'').toLowerCase();
- if(/egypt|egyptian/.test(n)){
-  if(periodIndex===0)return 'Исторические ориентиры: Нармер связывается с объединением двух земель; отождествление его с Менесом дискуссионно. Важный центр — Мемфис.';
-  if(periodIndex===3)return 'Исторические ориентиры: фараоны Тутмос III и Рамсес II; важнейшие центры — Фивы и Мемфис.';
-  if(periodIndex===5)return 'Исторические ориентиры: XXVI (Саисская) династия; при Псамметихе I Египет восстановил самостоятельность.';
-  if(periodIndex===6)return 'Исторические ориентиры: Египет входил в державу Ахеменидов после завоевания Камбисом II в 525 г. до н. э.';
- }
- if(/old babylon|babylon|babylonia|kassite/.test(n)){
-  if(periodIndex===2)return 'Исторические ориентиры: царь Хаммурапи; Вавилон — столица царства и центр его управления.';
-  if(periodIndex===5)return 'Исторические ориентиры: Набопаласар и Навуходоносор II; столица — Вавилон.';
- }
- if(/assyria/.test(n)&&periodIndex===4)return 'Исторические ориентиры: Тиглатпаласар III, Саргон II, Синаххериб, Асархаддон и Ашшурбанапал; важнейшие центры — Ашшур, Кальху и Ниневия.';
- if(/achaemenid|persian/.test(n)&&periodIndex===6)return 'Исторические ориентиры: Кир II, Камбис II и Дарий I; царские центры — Пасаргады, Сузы, Персеполь и Экбатаны.';
- if(/qin/.test(n)&&periodIndex===9)return 'Исторические ориентиры: Цинь Шихуанди; столица — Сяньян.';
- if(/maurya/.test(n)&&(periodIndex===8||periodIndex===9))return 'Исторические ориентиры: Чандрагупта Маурья и Ашока; столица — Паталипутра.';
- if(/indus|harappan/.test(n))return 'Исторические ориентиры: Хараппа и Мохенджо-Даро. Это городская цивилизация, а не единая империя с известной нам династией правителей.';
- if(/phoenicia|tyre|sidon/.test(n))return 'Исторические ориентиры: города Тир, Сидон и Библ; политическая жизнь была организована вокруг отдельных городов-государств.';
- if(/han/.test(n)&&periodIndex===10)return 'Исторические ориентиры: династия Хань; в эпоху Восточной Хань столицей был Лоян, Чанъань оставался важным бывшим центром.';
- if(/gupta/.test(n)&&periodIndex===11)return 'Исторические ориентиры: Самудрагупта правил в IV в. н. э.; одним из важных центров был Паталипутра.';
- if(/roman empire/.test(n)&&periodIndex===10)return 'Исторические ориентиры: император Траян правил с 98 по 117 г. н. э.; Рим был центром империи.';
- if(/roman empire/.test(n)&&periodIndex===11)return 'Исторические ориентиры: при Констанции II Римская империя оставалась единой; после смерти Феодосия I в 395 г. управление перешло к двум его сыновьям.';
- if(/roman|west_rome|eastern roman/.test(n)&&periodIndex===12)return 'Исторические ориентиры: в 476 г. был смещён Ромул Августул; Восточная Римская империя продолжила существовать.';
- return '';
-}
 function g5SelectPolity(p){
- const translatedName=g5Translate(p.Name),name=translatedName==='Название не переведено'?'Политическое образование (название уточняется)':translatedName,year=Number(p.Year),area=Number(p.AreaSqKM),rawName=String(p.Name||''),isPeriod=/period|civilization|culture|world|region/i.test(rawName);
+ const translatedName=g5Translate(p.Name),name=translatedName==='Название не установлено'?'Политическое образование (название уточняется)':translatedName,year=Number(p.Year),area=Number(p.AreaSqKM),rawName=String(p.Name||''),isPeriod=/period|civilization|culture|world|region/i.test(rawName);
  document.getElementById('stateTitle').textContent=name;
- const parts=[g5HistoricalBrief(rawName,name,year)];const contextLine=g5ContextLine(rawName,idx);if(contextLine)parts.push(contextLine);
+ const parts=[g5HistoricalBrief(rawName,name,year)];
+ 
  if(name==='Название требует проверки')parts.push('Русское название объекта пока не подтверждено. Ошибочная подпись намеренно не показывается.');
  if(Number.isFinite(year))parts.push('Дата среза: '+(year<0?Math.abs(year)+' г. до н. э.':year+' г. н. э.')+'.');
  if(Number.isFinite(area)&&area>0)parts.push('Площадь по базе: '+Math.round(area).toLocaleString('ru-RU')+' км² (приблизительная оценка).');
  parts.push('Контур — научная реконструкция. Он не означает одинаково плотного контроля над всей территорией.');
  document.getElementById('stateInfo').textContent=parts.join(' ');
- const media=document.getElementById('stateMedia');
- if(/egypt|egyptian/i.test(rawName)&&idx===0){
-  media.hidden=false;
-  media.innerHTML=`
-  <h3 style="font-size:.98rem;margin:0 0 6px">Объединение Верхнего и Нижнего Египта</h3>
-  <p class="small">Две земли имели собственные символы власти. Белая корона связана с Верхним Египтом, красная — с Нижним. После объединения фараон носил обе короны.</p>
-  <div class="crowns">
-   <div class="crown-card"><svg viewBox="0 0 100 70" role="img" aria-label="Белая корона Верхнего Египта"><path d="M35 58 L35 31 Q35 10 50 5 Q65 10 65 31 L65 58 Z" fill="#fff" stroke="#7d827f" stroke-width="2"/><path d="M30 58 H70 V64 H30 Z" fill="#e6dfcf" stroke="#7d827f" stroke-width="1.5"/></svg><strong>Белая корона</strong><br>Верхний Египет</div>
-   <div class="crown-card"><svg viewBox="0 0 100 70" role="img" aria-label="Красная корона Нижнего Египта"><path d="M24 58 L24 32 Q24 23 34 23 L34 12 L44 12 L44 23 L58 23 Q70 23 70 36 L70 58 Z" fill="#c94e3e" stroke="#81382d" stroke-width="2"/><path d="M70 36 Q84 32 84 18 Q92 33 78 43 L70 45" fill="none" stroke="#c94e3e" stroke-width="5" stroke-linecap="round"/><path d="M20 58 H74 V64 H20 Z" fill="#c94e3e" stroke="#81382d" stroke-width="1.5"/></svg><strong>Красная корона</strong><br>Нижний Египет</div>
-  </div>
-  <img src="https://commons.wikimedia.org/wiki/Special:FilePath/King_Narmer.jpg?width=600" alt="Палетка Нармера — древнее изображение царя в коронах Верхнего и Нижнего Египта" loading="lazy" style="margin-top:10px;max-width:100%" onerror="this.style.display='none'">
-  <p class="small">На палетке Нармера правитель изображён в обеих коронах. Это древнее изображение, а не достоверный портрет. Нармера часто связывают с объединением Египта около 3100 г. до н. э.; отождествление с Менесом остаётся дискуссионным.</p>
-  <p class="small">Источник изображения: <a href="https://commons.wikimedia.org/wiki/File:King_Narmer.jpg" target="_blank" rel="noopener">Wikimedia Commons — палетка Нармера</a>.</p>`;
- }else{media.hidden=true;media.innerHTML='';}
+ document.getElementById('stateMedia').hidden=true;
 }
 document.getElementById('g5LegendSearch')?.addEventListener('input',renderG5Legend);
 async function g5GetYears(){if(g5AvailableYears)return g5AvailableYears;const p=new URLSearchParams({where:"Type = 'POLITY'",outFields:'Year',returnDistinctValues:'true',returnGeometry:'false',orderByFields:'Year',f:'json'});const r=await fetch(G5_CLI_URL+'?'+p.toString());if(!r.ok)throw new Error('Не удалось получить список исторических дат');const j=await r.json();if(j.error||!Array.isArray(j.features))throw new Error(j.error?.message||'В базе нет списка дат');g5AvailableYears=j.features.map(x=>Number(x.attributes?.Year)).filter(Number.isFinite);if(!g5AvailableYears.length)throw new Error('Не найдены даты исторических срезов');return g5AvailableYears;}
@@ -988,8 +534,7 @@ async function loadGrade5Cliopatria(targetYear){
    data={type:'FeatureCollection',features:all};g5PolityCache.set(snapshot,data);
   }
   if(request!==g5PolityRequest)return;
-  const untranslatedNames=[...new Set(data.features.filter(f=>g5IsInGrade5Course(f.properties?.Name)&&g5Translate(String(f.properties?.Name||''))==='Название не переведено').map(f=>String(f.properties?.Name||'')))];
-  const courseFeatures=data.features.filter(f=>g5IsInGrade5Course(f.properties?.Name)&&!(targetYear===-3050&&/egypt|egyptian/i.test(String(f.properties?.Name||''))));
+  const courseFeatures=data.features.filter(f=>g5IsInGrade5Course(f.properties?.Name));
   const egyptFeatures=courseFeatures.filter(f=>/egypt|egyptian/i.test(String(f.properties?.Name||'')));
   const phoeniciaFeatures=courseFeatures.filter(f=>/phoenicia|phoenician|tyre|sidon|byblos|arwad/i.test(String(f.properties?.Name||'')));
   g5ActiveFeatures=courseFeatures;g5PolityLayer.clearLayers();
@@ -998,12 +543,11 @@ async function loadGrade5Cliopatria(targetYear){
    return{color:periodOrCulture?'#66757b':'#35444d',weight:periodOrCulture?1.15:(boundaryFocus?1.45:.75),opacity:.98,fillColor:g5Color(f.properties?.Color),fillOpacity:periodOrCulture?.055:(uncertain?(boundaryFocus?.2:.12):(boundaryFocus?.34:.25)),lineJoin:'round',dashArray:periodOrCulture?'3 5':(uncertain?'5 4':null)};
   },onEachFeature:(f,l)=>{
    const p=f.properties||{},name=g5Translate(p.Name||'');
-   if(name!=='Название не переведено'&&name!=='Название требует проверки')l.bindTooltip(name,{sticky:true,direction:'center',className:'polity-label',opacity:.97});
+   if(name!=='Название требует проверки'&&name!=='Название не установлено')l.bindTooltip(name,{sticky:true,direction:'center',className:'polity-label',opacity:.97});
    l.on('click',()=>g5SelectPolity(p));
-   const displayName=name==='Название не переведено'?'Политическое образование (название уточняется)':name;l.bindPopup('<strong>'+displayName+'</strong><br><b>Краткая историческая справка</b><br>'+g5HistoricalBrief(p.Name,displayName,Number(p.Year))+'<br><span class=\'small\'>Дата исторического среза: '+(Number(p.Year)<0?Math.abs(Number(p.Year))+' г. до н. э.':Number(p.Year)+' г. н. э.')+'</span>');
+   const displayName=name==='Название не установлено'?'Политическое образование (название уточняется)':name;l.bindPopup('<strong>'+displayName+'</strong><br><b>Краткая историческая справка</b><br>'+g5HistoricalBrief(p.Name,displayName,Number(p.Year))+'<br><span class=\'small\'>Дата исторического среза: '+(Number(p.Year)<0?Math.abs(Number(p.Year))+' г. до н. э.':Number(p.Year)+' г. н. э.')+'</span>');
   }}).addTo(g5PolityLayer);
   const unique=new Map();courseFeatures.forEach(f=>{const p=f.properties||{};if(p.Name&&!unique.has(p.Name))unique.set(p.Name,p);});
-  if(targetYear===-3050&&!unique.has('Egypt'))unique.set('Egypt',{Name:'Egypt',Year:-3050,AreaSqKM:0,Color:'#d9a441'});
   g5LegendEntries=[...unique.entries()].sort((a,b)=>g5Translate(a[0]).localeCompare(g5Translate(b[0]),'ru'));renderG5Legend();
   const bounds=g5PolityLayer.getBounds();
   if(!g5HasInitialFit&&bounds.isValid()){map.fitBounds(bounds,{padding:[18,18],maxZoom:4.5});g5HasInitialFit=true;}
@@ -1119,10 +663,9 @@ function insertEraIndex(rows,at){
  });
 }
 shiftEraIndices(territories);
-insertEraIndex(territories,2);insertEraIndex(territories,9);
 const eraData=[
-{date:'ок. 3100–3000 гг. до н. э.',title:'Объединение Египта и первые города Междуречья',text:'На юге долины Нила находился Верхний Египет, а на севере, в дельте, — Нижний Египет. Около 3100 г. до н. э. правитель Нармер связан с объединением двух земель. Его нередко отождествляют с Менесом, известным по более поздней традиции, однако такое отождествление остаётся предметом научной дискуссии. В Южном Междуречье развивались города-государства, в том числе Ур, Урук и Лагаш. Их не следует изображать как единую империю.',keys:['egypt','sumer']},
-{date:'III тысячелетие до н. э. (срез около 2300 г.)',title:'Аккадская держава и Индская цивилизация',text:'В XXIV–XXIII веках до н. э. Саргон Аккадский объединил под своей властью значительную часть Южного и Центрального Междуречья. В это же время в долине Инда в Южной Азии процветала Индская (Хараппская) цивилизация: её крупные города, в том числе Хараппа и Мохенджо-Даро, ранние этапы относятся к IV тысячелетию до н. э., а зрелая городская цивилизация сложилась примерно в 2600–1900 гг. до н. э. (III тысячелетие до н. э.). Это ещё не Индия как единое государство, а ранняя городская цивилизация долины Инда. Шумерские города продолжали жить, хотя их политическая самостоятельность менялась. Контуры исторических областей условны.',keys:['akkad','sumer','egypt','indus_civilization']},
+{date:'ок. 3100–3000 гг. до н. э.',title:'Ранний Египет и города Междуречья',text:'На юге долины Нила находился Верхний Египет, а на севере, в дельте, — Нижний Египет. Около 3100 г. до н. э. правитель Нармер связан с объединением двух земель. Его нередко отождествляют с Менесом, известным по более поздней традиции, однако такое отождествление остаётся предметом научной дискуссии. В Южном Междуречье развивались города-государства, в том числе Ур, Урук и Лагаш. Их не следует изображать как единую империю.',keys:['egypt','sumer']},
+{date:'III тысячелетие до н. э. (срез около 2300 г.)',title:'Аккадская держава и Индская цивилизация',text:'В XXIV–XXIII веках до н. э. Саргон Аккадский объединил под своей властью значительную часть Южного и Центрального Междуречья. В это же время в долине Инда в Южной Азии процветала Индская (Хараппская) цивилизация: её крупные города, в том числе Хараппа и Мохенджо-Даро, развивались уже в III тысячелетии до н. э. Это ещё не Индия как единое государство, а ранняя городская цивилизация долины Инда. Шумерские города продолжали жить, хотя их политическая самостоятельность менялась. Контуры исторических областей условны.',keys:['akkad','sumer','egypt','indus_civilization']},
 {date:'ок. 1500 г. до н. э.',title:'Египет Нового царства и соседние регионы',text:'Египет Нового царства расширял влияние на Нубию и Левант. В северной Месопотамии находились Ашшур и Ниневия: Ниневия уже была древним городским центром, но ещё не являлась царской столицей Ассирии. Ашшур был главным политическим центром ранней Ассирии; примерно с XIV в. до н. э. регион оказался под сильным влиянием Митанни. Вавилон был столицей касситской Вавилонии. В микенской Греции существовали отдельные дворцовые центры, а не единое государство. На восточном побережье Средиземного моря отмечены Библ, Сидон, Тир, Арвад и Угарит: в это время это города позднего бронзового века, а не единая Финикийская держава. Золотые маркеры со звездой обозначают важнейшие политические центры; обычные точки — другие города.',keys:['egypt','nubia','levant_egypt','babylon_kassite','assyria','hittites','phoenicia','greek']},
 {date:'IX–VII вв. до н. э. (срез около 700 г. до н. э.)',title:'Расширение Ассирийской державы',text:'В IX–VII веках до н. э. Ассирия превратилась из государства Северного Междуречья в крупнейшую державу Передней Азии. Особенно активно расширение шло при Тиглатпаласаре III (745–727 гг. до н. э.): ассирийцы подчинили Вавилонию, Сирию, Финикию и ряд областей Палестины, распространив влияние от Средиземного моря до Персидского залива. Позднее, в 671 г. до н. э., царь Асархаддон захватил Мемфис и временно подчинил Нижний Египет. Это был эпизод общего расширения державы, а не отдельная эпоха: ассирийская власть в Египте оставалась непрочной, и всю долину Нила нельзя изображать как устойчиво включённую в империю. В 612 г. до н. э. пала Ниневия, после чего Ассирийская держава прекратила существование.',keys:['assyria_peak','phoenicia','greek']},
 {date:'ок. 600 г. до н. э.',title:'Вавилон и государства Восточного Средиземноморья',text:'Новоассирийская держава пала в конце VII века до н. э. Около 600 г. до н. э. важнейшей силой в Южном Междуречье было Нововавилонское царство со столицей в Вавилоне; его власть распространялась на значительную часть Месопотамии и Леванта. Египет восстановил самостоятельность при XXVI династии. Финикийские города сохраняли значение, но их самостоятельность ограничивалась давлением Нововавилонского царства. На карте показаны основные регионы, а не точные административные границы.',keys:['egypt','babylon','phoenicia','greek','judah','scythians','north_black_sea_greek']},
@@ -1130,15 +673,15 @@ const eraData=[
 {date:'ок. 330 г. до н. э.',title:'Держава Александра Македонского',text:'После побед над персами Александр Македонский подчинил себе Египет, Месопотамию, Иран и значительную часть бывшей державы Ахеменидов. Тир был взят после осады в 332 г. до н. э.; к выбранному срезу 330 г. до н. э. финикийские города уже находились в составе державы Александра. Походы на восток ещё продолжались: Бактрия, Согдиана и Индия не должны целиком попадать в контур этой даты. После смерти Александра в 323 г. до н. э. началась борьба его преемников, и единая держава распалась.',keys:['alexander_egypt','alexander','phoenicia','greek','scythians','north_black_sea_greek']},
 {date:'ок. 250 г. до н. э.',title:'Маурьи, царства Древнего Китая и Римская республика',text:'Около 250 г. до н. э. держава Маурьев достигла расцвета при Ашоке; на территории Китая ещё существовали соперничающие царства эпохи Сражающихся царств; Римская республика контролировала Италию и боролась за влияние в западном Средиземноморье. Египет был самостоятельным царством Птолемеев. Контуры схематичны и показывают общий масштаб, а не точные границы.',keys:['maurya','china_warring','roman_republic','ptolemaic_egypt','seleucid','greek','scythians','north_black_sea_greek']},
 {date:'ок. 100 г. н. э.',title:'Римская империя, Ханьский Китай и кушаны',text:'В начале II в. н. э. Римская империя охватывала значительную часть Средиземноморья, а Китай находился под властью династии Хань. Кушанское царство связывало Бактрию и северо-запад Индии. Это обзорная карта нескольких регионов Евразии: разные государства показаны отдельными цветами, границы условны.',keys:['roman_empire','han','kushan','greek','sarmatians']},
-{date:'ок. 350 г. н. э.',title:'Держава Гуптов и поздняя Римская империя',text:'В IV в. н. э. в Северной Индии усилилась держава Гуптов. Римская империя оставалась единой, хотя после реформ Диоклетиана и Константина управление стало сложнее; окончательное разделение на Западную и Восточную империи относится к 395 г. н. э. В Китае после падения Хань существовали разные государства; на этом обзорном срезе их политические границы отдельно не детализированы.',keys:['gupta','roman_empire','jin_china','sarmatians']},
-{date:'476 г. н. э.',title:'Падение Западной Римской империи',text:'В 476 г. н. э. был смещён последний западный император Ромул Августул. Эта дата традиционно обозначает конец Западной Римской империи, но не исчезновение римской государственности: Восточная Римская империя продолжила существовать. В Северной Индии ещё существовала держава Гуптов, а Китай был разделён между несколькими государствами; их границы на этой обзорной карте отдельно не детализированы. Границы показанных держав обобщены.',keys:['west_rome','east_rome','gupta']}
+{date:'ок. 350 г. н. э.',title:'Держава Гуптов и поздняя Римская империя',text:'В IV в. н. э. в Северной Индии усилилась держава Гуптов. Римская империя оставалась единой, хотя после реформ Диоклетиана и Константина управление стало сложнее; окончательное разделение на Западную и Восточную империи относится к 395 г. н. э. В Китае после падения Хань давно существовали разные государства; контур показывает регион Северного Китая, а не единую империю.',keys:['gupta','roman_empire','jin_china','sarmatians']},
+{date:'476 г. н. э.',title:'Падение Западной Римской империи',text:'В 476 г. н. э. был смещён последний западный император Ромул Августул. Эта дата традиционно обозначает конец Западной Римской империи, но не исчезновение римской государственности: Восточная Римская империя продолжила существовать. В Северной Индии ещё существовала держава Гуптов, а Китай был разделён между несколькими государствами. Границы на карте обобщены.',keys:['west_rome','east_rome','gupta']}
  ];
-/* Дополнительные срезы для тем школьного курса: Хаммурапи и объединение Китая при Цинь Шихуанди. */
-eraData.splice(2,0,{date:'ок. 1750 г. до н. э.',title:'Вавилон при Хаммурапи и Египет в конце Среднего царства',text:'В XVIII веке до н. э. Вавилонское царство усилилось при Хаммурапи. В традиционной средней хронологии его правление относят примерно к 1792–1750 гг. до н. э. Царь подчинил значительную часть Междуречья; его законы известны по сохранившейся стеле. Это не была единая держава всей Передней Азии. В Египте происходили перемены конца Среднего царства, а политическая власть и контроль над отдельными областями менялись. Города Междуречья продолжали существовать, но многие оказались в сфере власти Вавилона.',keys:['babylon','egypt']});
-eraData.splice(9,0,{date:'221–220 гг. до н. э.',title:'Объединение Китая при Цинь Шихуанди',text:'В 221 г. до н. э. царство Цинь подчинило соперников и объединило Китай. Правитель Ин Чжэн принял титул Цинь Шихуанди — «Первый император Цинь». Около 220 г. до н. э. единая империя уже существовала и укрепляла управление. В Индии продолжала существовать держава Маурьев, а в Италии — Римская республика. В Передней Азии и Египте существовали эллинистические государства Селевкидов и Птолемеев.',keys:['qin','maurya','roman_republic','seleucid','ptolemaic_egypt']});
+function removeEraIndex(rows,at){rows.forEach(row=>{if(Array.isArray(row.eras))row.eras=row.eras.filter(v=>v!==at).map(v=>v>at?v-1:v);if(Array.isArray(row[4]))row[4]=row[4].filter(v=>v!==at).map(v=>v>at?v-1:v);if(row[5]&&typeof row[5]==='object'){const shifted={};Object.entries(row[5]).forEach(([k,v])=>{const n=Number(k);if(!Number.isNaN(n)&&n===at)return;shifted=!Number.isNaN(n)&&n>at?String(n-1):k;shifted[shifted]=v;});row[5]=shifted;}});}
+removeEraIndex(territories,4);
+eraData.splice(4,1);
 let idx=0,layers=[],boundaryFocus=true;
 document.getElementById('boundaryFocus').addEventListener('change',e=>{boundaryFocus=e.target.checked;render();});
-function getDescription(key){const d=descriptions[key];if(key==='egypt'&&idx===0)return {name:'Единое государство Египет',info:'Около 3100 г. до н. э. Верхний и Нижний Египет объединены в одно царство. На карте они показаны одной территорией вдоль долины и в дельте Нила; точная граница раннего государства реконструируется приблизительно.'};if(key==='egypt'&&idx===3)return {name:'Египет Нового царства',info:'Около 1500 г. до н. э. Египет был крупной державой. Основное ядро показано вдоль Нила, а расширение власти на юг и северо-восток отмечено отдельными зонами Нубии и Леванта. Это учебная схема, не точная административная карта.'};if(key==='egypt'&&idx===5)return {name:'Египет около 600 г. до н. э.',info:'После падения Ассирии Египет восстановил самостоятельность при XXVI династии. На карте показано единое ядро государства вдоль Нила; исторические рубежи обозначены схематично.'};if(key==='greek'&&idx===3)return {name:'Микенский мир',info:'Около 1500 г. до н. э. в материковой Греции существовали микенские дворцовые центры. Это обозначение культурного региона, а не единого государства.'};if(key==='greek'&&idx>=5)return {name:'Греческие полисы',info:'В I тысячелетии до н. э. греческий мир состоял из самостоятельных полисов и регионов. Контур обозначает культурно-географическую область, а не единую империю.'};return d;}
+function getDescription(key){const d=descriptions[key];if(key==='egypt'&&idx===0)return {name:'Единое государство Египет',info:'Около 3100 г. до н. э. Верхний и Нижний Египет объединены в одно царство. На карте они показаны одной территорией вдоль долины и в дельте Нила; точная граница раннего государства реконструируется приблизительно.'};if(key==='egypt'&&idx===2)return {name:'Египет Нового царства',info:'Около 1500 г. до н. э. Египет был крупной державой. Основное ядро показано вдоль Нила, а расширение власти на юг и северо-восток отмечено отдельными зонами Нубии и Леванта. Это учебная схема, не точная административная карта.'};if(key==='egypt'&&idx===4)return {name:'Египет около 600 г. до н. э.',info:'После падения Ассирии Египет восстановил самостоятельность при XXVI династии. На карте показано единое ядро государства вдоль Нила; исторические рубежи обозначены схематично.'};if(key==='greek'&&idx===2)return {name:'Микенский мир',info:'Около 1500 г. до н. э. в материковой Греции существовали микенские дворцовые центры. Это обозначение культурного региона, а не единого государства.'};if(key==='greek'&&idx>=5)return {name:'Греческие полисы',info:'В I тысячелетии до н. э. греческий мир состоял из самостоятельных полисов и регионов. Контур обозначает культурно-географическую область, а не единую империю.'};return d;}
 function selectPolity(key){const d=getDescription(key);document.getElementById('stateTitle').textContent=d.name;document.getElementById('stateInfo').textContent=d.info;const media=document.getElementById('stateMedia');if(key==='egypt'){media.hidden=false;media.innerHTML=`
 <h3 style="font-size:.98rem;margin:0 0 6px">Объединение Верхнего и Нижнего Египта</h3>
 <p class="small">Схематично показаны две короны, связанные с двумя землями.</p>
@@ -1150,14 +693,14 @@ function selectPolity(key){const d=getDescription(key);document.getElementById('
 <p class="small">На палетке Нармера царь изображён в обеих коронах. Это древнее художественное изображение, а не портрет, достоверно передающий внешность правителя. Нармера часто отождествляют с Менесом, известным по более поздним источникам, однако учёные не считают это установленным фактом.</p>
 <p class="small">Источник изображения: <a href="https://commons.wikimedia.org/wiki/File:King_Narmer.jpg" target="_blank" rel="noopener">Wikimedia Commons — деталь палетки Нармера</a>.</p>`;}else{media.hidden=true;media.innerHTML='';}}
 const campaigns={
- 1:{eraIndex:3,title:'Походы Тутмоса III',period:'XV век до н. э.',note:'Учебная последовательность показывает основные направления расширения египетского влияния в Сирии и Палестине; это не единый непрерывный маршрут.',segments:[[[25.7,32.65],[31.5,34.47],[32.58,35.18]],[[32.58,35.18],[34.0,36.5],[36.0,38.0]]],stops:[
+ 1:{eraIndex:2,title:'Походы Тутмоса III',period:'XV век до н. э.',note:'Учебная последовательность показывает основные направления расширения египетского влияния в Сирии и Палестине; это не единый непрерывный маршрут.',segments:[[[25.7,32.65],[31.5,34.47],[32.58,35.18]],[[32.58,35.18],[34.0,36.5],[36.0,38.0]]],stops:[
  {name:'Фивы',lat:25.7,lon:32.65,date:'XV в. до н. э.',info:'Главный царский и религиозный центр Египта эпохи Нового царства.'},
  {name:'Газа',lat:31.5,lon:34.47,date:'XV в. до н. э.',info:'Важный город на пути между Египтом и Южной Сирией.'},
  {name:'Мегиддо',lat:32.58,lon:35.18,date:'ок. 1457 г. до н. э.',info:'После победы Тутмоса III над коалицией правителей Ханаана город подчинился Египту.'},
  {name:'Северная Сирия',lat:34.0,lon:36.5,date:'XV в. до н. э.',info:'Египетские походы достигали северных районов Сирии; зависимость местных правителей менялась.'},
  {name:'Район Евфрата',lat:36.0,lon:38.0,date:'XV в. до н. э.',info:'Северный предел отдельных походов Тутмоса III; не постоянная граница египетского государства.'}
  ]},
- 2:{eraIndex:4,title:'Расширение Ассирийской державы',period:'IX–VII века до н. э.',note:'Ассирия выросла из государства Северного Междуречья в крупнейшую державу Передней Азии. Её расширение шло постепенно: ассирийские цари подчинили Месопотамию, Сирию и Финикию, часть Палестины и земли к востоку от Тигра. Вершина могущества пришлась на VIII–VII века до н. э. При разных царях границы менялись, а покорённые области могли восставать. Линии на карте показывают направления и важные районы расширения, а не один поход.',segments:[[[35.46,43.26],[36.5,36.9]],[[35.46,43.26],[33.51,36.29]],[[35.46,43.26],[32.54,44.42]],[[35.46,43.26],[34.5,35.5]],[[35.46,43.26],[29.0,48.5]],[[35.46,43.26],[38.0,36.0]]],stops:[
+ 2:{eraIndex:3,title:'Расширение Ассирийской державы',period:'IX–VII века до н. э.',note:'Ассирия выросла из государства Северного Междуречья в крупнейшую державу Передней Азии. Её расширение шло постепенно: ассирийские цари подчинили Месопотамию, Сирию и Финикию, часть Палестины и земли к востоку от Тигра. Вершина могущества пришлась на VIII–VII века до н. э. При разных царях границы менялись, а покорённые области могли восставать. Линии на карте показывают направления и важные районы расширения, а не один поход.',segments:[[[35.46,43.26],[36.5,36.9]],[[35.46,43.26],[33.51,36.29]],[[35.46,43.26],[32.54,44.42]],[[35.46,43.26],[34.5,35.5]],[[35.46,43.26],[29.0,48.5]],[[35.46,43.26],[38.0,36.0]]],stops:[
  {name:'Ашшур и Ниневия',lat:35.46,lon:43.26,date:'IX–VIII вв. до н. э.',info:'Историческое ядро Ассирии находилось в Северном Междуречье, в среднем течении Тигра. Ниневия позднее стала главной царской столицей.'},
  {name:'Северная Сирия',lat:36.5,lon:36.9,date:'IX–VIII вв. до н. э.',info:'Ассирийские цари подчинили ряд сирийских государств и получили выход к Средиземному морю.'},
  {name:'Финикийские города',lat:34.5,lon:35.5,date:'VIII–VII вв. до н. э.',info:'Тир, Сидон и другие города сохраняли местную жизнь и торговлю, но оказались под сильным давлением и в зависимости от Ассирии.'},
@@ -1243,91 +786,8 @@ document.getElementById('campaignPrev').addEventListener('click',()=>campaignMov
 document.getElementById('campaignNext').addEventListener('click',()=>campaignMove(1));
 document.getElementById('campaignPlay').addEventListener('click',campaignTogglePlay);
 document.getElementById('campaignClose').addEventListener('click',()=>{campaignStopTimer();document.getElementById('campaignPlayer').hidden=true;clearCampaign();});
-const historicalEvents=[
- {era:0,name:'Объединение Верхнего и Нижнего Египта',date:'около 3100 г. до н. э.',lat:29.85,lon:31.25,info:'Традиционно объединение Египта связывают с правителем Нармером. Точная последовательность событий и отождествление Нармера с Менесом остаются предметом дискуссии.'},
- {era:1,name:'Возвышение Аккадской державы',date:'XXIV–XXIII вв. до н. э.',lat:33.1,lon:44.4,info:'При Саргоне Аккадском под одной властью оказалась значительная часть Южного и Центрального Междуречья. Местоположение столицы Аккада точно не установлено; маркер показывает приблизительный район.'},
- {era:2,name:'Правление Хаммурапи',date:'около 1792–1750 гг. до н. э. (средняя хронология)',lat:32.542,lon:44.421,info:'Вавилонское царство подчинило значительную часть Междуречья. С именем Хаммурапи связана известная сборка законов, высеченная на стеле.'},
- {era:3,name:'Битва при Мегиддо',date:'около 1457 г. до н. э.',lat:32.585,lon:35.183,info:'Победа Тутмоса III над коалицией правителей Ханаана укрепила египетское влияние в Южной Сирии и Палестине.'},
- {era:4,name:'Поход Асархаддона в Египет',date:'671 г. до н. э.',lat:29.85,lon:31.25,info:'Ассирийцы захватили Мемфис и подчинили Нижний Египет. Это не означало прочного присоединения всей долины Нила.'},
- {era:5,name:'Падение Ниневии',date:'612 г. до н. э.',lat:36.36,lon:43.15,info:'Ниневия была взята войсками противников Ассирии. Падение столицы стало решающим этапом гибели Новоассирийской державы.'},
- {era:6,name:'Кир II овладел Вавилоном',date:'539 г. до н. э.',lat:32.542,lon:44.421,info:'Вавилон вошёл в состав державы Ахеменидов. Позднее, в 525 г. до н. э., Камбис II завоевал Египет.'},
- {era:7,name:'Завоевания Александра Македонского',date:'332–330 гг. до н. э.',lat:36.36,lon:43.25,info:'После победы при Гавгамелах и взятия ключевых центров Персидская держава Ахеменидов прекратила существование.'},
- {era:8,name:'Правление Ашоки',date:'III в. до н. э.',lat:25.61,lon:85.14,info:'При Ашоке держава Маурьев достигла наибольшего могущества. Царь поддерживал распространение буддизма и оставил надписи на каменных столбах и скалах.'},
- {era:9,name:'Объединение Китая при Цинь',date:'221 г. до н. э.',lat:34.33,lon:108.70,info:'Царство Цинь победило соперников. Ин Чжэн принял титул Цинь Шихуанди — Первого императора Цинь.'},
- {era:10,name:'Торговые связи между Востоком и Западом',date:'I–II вв. н. э.',lat:39.47,lon:75.99,info:'По сухопутным и морским маршрутам перемещались товары, люди и идеи. Позднее эти связи стали известны как Великий шёлковый путь; это была сеть путей, а не одна дорога.'},
- {era:11,name:'Основание Константинополя',date:'330 г. н. э.',lat:41.01,lon:28.97,info:'Император Константин сделал город новой императорской резиденцией. В 350 г. Римская империя ещё оставалась единой.'},
- {era:12,name:'Падение Западной Римской империи',date:'476 г. н. э.',lat:44.418,lon:12.203,info:'В Равенне был смещён последний западный император Ромул Августул. Восточная Римская империя продолжила существовать.'}
-];
-const historicalTradeRoutes=[
- {eras:[1],name:'Торговые связи Индской цивилизации',coords:[[27.32,68.14],[26.4,69.3],[24.8,70.4],[22.52,72.25]],note:'Схема внутренних и прибрежных связей городов долины Инда; точный маршрут не установлен.'},
- {eras:[4,5,6],name:'Финикийские морские связи',coords:[[33.27,35.20],[34.67,33.04],[35.2,24.9],[36.85,10.32]],note:'Условная линия между восточным побережьем Средиземного моря, Кипром, Критом и Карфагеном. Финикийская торговля представляла собой сеть морских маршрутов.'},
- {eras:[6],name:'Царская дорога Ахеменидов',coords:[[38.49,28.04],[38.0,36.0],[36.36,43.15],[32.54,44.42],[32.19,48.25]],note:'Схематическое направление между Сардами и Сузами; реальные дороги имели ответвления и менялись со временем.'},
- {eras:[10],name:'Великий шёлковый путь',coords:[[34.27,108.94],[40.14,94.66],[39.47,75.99],[36.7,67.1],[36.2,36.16]],note:'Один из условных сухопутных коридоров между Китаем, Центральной Азией и Средиземноморьем. Исторически это была разветвлённая сеть путей.'}
-];
-async function g5GetComparisonSnapshot(targetYear){
- const years=await g5GetYears(),snapshot=years.reduce((best,y)=>Math.abs(y-targetYear)<Math.abs(best-targetYear)?y:best,years[0]);
- let data=g5PolityCache.get(snapshot);
- if(!data){
-  const spatial={xmin:-25,ymin:-12,xmax:150,ymax:78,spatialReference:{wkid:4326}};
-  const idParams=new URLSearchParams({where:"Year = "+snapshot+" AND Type = 'POLITY'",returnIdsOnly:'true',returnGeometry:'false',geometry:JSON.stringify(spatial),geometryType:'esriGeometryEnvelope',inSR:'4326',spatialRel:'esriSpatialRelIntersects',f:'json'});
-  const idResponse=await fetch(G5_CLI_URL+'?'+idParams.toString());if(!idResponse.ok)throw new Error('HTTP '+idResponse.status);
-  const idResult=await idResponse.json();if(idResult.error||!Array.isArray(idResult.objectIds))throw new Error(idResult.error?.message||'Не получен список объектов для сравнения');
-  const all=[];
-  for(let start=0;start<idResult.objectIds.length;start+=500){
-   const params=new URLSearchParams({objectIds:idResult.objectIds.slice(start,start+500).join(','),outFields:'OBJECTID,Year,AreaSqKM,Name,Color,Type,Wikipedia',returnGeometry:'true',outSR:'4326',f:'geojson'});
-   const response=await fetch(G5_CLI_URL+'?'+params.toString());if(!response.ok)throw new Error('HTTP '+response.status);
-   const page=await response.json();if(page.error||!Array.isArray(page.features))throw new Error(page.error?.message||'Не получены геометрии для сравнения');
-   all.push(...page.features);
-  }
-  data={type:'FeatureCollection',features:all};g5PolityCache.set(snapshot,data);
- }
- return {snapshot,data};
-}
-async function loadComparisonOverlay(targetIndex){
- const request=++comparisonRequest,status=document.getElementById('compareStatus'),targetYear=g5TargetYears[targetIndex];
- if(status)status.textContent='Загружаем второй исторический срез…';
- try{
-  const {snapshot,data}=await g5GetComparisonSnapshot(targetYear);
-  if(request!==comparisonRequest||comparisonTargetIndex!==targetIndex)return;
-  const features=data.features.filter(f=>g5IsInGrade5Course(f.properties?.Name)&&!(targetYear===-3050&&/egypt|egyptian/i.test(String(f.properties?.Name||''))));
-  const group=L.layerGroup();
-  L.geoJSON({type:'FeatureCollection',features},{style:f=>({color:'#604a91',weight:2.4,opacity:.95,fillColor:'#8b78b4',fillOpacity:.035,dashArray:'6 5',lineJoin:'round',interactive:false})}).addTo(group);
-  if(targetIndex===0){
-   L.polygon([[31.55,29.70],[31.65,31.15],[31.45,32.35],[30.95,32.55],[30.35,32.55],[29.85,32.15],[29.7,31.75],[28.5,32.05],[27.0,32.35],[25.5,32.65],[24.0,32.9],[24.0,32.55],[25.5,32.35],[27.0,32.05],[28.5,31.75],[29.7,31.0],[30.05,30.8],[30.55,30.3],[31.55,29.70]],{color:'#604a91',weight:2.4,opacity:.98,fillColor:'#8b78b4',fillOpacity:.04,dashArray:'6 5',interactive:false}).addTo(group);
-  }
-  group.addTo(map);window.comparisonLayer=group;
-  if(status)status.textContent='Основная эпоха: '+eraData[idx].date+'. Пунктиром показана эпоха сравнения: '+eraData[targetIndex].date+'. Срез базы: '+(snapshot<0?Math.abs(snapshot)+' г. до н. э.':snapshot+' г. н. э.')+'.';
- }catch(e){
-  if(request!==comparisonRequest)return;
-  if(status)status.textContent='Не удалось загрузить эпоху для сравнения: '+e.message;
- }
-}
-function drawHistoricalEvents(){
- const button=document.getElementById('eventsToggle');
- if(button){button.setAttribute('aria-pressed',String(eventsVisible));button.textContent=eventsVisible?'Скрыть события':'Показать события';}
- if(!eventsVisible)return;
- const rows=historicalEvents.filter(e=>e.era===idx);
- window.historicalEventLayer=L.layerGroup(rows.map(e=>{
-  const marker=L.circleMarker([e.lat,e.lon],{radius:8,color:'#fff',weight:2,fillColor:'#b34d35',fillOpacity:.98});
-  marker.bindTooltip(e.name,{direction:'top',offset:[0,-7],className:'city-tooltip'});
-  marker.bindPopup('<strong>'+e.name+'</strong><br><b>'+e.date+'</b><br>'+e.info);
-  return marker;
- })).addTo(map);
-}
-function drawTradeRoutes(){
- const button=document.getElementById('tradeRoutesToggle');
- if(button){button.setAttribute('aria-pressed',String(tradeRoutesVisible));button.textContent=tradeRoutesVisible?'Скрыть торговые пути':'Показать торговые пути';}
- if(!tradeRoutesVisible)return;
- const rows=historicalTradeRoutes.filter(r=>r.eras.includes(idx));
- window.tradeRouteLayer=L.layerGroup(rows.map(r=>{
-  const line=L.polyline(r.coords,{color:'#247d91',weight:3.5,opacity:.92,dashArray:'7 7',lineCap:'round'});
-  line.bindTooltip(r.name,{sticky:true,className:'polity-label'});
-  line.bindPopup('<strong>'+r.name+'</strong><br>'+r.note);
-  return line;
- })).addTo(map);
-}
-function render(){clearCampaign();if(window.historicalEventLayer){map.removeLayer(window.historicalEventLayer);window.historicalEventLayer=null;}if(window.tradeRouteLayer){map.removeLayer(window.tradeRouteLayer);window.tradeRouteLayer=null;}if(window.comparisonLayer){map.removeLayer(window.comparisonLayer);window.comparisonLayer=null;}comparisonRequest++;idx=Math.max(0,Math.min(eraData.length-1,idx));const e=eraData[idx];loadGrade5Cliopatria(g5TargetYears[idx]);document.getElementById('era').value=idx;document.getElementById('period').textContent='Период '+(idx+1)+' из '+eraData.length;document.getElementById('eraTitle').textContent=e.title;document.getElementById('eraText').textContent=e.text;document.getElementById('eraDate').textContent='Ориентировочная дата: '+e.date;document.getElementById('prev').disabled=idx===0;document.getElementById('next').disabled=idx===eraData.length-1;
-layers.forEach(l=>map.removeLayer(l));layers=[];if(window.nileLayer)map.removeLayer(window.nileLayer);if(window.egyptGeographyLayer)map.removeLayer(window.egyptGeographyLayer);if(window.earlyEgyptStateLayer)map.removeLayer(window.earlyEgyptStateLayer);if(window.assyriaEgyptLayer)map.removeLayer(window.assyriaEgyptLayer);if(window.mesopotamiaRiverLayer)map.removeLayer(window.mesopotamiaRiverLayer);if(window.cityLayer)map.removeLayer(window.cityLayer);if(window.mesoCityLayer)map.removeLayer(window.mesoCityLayer);if(window.worldCityLayer)map.removeLayer(window.worldCityLayer);if(window.practiceMarker){map.removeLayer(window.practiceMarker);window.practiceMarker=null;}if(window.geographyLabelLayer)map.removeLayer(window.geographyLabelLayer);if(window.geoLabelLayer)map.removeLayer(window.geoLabelLayer);if(window.egyptLabels)map.removeLayer(window.egyptLabels);if(window.historyLabelLayer)map.removeLayer(window.historyLabelLayer);const keyEl=document.getElementById('key');keyEl.innerHTML='';
+function render(){clearCampaign();idx=Math.max(0,Math.min(eraData.length-1,idx));const e=eraData[idx];loadGrade5Cliopatria(g5TargetYears[idx]);document.getElementById('era').value=idx;document.getElementById('period').textContent='Период '+(idx+1)+' из '+eraData.length;document.getElementById('eraTitle').textContent=e.title;document.getElementById('eraText').textContent=e.text;document.getElementById('eraDate').textContent='Ориентировочная дата: '+e.date;document.getElementById('prev').disabled=idx===0;document.getElementById('next').disabled=idx===eraData.length-1;
+layers.forEach(l=>map.removeLayer(l));layers=[];if(window.nileLayer)map.removeLayer(window.nileLayer);if(window.egyptGeographyLayer)map.removeLayer(window.egyptGeographyLayer);if(window.assyriaEgyptLayer)map.removeLayer(window.assyriaEgyptLayer);if(window.mesopotamiaRiverLayer)map.removeLayer(window.mesopotamiaRiverLayer);if(window.cityLayer)map.removeLayer(window.cityLayer);if(window.mesoCityLayer)map.removeLayer(window.mesoCityLayer);if(window.worldCityLayer)map.removeLayer(window.worldCityLayer);if(window.practiceMarker){map.removeLayer(window.practiceMarker);window.practiceMarker=null;}if(window.geographyLabelLayer)map.removeLayer(window.geographyLabelLayer);if(window.geoLabelLayer)map.removeLayer(window.geoLabelLayer);if(window.egyptLabels)map.removeLayer(window.egyptLabels);if(window.historyLabelLayer)map.removeLayer(window.historyLabelLayer);const keyEl=document.getElementById('key');keyEl.innerHTML='';
 window.setTimeout(()=>map.invalidateSize({pan:false}),140);
 
 // Русские названия исторических областей; современных названий стран на подложке нет.
@@ -1343,9 +803,12 @@ window.geographyLabelLayer=L.layerGroup(geographyLabels.map(([name,lat,lon,width
 const nileCoords=[[4.0,32.5],[9.0,32.5],[15.0,32.5],[18.0,32.6],[20.5,32.8],[22.0,31.7],[23.0,32.7],[24.1,32.9],[25.7,32.65],[27.0,32.5],[28.5,32.4],[29.8,31.2],[30.2,31.0],[30.7,30.8],[31.2,30.5]];
 window.nileLayer=L.polyline(nileCoords,{color:'#1688b5',weight:3,opacity:.9,dashArray:'7 4'}).addTo(map);
 window.nileLayer.bindPopup('<strong>Нил</strong><br>Река течёт с юга на север и образует дельту у Средиземного моря. Поселения Древнего Египта тянулись вдоль её долины.');
-if(idx!==0){window.egyptGeographyLayer=L.polygon([[31.55,29.70],[31.65,31.15],[31.45,32.35],[30.95,32.55],[30.35,32.55],[29.85,32.15],[29.7,31.75],[28.5,32.05],[27.0,32.35],[25.5,32.65],[24.0,32.9],[24.0,32.55],[25.5,32.35],[27.0,32.05],[28.5,31.75],[29.7,31.0],[30.05,30.8],[30.55,30.3],[31.55,29.70]],{color:'#a67c35',weight:1.8,opacity:.95,fillColor:'#d9a441',fillOpacity:.12,dashArray:'4 4'}).addTo(map);window.egyptGeographyLayer.bindTooltip('Долина и дельта Нила — географическое ядро Египта; контур не обозначает границу государства.',{sticky:true});}
-if(idx===0){window.earlyEgyptStateLayer=L.polygon([[31.55,29.70],[31.65,31.15],[31.45,32.35],[30.95,32.55],[30.35,32.55],[29.85,32.15],[29.7,31.75],[28.5,32.05],[27.0,32.35],[25.5,32.65],[24.0,32.9],[24.0,32.55],[25.5,32.35],[27.0,32.05],[28.5,31.75],[29.7,31.0],[30.05,30.8],[30.55,30.3],[31.55,29.70]],{color:'#8d6526',weight:2.4,opacity:1,fillColor:'#d9a441',fillOpacity:.30}).addTo(map);window.earlyEgyptStateLayer.bindTooltip('Объединённое государство Египет около 3100 г. до н. э.',{sticky:true});window.earlyEgyptStateLayer.on('click',()=>g5SelectPolity({Name:'Egypt',Year:-3050,AreaSqKM:0}));}
-if(idx===4){window.assyriaEgyptLayer=L.polygon([[31.55,29.65],[31.68,30.45],[31.62,31.25],[31.35,32.35],[30.75,32.55],[30.15,32.2],[29.85,31.35],[30.25,30.65],[30.85,30.05],[31.55,29.65]],{color:'#8f4a35',weight:2,opacity:1,fillColor:'#a85b3d',fillOpacity:.10,dashArray:'5 5'}).addTo(map);window.assyriaEgyptLayer.bindTooltip('Поход Асархаддона в 671 г. до н. э.: временное подчинение Нижнего Египта, а не постоянная граница державы.',{sticky:true});window.assyriaEgyptLayer.bindPopup('<strong>Поход Асархаддона — часть расширения Ассирийской державы</strong><br>В 671 г. до н. э. Асархаддон захватил Мемфис и подчинил Нижний Египет. Вся долина Нила не стала устойчивой ассирийской провинцией.');}
+window.egyptGeographyLayer=L.layerGroup([
+ L.polygon([[31.55,29.70],[31.65,31.15],[31.45,32.35],[30.95,32.55],[30.35,32.55],[29.85,32.15],[30.05,31.4],[30.55,30.8],[31.0,30.0],[31.55,29.70]],{color:'#a67c35',weight:1.6,opacity:.9,fillColor:'#d9a441',fillOpacity:.10,dashArray:'4 4'}),
+ L.polygon([[24.0,32.55],[25.0,32.35],[27.0,32.15],[29.0,30.9],[30.0,30.75],[30.0,31.45],[29.0,31.9],[27.0,32.8],[25.0,33.15],[24.0,33.05]],{color:'#a67c35',weight:1.6,opacity:.9,fillColor:'#d9a441',fillOpacity:.10,dashArray:'4 4'})
+]).addTo(map);
+window.egyptGeographyLayer.eachLayer(layer=>layer.bindTooltip('Долина и дельта Нила — географическое ядро Египта; контур не обозначает границу государства.',{sticky:true}));
+if(idx===3){window.assyriaEgyptLayer=L.polygon([[31.55,29.65],[31.68,30.45],[31.62,31.25],[31.35,32.35],[30.75,32.55],[30.15,32.2],[29.85,31.35],[30.25,30.65],[30.85,30.05],[31.55,29.65]],{color:'#8f4a35',weight:2,opacity:1,fillColor:'#a85b3d',fillOpacity:.10,dashArray:'5 5'}).addTo(map);window.assyriaEgyptLayer.bindTooltip('Поход Асархаддона в 671 г. до н. э.: временное подчинение Нижнего Египта, а не постоянная граница державы.',{sticky:true});window.assyriaEgyptLayer.bindPopup('<strong>Поход Асархаддона — часть расширения Ассирийской державы</strong><br>В 671 г. до н. э. Асархаддон захватил Мемфис и подчинил Нижний Египет. Вся долина Нила не стала устойчивой ассирийской провинцией.');}
 
 // Тигр и Евфрат — ориентировочные линии русел для учебной географической ориентации.
 window.mesopotamiaRiverLayer=L.layerGroup([
@@ -1358,6 +821,7 @@ shiftEraIndices(cities);
 ['Мемфис','Фивы','Асуан'].forEach(name=>{const city=cities.find(row=>row[0]===name);if(city){[1,3,4,5].forEach(period=>{if(!city[4].includes(period))city[4].push(period);});}});
 const memphisCity=cities.find(row=>row[0]==='Мемфис');if(memphisCity)memphisCity[3]='Один из важнейших политических центров Египта у начала дельты Нила. В 671 г. до н. э. город был захвачен ассирийским царём Асархаддоном; этот эпизод был частью расширения Ассирийской державы и не означал прочного подчинения всей долины Нила.';
 const saisCity=cities.find(row=>row[0]==='Саис');if(saisCity&&saisCity[5]){delete saisCity[5][3];saisCity[5][4]='столица Египта при XXVI династии';}
+removeEraIndex(cities,4);
 // Срез ок. 2300 г. до н. э.: Мемфис — главный политический центр Египта эпохи Древнего царства.
 ['Мемфис','Гиза','Фивы','Асуан'].forEach(name=>{
  const city=cities.find(row=>row[0]===name);
@@ -1365,8 +829,6 @@ const saisCity=cities.find(row=>row[0]==='Саис');if(saisCity&&saisCity[5]){d
 });
 const memphis=cities.find(row=>row[0]==='Мемфис');
 if(memphis){memphis[5]=memphis[5]||{};memphis[5][1]='главный политический центр Египта эпохи Древнего царства';}
-insertEraIndex(cities,2);insertEraIndex(cities,9);
-['Мемфис','Гиза','Фивы','Асуан'].forEach(name=>{const city=cities.find(row=>row[0]===name);if(city&&!city[4].includes(2))city[4].push(2);});
 window.cityLayer=L.layerGroup(cities.filter(c=>c[4].includes(idx)).map(([name,lat,lon,info,eras,roles])=>{const role=roles?.[idx],capital=!!role,marker=L.circleMarker([lat,lon],{radius:capital?7:4,color:'#fff',weight:capital?2.2:1,fillColor:capital?'#d39a27':'#273746',fillOpacity:1});marker.bindPopup('<strong>'+name+'</strong><br><b>'+(role?role[0].toUpperCase()+role.slice(1):'Город / исторический центр; не столица в данном срезе')+'</b><br>'+info);marker.bindTooltip((capital?'★ ':'')+name,{permanent:false,direction:'top',offset:[0,-5],className:'city-tooltip'});return marker;})).addTo(map);
 const mesopotamiaCities=[
  ['Ур',30.962,46.103,'Важный город Южного Междуречья. В ранний период был центром самостоятельного шумерского города-государства; в эпоху Аккада продолжал существовать в составе более крупной державы.',[0,1],{0:'центр города-государства'}],
@@ -1377,16 +839,14 @@ const mesopotamiaCities=[
  ['Ниневия',36.359,43.152,'Древний город северной Месопотамии. Столицей царской державы стал при Синаххерибе в конце VIII — начале VII в. до н. э.; разрушен в 612 г. до н. э.',[1,2],{2:'царская столица Новоассирийской державы'}],
  ['Кальху (Нимруд)',36.10,43.33,'Ашшурнасирпал II сделал город царской столицей в IX в. до н. э. После переноса двора в Дур-Шаррукин, а затем в Ниневию он сохранял значение крупного ассирийского центра.',[2],{2:'прежняя царская столица Ассирии'}]
 ];
-shiftEraIndices(mesopotamiaCities);
-// Ниневия, Кальху и Ашшур отмечаются на срезе около 700 г. до н. э.; отдельный срез 671 г. удалён.
+shiftEraIndices(mesopotamiaCities);insertEraIndex(mesopotamiaCities,4);
+['Ниневия','Кальху (Нимруд)','Ашшур'].forEach(name=>{const city=mesopotamiaCities.find(row=>row[0]===name);if(city&&!city[4].includes(4))city[4].push(4);});
+const ninevehCity=mesopotamiaCities.find(row=>row[0]==='Ниневия');if(ninevehCity){ninevehCity[5]=ninevehCity[5]||{};ninevehCity[5][4]='царская столица Новоассирийской державы при Асархаддоне';}
 // Города Шумера сохраняются на срезе Аккадской державы, но уже без статуса самостоятельных городов-государств.
 ['Ур','Урук','Лагаш','Вавилон'].forEach(name=>{
  const city=mesopotamiaCities.find(row=>row[0]===name);
  if(city&&!city[4].includes(1))city[4].push(1);
 });
-insertEraIndex(mesopotamiaCities,2);insertEraIndex(mesopotamiaCities,9);
-['Ур','Урук','Лагаш','Вавилон'].forEach(name=>{const city=mesopotamiaCities.find(row=>row[0]===name);if(city&&!city[4].includes(2))city[4].push(2);});
-const babylonCity=mesopotamiaCities.find(row=>row[0]==='Вавилон');if(babylonCity){babylonCity[3]='Город на Евфрате. Около 1750 г. до н. э. — столица царства Хаммурапи; около 1500 г. до н. э. — столица касситской Вавилонии; около 600 г. до н. э. — столица Нововавилонского царства; при Ахеменидах сохранял значение важного административного центра.';babylonCity[5]=babylonCity[5]||{};babylonCity[5][2]='столица Вавилонского царства при Хаммурапи';}
 window.mesoCityLayer=L.layerGroup(mesopotamiaCities.filter(c=>c[4].includes(idx)).map(([name,lat,lon,info,eras,roles])=>{const role=roles?.[idx],capital=!!role,marker=L.circleMarker([lat,lon],{radius:capital?7:4.5,color:'#fff',weight:capital?2.2:1.5,fillColor:capital?'#d39a27':'#7b382b',fillOpacity:1});marker.bindPopup('<strong>'+name+'</strong><br><b>'+(role?role[0].toUpperCase()+role.slice(1):'Город / исторический центр; не столица в данном срезе')+'</b><br>'+info);marker.bindTooltip((capital?'★ ':'')+name,{permanent:false,direction:'top',offset:[0,-5],className:'city-tooltip'});return marker;})).addTo(map);
 const worldCities=[
  ['Рим',41.89,12.49,'Политический центр Рима; в 250 г. до н. э. — столица республики, позднее — важнейший город империи. В 476 г. последний западный император был смещён в Равенне, а не в Риме.',[6,7,8,9],{6:'столица Римской республики',7:'столица Римской империи'}],
@@ -1412,7 +872,7 @@ const worldCities=[
  ['Сузы',32.19,48.25,'Древний город Элама, при Ахеменидах — важный административный и царский центр; двор перемещался между несколькими резиденциями.',[4,5],{4:'один из главных административных и царских центров Ахеменидов'}],
  ['Экбатаны',34.80,48.52,'Древний город Мидии, использовавшийся Ахеменидами как сезонная летняя царская резиденция.',[4,5],{4:'сезонная летняя царская резиденция Ахеменидов'}]
 ];
-shiftEraIndices(worldCities);
+shiftEraIndices(worldCities);insertEraIndex(worldCities,4);
 // Финикийские города: точки показывают реальные городские центры, а не условные границы всей Финикии.
 worldCities.push(
  ['Арвад',34.856,35.858,'Островной порт и финикийский город на северном побережье Леванта. Его политическая самостоятельность зависела от соотношения сил крупных держав.',[2,3,4,5,6,7]],
@@ -1423,29 +883,11 @@ worldCities.push(
  ['Сарепта',33.463,35.287,'Финикийское поселение между Сидоном и Тиром, известное по археологическим находкам и ремесленному производству.',[2,3,4,5,6]],
  ['Угарит',35.602,35.782,'Крупный портовый центр позднего бронзового века. Угарит был разрушен около 1200 г. до н. э.; это предшественник финикийской городской сети, а не город классической Финикии.',[2]]
 );
-// Города Индской (Хараппской) цивилизации: отмечены на срезе около 2300 г. до н. э.
-worldCities.push(
- ['Хараппа',30.63,72.86,'Один из крупнейших городов Индской (Хараппской) цивилизации. Городская культура долины Инда расцвела в III тысячелетии до н. э.; это не территория единого государства Индия в позднейшем смысле.',[1]],
- ['Мохенджо-Даро',27.32,68.14,'Крупный город Индской (Хараппской) цивилизации, развивавшийся в III тысячелетии до н. э.; зрелый Хараппский период обычно датируют примерно 2600–1900 гг. до н. э.',[1]]
-);
-insertEraIndex(worldCities,2);insertEraIndex(worldCities,9);
-const worldCityByName=name=>worldCities.find(row=>row[0]===name);
-[['Рим',9],['Карфаген',9],['Афины',9],['Спарта',9],['Александрия',9],['Паталипутра',9],['Антиохия',9]].forEach(([name,era])=>{const city=worldCityByName(name);if(city&&!city[4].includes(era))city[4].push(era);});
-const romeCity=worldCityByName('Рим');if(romeCity){romeCity[5]=romeCity[5]||{};romeCity[5][9]='столица Римской республики';}
-const pPataliputra=worldCityByName('Паталипутра');if(pPataliputra){pPataliputra[5]=pPataliputra[5]||{};pPataliputra[5][9]='столица державы Маурьев';}
-const alexandriaCity=worldCityByName('Александрия');if(alexandriaCity){alexandriaCity[5]=alexandriaCity[5]||{};alexandriaCity[5][9]='столица Египта Птолемеев';}
-const antiochCity=worldCityByName('Антиохия');if(antiochCity){antiochCity[5]=antiochCity[5]||{};antiochCity[5][9]='столица державы Селевкидов';}
-const constantinopleCity=worldCityByName('Константинополь');if(constantinopleCity){constantinopleCity[3]='Основан как Константинополь в 330 г. н. э. и стал одной из важнейших императорских резиденций. После разделения управления в 395 г. был столицей восточной части Римской империи, продолжившей существовать после 476 г.';constantinopleCity[5]={11:'императорская столица единой Римской империи',12:'столица Восточной Римской империи'};}
-const olbiaCity=worldCityByName('Ольвия');if(olbiaCity)olbiaCity[4]=[5,6,7,8,9,10,11,12];
-const pantikapaionCity=worldCityByName('Пантикапей');if(pantikapaionCity)pantikapaionCity[4]=[5,6,7,8,9,10,11,12];
-const phanagoriaCity=worldCityByName('Фанагория');if(phanagoriaCity)phanagoriaCity[4]=[6,7,8,9,10,11,12];
-const chersonesusCity=worldCityByName('Херсонес');if(chersonesusCity)chersonesusCity[4]=[7,8,9,10,11,12];
-worldCities.push(['Сяньян',34.33,108.70,'Столица царства Цинь и затем первой объединённой империи Цинь. В 221 г. до н. э. Ин Чжэн объединил Китай и принял титул Цинь Шихуанди.',[9],{9:'столица империи Цинь'}]);
-window.worldCityLayer=L.layerGroup(worldCities.filter(c=>c[4].includes(idx)).map(([name,lat,lon,info,eras,roles])=>{const role=roles?.[idx],capital=!!role,marker=L.circleMarker([lat,lon],{radius:capital?7:4.5,color:'#fff',weight:capital?2.2:1.5,fillColor:capital?'#d39a27':'#4a5d8a',fillOpacity:1});marker.bindPopup('<strong>'+name+'</strong><br><b>'+(role?role[0].toUpperCase()+role.slice(1):'Город / исторический центр; не столица в данном срезе')+'</b><br>'+info);marker.bindTooltip((capital?'★ ':'')+name,{permanent:false,direction:'top',offset:[0,-5],className:'city-tooltip'});return marker;})).addTo(map);document.getElementById('cityLegendNote')?.remove();const cityNote=document.createElement('p');cityNote.id='cityLegendNote';cityNote.className='city-legend-note';cityNote.textContent='Золотая точка со звездой — столица, царская резиденция или главный политический центр именно выбранной эпохи; синие и тёмно-красные точки — другие города. Статус города менялся со временем.';document.getElementById('eraText').after(cityNote);setCityLabelsVisible(cityLabelsVisible);drawHistoricalEvents();drawTradeRoutes();if(comparisonTargetIndex!==null){const from=document.getElementById('compareFrom');if(from)from.value=String(idx);loadComparisonOverlay(comparisonTargetIndex);}
+window.worldCityLayer=L.layerGroup(worldCities.filter(c=>c[4].includes(idx)).map(([name,lat,lon,info,eras,roles])=>{const role=roles?.[idx],capital=!!role,marker=L.circleMarker([lat,lon],{radius:capital?7:4.5,color:'#fff',weight:capital?2.2:1.5,fillColor:capital?'#d39a27':'#4a5d8a',fillOpacity:1});marker.bindPopup('<strong>'+name+'</strong><br><b>'+(role?role[0].toUpperCase()+role.slice(1):'Город / исторический центр; не столица в данном срезе')+'</b><br>'+info);marker.bindTooltip((capital?'★ ':'')+name,{permanent:false,direction:'top',offset:[0,-5],className:'city-tooltip'});return marker;})).addTo(map);document.getElementById('cityLegendNote')?.remove();const cityNote=document.createElement('p');cityNote.id='cityLegendNote';cityNote.className='city-legend-note';cityNote.textContent='Золотая точка со звездой — столица, царская резиденция или главный политический центр именно выбранной эпохи; синие и тёмно-красные точки — другие города. Статус города менялся со временем.';document.getElementById('eraText').after(cityNote);setCityLabelsVisible(cityLabelsVisible);
 const geoLabels=[['Синай',29.8,34.1],['Ливийская пустыня',26.8,27.8]];
 window.geoLabelLayer=L.layerGroup(geoLabels.map(([name,lat,lon])=>L.marker([lat,lon],{interactive:false,icon:L.divIcon({className:'geo-label',html:'<span style="color:#426c7b;font-style:italic;font-size:12px;white-space:nowrap;text-shadow:0 1px #fff">'+name+'</span>',iconSize:[130,18],iconAnchor:[65,9]})}))).addTo(map);
 document.getElementById('stateTitle').textContent='Выбери государство';document.getElementById('stateInfo').textContent='Нажми на цветную территорию или название в легенде.';document.getElementById('stateMedia').hidden=true;document.getElementById('stateMedia').innerHTML='';
-if(idx===0){const label=(text,lat,lon)=>L.marker([lat,lon],{interactive:false,icon:L.divIcon({className:'',html:'<span class="map-history-label">'+text+'</span>',iconSize:[150,26],iconAnchor:[75,13]})});window.egyptLabels=L.layerGroup([label('Верхний Египет',26.5,32.4),label('Нижний Египет',30.8,31.1)]).addTo(map);}
+if(idx===0){const label=(text,lat,lon)=>L.marker([lat,lon],{interactive:false,icon:L.divIcon({className:'',html:'<span class="map-history-label">'+text+'</span>',iconSize:[140,28],iconAnchor:[70,14]})});window.egyptLabels=L.layerGroup([label('Верхний Египет',26.5,32.4),label('Нижний Египет',30.8,31.1),label('Нармер и объединение Египта',25.1,32.8)]).addTo(map);}
 }
 
 const practiceTasks={
@@ -1503,10 +945,8 @@ sources:[
 {q:'Почему историки сопоставляют миф о Гильгамеше с археологией и другими табличками?',a:'Потому что миф передаёт представления и литературную традицию, но не является прямым протоколом всех событий. Разные копии и фрагменты помогают восстановить текст и историю его передачи.',lat:31.3,lon:45.6,zoom:5,era:0}
 ]
 };
-// Переносим задания с исходной шкалы на шкалу с отдельным срезом Аккадской державы (2300 г. до н. э.).
-Object.values(practiceTasks).forEach(group=>group.forEach(task=>{if(task.era>=1)task.era+=1;if(task.era>=2)task.era+=1;if(task.era>=9)task.era+=1;}));
-practiceTasks.atlas.push({q:'Найди Вавилон и объясни, с каким царём связаны знаменитые законы XVIII века до н. э.',a:'Вавилон на Евфрате; законы связаны с царём Хаммурапи.',lat:32.542,lon:44.421,zoom:6,era:2});
-practiceTasks.atlas.push({q:'Найди столицу империи Цинь, объединившей Китай в 221 г. до н. э.',a:'Сяньян — столица царства Цинь и первой объединённой империи Цинь.',lat:34.33,lon:108.70,zoom:5,era:9});
+// После добавления отдельного среза 671 г. до н. э. переносим задания поздних эпох на новые индексы.
+Object.values(practiceTasks).forEach(group=>group.forEach(task=>{if(task.era>=4)task.era+=1;}));
 let currentPracticeTask=null,practiceMarker=null;
 function choosePracticeTask(){
  const mode=document.getElementById('practiceMode').value;
@@ -1540,12 +980,6 @@ document.getElementById('practiceMode').addEventListener('change',()=>{currentPr
 
 document.querySelectorAll('.term-item').forEach(item=>{const dt=item.querySelector('dt'),dd=item.querySelector('dd');if(!dt||!dd)return;const details=document.createElement('details');details.className='term-item';const summary=document.createElement('summary');summary.textContent=dt.textContent;const body=document.createElement('p');body.textContent=dd.textContent;body.style.margin='7px 0 0';details.append(summary,body);item.replaceWith(details);});
 document.getElementById('cityLabelsToggle').addEventListener('click',()=>setCityLabelsVisible(!cityLabelsVisible));
-const compareOptions=eraData.map((e,i)=>'<option value="'+i+'">'+e.date+' — '+e.title+'</option>').join('');document.getElementById('compareFrom').innerHTML=compareOptions;document.getElementById('compareTo').innerHTML=compareOptions;document.getElementById('compareFrom').value='4';document.getElementById('compareTo').value='5';
-document.getElementById('eventsToggle').addEventListener('click',()=>{eventsVisible=!eventsVisible;render();});
-document.getElementById('tradeRoutesToggle').addEventListener('click',()=>{tradeRoutesVisible=!tradeRoutesVisible;render();});
-document.getElementById('compareToggle').addEventListener('click',()=>{const panel=document.getElementById('comparePanel'),button=document.getElementById('compareToggle');panel.hidden=!panel.hidden;button.setAttribute('aria-expanded',String(!panel.hidden));if(!panel.hidden)panel.scrollIntoView({behavior:'smooth',block:'nearest'});});
-document.getElementById('compareApply').addEventListener('click',()=>{const from=Number(document.getElementById('compareFrom').value),to=Number(document.getElementById('compareTo').value);if(from===to){document.getElementById('compareStatus').textContent='Выбери разные эпохи для сравнения.';return;}idx=from;comparisonTargetIndex=to;render();});
-document.getElementById('compareClear').addEventListener('click',()=>{comparisonTargetIndex=null;comparisonRequest++;if(window.comparisonLayer){map.removeLayer(window.comparisonLayer);window.comparisonLayer=null;}document.getElementById('compareStatus').textContent='Сравнение скрыто.';});
 document.getElementById('era').addEventListener('change',e=>{idx=Number(e.target.value);render()});document.getElementById('prev').onclick=()=>{idx--;render()};document.getElementById('next').onclick=()=>{idx++;render()};render();
 
 const quizBank=[
@@ -1553,7 +987,6 @@ const quizBank=[
 {q:'Между какими реками располагалось Междуречье?',a:['Нилом и Иорданом','Индом и Гангом','Тигром и Евфратом','Хуанхэ и Янцзы'],correct:2,why:'Междуречье — область между Тигром и Евфратом.'},
 {q:'Как назывались города раннего Шумера?',a:['Ур и Урук','Афины и Спарта','Рим и Карфаген','Мемфис и Фивы'],correct:0,why:'Ур и Урук были важными городами Южного Междуречья.'},
 {q:'С каким государством связаны законы Хаммурапи?',a:['Ассирия','Вавилон','Персия','Древний Рим'],correct:1,why:'Хаммурапи был царём Вавилона в XVIII веке до н. э.'},
-{q:'В каком году царство Цинь объединило Китай?',a:['221 г. до н. э.','612 г. до н. э.','539 г. до н. э.','476 г. н. э.'],correct:0,why:'В 221 г. до н. э. Ин Чжэн объединил Китай и принял титул Цинь Шихуанди.'},
 {q:'Какой город был столицей Новоассирийской державы в период её расцвета?',a:['Ниневия','Афины','Паталипутра','Карфаген'],correct:0,why:'Ниневия была столицей Ассирии; город пал в 612 г. до н. э.'},
 {q:'Как назывались области Персидской державы, управляемые назначенными правителями?',a:['Полисы','Сатрапии','Провинции сената','Номы Греции'],correct:1,why:'Персидская держава делилась на сатрапии.'},
 {q:'Что такое полис в Древней Греции?',a:['Храмовая пирамида','Город-государство','Китайская династия','Римский легион'],correct:1,why:'Полис — самостоятельная гражданская община и город-государство.'},
