@@ -417,7 +417,7 @@ Object.assign(g5Names,{
  'Etruscan city states':'Этрусские города-государства','Etruscans':'Этруски','Carthaginian Republic':'Карфагенская республика',
  'Upper Egypt':'Верхний Египет','Lower Egypt':'Нижний Египет'
 });
-function g5Translate(n){const v=String(n||'').trim();if(!v)return 'Название не установлено';if(g5Names[v])return g5Names[v];const key=Object.keys(g5Names).find(k=>k.toLocaleLowerCase('en')===v.toLocaleLowerCase('en'));if(key)return g5Names[key];
+function g5Translate(n){const v=String(n||'').trim();if(!v)return 'Название не установлено';if(idx===6&&g5IsWarringStatesPolity(v)){const m=v.match(/^(qin|chu|qi|yan|zhao|wei|han)/i);const labels={qin:'Цинь',chu:'Чу',qi:'Ци',yan:'Янь',zhao:'Чжао',wei:'Вэй',han:'Хань'};if(m)return 'Царство '+labels[m[1].toLowerCase()];}if(g5Names[v])return g5Names[v];
  const patterns=[[/^Kingdom of (.+)$/i,(_,x)=>'≈ Царство '+g5TransliterateName(x)],[/^(.+) Kingdom$/i,(_,x)=>'Царство '+g5TransliterateName(x)],[/^(.+) Empire$/i,(_,x)=>'≈ Держава '+g5TransliterateName(x)],[/^(.+) Dynasty$/i,(_,x)=>'≈ Династия '+g5TransliterateName(x)],[/^(.+) dynasty$/i,(_,x)=>'Династия '+g5TransliterateName(x)],[/^(.+) city-states$/i,(_,x)=>'≈ города-государства '+g5TransliterateName(x)],[/^(.+) Civilization$/i,(_,x)=>'≈ цивилизация '+g5TransliterateName(x)],[/^(.+) civilization$/i,(_,x)=>'Цивилизация '+g5TransliterateName(x)]];
  for(const [re,fn] of patterns){const m=v.match(re);if(m)return fn(...m);}
  return '≈ '+g5TransliterateName(v);
@@ -438,10 +438,16 @@ const g5CoursePolities = new Set([
 'Seleucid Empire','Ptolemaic Kingdom','Ptolemaic Egypt','Antigonid Kingdom',
 'Etruscan city-states','Etruscan city states','Roman Republic','Roman Empire','Western Roman Empire','Eastern Roman Empire','Carthage','Carthaginian Empire','Carthaginian Republic'
 ]);
+function g5IsWarringStatesPolity(raw){
+ const n=String(raw||'').trim().toLowerCase().replace(/[–—−]/g,'-').replace(/\s+/g,' ');
+ return /^(qin|chu|qi|yan|zhao|wei|han)(?:\s+(?:state|kingdom))?(?:\s*\(state\))?(?:\s*-\s*warring states period)?$/.test(n)
+  || /^kingdom of (qin|chu|qi|yan|zhao|wei|han)$/.test(n);
+}
 function g5IsInGrade5Course(raw){
  const n=String(raw||'').trim().replace(/[–—−]/g,'-').replace(/\s+/g,' ');
  const lower=n.toLocaleLowerCase('en');
  return [...g5CoursePolities].some(x=>x.toLocaleLowerCase('en').replace(/[–—−]/g,'-').replace(/\s+/g,' ')===lower)
+  || g5IsWarringStatesPolity(n)
   || /^(neo-)?assyrian (empire|kingdom)$/.test(lower)
   || /^(neo-)?babylonian (empire|kingdom)$/.test(lower)
   || /^(old|middle|new) kingdom of egypt$/.test(lower)
@@ -535,10 +541,13 @@ async function loadGrade5Cliopatria(targetYear){
   if(request!==g5PolityRequest)return;
   let courseFeatures=data.features.filter(f=>g5IsInGrade5Course(f.properties?.Name)&&g5Translate(String(f.properties?.Name||''))!=='Название не установлено');
   // После 221 г. до н. э. отдельные царства эпохи Сражающихся царств больше не показываем.
-  if(targetYear===-200)courseFeatures=courseFeatures.filter(f=>!/warring.?states|(^|\b)(qin|chu|qi|yan|zhao|wei|han) (state|kingdom)(\b|$)/i.test(String(f.properties?.Name||'')));
-  if(targetYear===-200&&!courseFeatures.some(f=>/qin.*(empire|dynasty)|empire.*qin/i.test(String(f.properties?.Name||''))))courseFeatures.push({type:'Feature',properties:{Name:'Qin Empire',Year:snapshot,Color:'#b58b58',Type:'POLITY',SourceNote:'Резервный схематичный учебный контур империи Цинь после объединения 221 г. до н. э. Он показывает общий масштаб объединённого государства, а не точную историческую границу.'},geometry:{type:'Polygon',coordinates:[[[102,30],[104,35],[106,39],[111,41],[116,40],[121,38],[122,34],[119,30],[115,27],[110,25],[106,26],[103,28],[102,30]]]}});
+  // Около 250 г. до н. э. отображаем отдельные царства из Cliopatria, а не общий полигон периода.
+  if(targetYear===-250){const chinaStates=courseFeatures.filter(f=>g5IsWarringStatesPolity(f.properties?.Name));if(chinaStates.length)courseFeatures=courseFeatures.filter(f=>!/^(warring states|warring states period|warring states china)$/i.test(String(f.properties?.Name||'').trim()));}
+  // После объединения 221 г. до н. э. отдельные царства эпохи Сражающихся царств скрываем.
+  if(targetYear===-200)courseFeatures=courseFeatures.filter(f=>!/warring.?states/i.test(String(f.properties?.Name||''))&&!g5IsWarringStatesPolity(f.properties?.Name));
   if(targetYear===-2300&&!courseFeatures.some(f=>/indus|harapp/i.test(String(f.properties?.Name||''))))courseFeatures.push({type:'Feature',properties:{Name:'Indus Valley Civilization',Year:snapshot,Color:'#b58b58',Type:'CULTURAL_REGION',SourceNote:'Условный контур культурного ареала; он не обозначает границу единого государства.'},geometry:{type:'Polygon',coordinates:[[[67,35],[69,33],[71,31],[73,30],[76,29],[78,27],[77,24],[75,22],[72,22],[69,24],[67,27],[66,30],[67,35]]]}});
-  if(targetYear===-250&&!courseFeatures.some(f=>/maurya/i.test(String(f.properties?.Name||''))))courseFeatures.push({type:'Feature',properties:{Name:'Maurya Empire',Year:snapshot,Color:'#4c9975',Type:'POLITY',SourceNote:'Резервный учебный контур приблизительно передаёт масштаб державы при Ашоке; это не точная граница.'},geometry:{type:'Polygon',coordinates:[[[68,35],[72,34],[76,33],[80,31],[84,29],[88,26],[89,23],[86,20],[82,18],[78,18],[74,20],[71,23],[69,27],[68,31],[68,35]]]}});
+  if(targetYear===-250){const chinaCount=courseFeatures.filter(f=>g5IsWarringStatesPolity(f.properties?.Name)).length;const sourceDate=snapshot<0?Math.abs(snapshot)+' г. до н. э.':snapshot+' г. н. э.';periodDate.textContent='Ориентировочная дата: около 250 г. до н. э. · срез Cliopatria: '+sourceDate+' · отдельных китайских царств в данных: '+chinaCount+'.';}
+  else{const sourceDate=snapshot<0?Math.abs(snapshot)+' г. до н. э.':snapshot+' г. н. э.';periodDate.textContent='Ориентировочная дата: '+(targetYear<0?Math.abs(targetYear)+' г. до н. э.':targetYear+' г. н. э.')+' · срез Cliopatria: '+sourceDate+'.';}
   const egyptFeatures=courseFeatures.filter(f=>/egypt|egyptian/i.test(String(f.properties?.Name||'')));
   const phoeniciaFeatures=courseFeatures.filter(f=>/phoenicia|phoenician|tyre|sidon|byblos|arwad/i.test(String(f.properties?.Name||'')));
   g5ActiveFeatures=courseFeatures;g5PolityLayer.clearLayers();
