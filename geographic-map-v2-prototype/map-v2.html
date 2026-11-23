@@ -934,8 +934,8 @@ sources:[
 {q:'Почему историки сопоставляют миф о Гильгамеше с археологией и другими табличками?',a:'Потому что миф передаёт представления и литературную традицию, но не является прямым протоколом всех событий. Разные копии и фрагменты помогают восстановить текст и историю его передачи.',lat:31.3,lon:45.6,zoom:5,era:0}
 ]
 };
-// После добавления отдельного среза 671 г. до н. э. переносим задания поздних эпох на новые индексы.
-Object.values(practiceTasks).forEach(group=>group.forEach(task=>{if(task.era>=4)task.era+=1;}));
+// Переносим задания с исходной шкалы на шкалу с отдельным срезом Аккадской державы (2300 г. до н. э.).
+Object.values(practiceTasks).forEach(group=>group.forEach(task=>{if(task.era>=1)task.era+=1;}));
 let currentPracticeTask=null,practiceMarker=null;
 function choosePracticeTask(){
  const mode=document.getElementById('practiceMode').value;
