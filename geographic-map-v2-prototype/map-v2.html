@@ -410,9 +410,9 @@ const g5CoursePolities = new Set([
 'Assyria','Assyrian Empire','Neo-Assyrian Empire','Middle Assyrian Empire','Old Assyrian Empire',
 'Phoenicia','Phoenician States','Phoenician city-states','Kingdom of Tyre','Kingdom of Sidon','Israelite Kingdom','Kingdom of Israel','Judah Kingdom','Kingdom of Judah',
 'Achaemenid Empire','Persian Empire','Median Empire',
-'Maurya Empire','Mauryan Empire','Nanda Empire','Magadha',
+'Maurya Empire','Mauryan Empire','Nanda Empire','Magadha','Gupta Empire',
 'Shang dynasty','Zhou dynasty','Western Zhou','Eastern Zhou','Qin','Qin state','Qin dynasty','Han dynasty','Han Empire',
-'Macedon','Kingdom of Macedon','Macedonian Kingdom','Macedonian Empire','Minoan Crete','Mycenaean civilization','Mycenaean Greece',
+'Macedon','Kingdom of Macedon','Macedonian Kingdom','Macedonian Empire','Minoan Crete','Mycenaean civilization','Mycenaean Greece','Etruscan city-states',
 'Athens','Sparta','Corinth','Thebes','Greek city-states',
 'Seleucid Empire','Ptolemaic Kingdom','Ptolemaic Egypt','Antigonid Kingdom',
 'Roman Republic','Roman Empire','Western Roman Empire','Eastern Roman Empire','Carthage','Carthaginian Empire'
@@ -443,6 +443,8 @@ function g5HistoricalBrief(raw,translated,year){
  if(/ptolemaic/.test(n))return 'Царство Птолемеев возникло в Египте после распада державы Александра Македонского. Его столицей стала Александрия — крупный политический, торговый и культурный центр.';
  if(/antigonid/.test(n))return 'Держава Антигонидов была одним из эллинистических государств, возникших после распада державы Александра Македонского; её ядром оставалась Македония.';
  if(/athens|sparta|corinth|thebes|greek city/.test(n))return 'Греческие полисы были самостоятельными городами-государствами. Афины и Спарта стали наиболее известными примерами разных политических и общественных порядков.';
+ if(/etruscan/.test(n))return 'Этрусские города-государства существовали в Центральной Италии до возвышения Рима. Этруски оказали заметное влияние на раннюю римскую культуру и городскую жизнь.';
+ if(/gupta/.test(n))return 'Держава Гуптов усилилась в Северной Индии в IV–VI веках н. э. Этот период часто связывают с расцветом науки, литературы, математики и искусства.';
  if(/carthage/.test(n))return 'Карфаген был крупным торговым и морским центром Северной Африки. Он соперничал с Римом за господство в Западном Средиземноморье во время Пунических войн.';
  if(/roman republic/.test(n))return 'Римская республика сложилась после изгнания царей. В ходе завоеваний Рим подчинил Италию, а затем вступил в борьбу за господство в Средиземноморье.';
  if(/roman empire|western roman|eastern roman/.test(n))return 'Римская империя возникла после длительного кризиса республики. В поздней античности управление империей разделилось между западной и восточной частями; Западная Римская империя прекратила существование в 476 году.';
